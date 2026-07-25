@@ -1,0 +1,134 @@
+# Word senses and polysemy
+
+Most words mean several things, but word2vec and GloVe learn exactly one vector per
+word. This page covers what that costs, the approaches to fixing it, and Manning's
+argument that the obvious fix is based on a wrong model of how word meaning
+actually works. Raised in questions during
+[lecture 1](01-intro-and-word-vectors.md) (≈41:09, ≈45:48) and treated properly in
+[lecture 2](02-word-vectors-and-language-models.md) (≈52:03–1:02:49).
+
+Slides: [wordvecs2](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-spr2024-lecture02-wordvecs2.pdf)
+
+## The scale of the problem
+
+Manning's claim is that almost every word has many meanings, and the words that do
+not are mostly very specialized scientific terms (lecture 2, ≈52:03). The famous
+example is *bank* — the financial institution and the side of a river — and *star*
+— the astronomical object and the celebrity.
+
+His set piece is the word **pike**, which he uses because it is a word you do not
+think of as ambiguous (≈52:49). The class comes up with, and he adds to:
+
+- a kind of fish
+- a spear (the medieval weapon)
+- a road — *pike* as shorthand for *turnpike*, so named because of the spiked
+  barrier originally used to count people through
+- a position in diving and gymnastics
+- a verb, as in to attack someone with a pike
+- "coming down the pike", a metaphorical extension of the road sense that ends up
+  meaning the future
+- an Australian usage meaning to chicken out of something (≈55:07)
+
+## What one vector per word actually gives you
+
+A student asks in lecture 1 whether the similarity captured is context-dependent,
+and Manning concedes it directly (≈41:56): the course is learning one vector per
+word string, which absolutely does not capture meaning in context. The vector for
+*star* will not tell you whether a given occurrence means a Hollywood star or an
+astronomical one.
+
+But the consolation is genuinely surprising, and follows from how high-dimensional
+spaces behave (≈42:43): the single vector for *star* ends up close **both** to
+astronomical words like *nebula* **and** to words like *celebrity*. It does not have
+to choose, because in a high-dimensional space a point can be near different things
+along different dimensions. This is the same point made in
+[distributional semantics](distributional-semantics.md) about high-dimensional
+geometry.
+
+Asked directly whether each word has one embedding or several, Manning says one per
+string of letters, and that you can think of it as an **average over the word's
+senses** (lecture 1, ≈45:48) — which he then makes precise in lecture 2.
+
+## Approach 1: learn a vector per sense
+
+The direct fix: accept that words have several meanings, cluster the occurrences of
+each word by the similarity of their contexts, treat each cluster as a sense, and
+learn a separate vector for each (lecture 2, ≈54:20). Stanford did this in 2012,
+before word2vec.
+
+It works well. Manning shows *bank₁* and *bank₂* separated, and *jaguar* split four
+ways (≈55:52):
+
+- *jaguar₁* — the car, near *luxury* and *convertible*
+- *jaguar₂* — near *software* and *Microsoft*, because Apple named a version of Mac
+  OS X "Jaguar"
+- *jaguar₃* — near *keyboard*, *solo*, *drum*, *bass*, because there is a Jaguar
+  keyboard
+- *jaguar₄* — the animal, near *hunter*, and Manning notes this sense that we think
+  of as basic actually turns up rather *less* in text corpora
+
+## Approach 2 (what is actually done): superposition
+
+Despite that working, it is not what is done now (lecture 2, ≈57:26). Instead you
+keep **one** vector per word, and what you learn is a weighted average of the sense
+vectors you would have learned — weighted by the relative frequency of each sense.
+
+This is commonly called a **superposition**. Manning's aside is that neural network
+people like borrowing physics vocabulary, but it is simply a weighted average
+(≈57:26).
+
+## Why the sense model is the wrong model anyway
+
+Manning then makes the linguistic argument that the sense-based view is broken
+regardless (≈58:12). It is how dictionaries are built — sense 1, sense 2, sense 3 —
+but ask how many senses a word has and every dictionary gives a different answer.
+
+His example is *field* (≈59:43). A field can be:
+
+- a place where you grow a crop
+- a natural expanse — a rock field, an ice field
+- a sporting field
+- the mathematical sense
+
+All of these have something to do with each other. The mathematical one is furthest
+away; the physical ones are all sort of flat spaces. The sporting sense is clearly
+different from the ice sense. But is an ice field really a *different sense* from a
+rock field, or are you just modifying the same sense with a different material?
+There is no principled answer, which is the point.
+
+Cases like *bank* — where financial institution and river edge are genuinely far
+apart — are the extreme, not the norm. Most words have meanings that shade into each
+other, and cutting them into discrete senses is artificial. What you really have,
+in Manning's framing, is something like a **probability density over the things a
+word can mean** (≈1:00:29). Under that view, a vector that averages over contexts is
+the more honest representation, not a compromise — and it points directly toward the
+contextual word vectors covered later in the course.
+
+## The sparse coding coda
+
+There is a genuinely surprising result here (lecture 2, ≈1:00:29). Since the word
+vector is the sum of sense vectors, standard linear algebra says you cannot recover
+the individual senses from the single vector — the information is gone.
+
+But because these vector spaces are so high-dimensional and sparse, ideas from
+**sparse coding theory** can reconstruct the sense vectors from the one word vector.
+Manning shows a result recovering senses of *tie* from its single vector (≈1:02:03):
+the piece-of-clothing sense, the tied-game sense, the cable-tie sense (the kind you
+put on electrical cables), and the musical sense — four or five out of five,
+convincingly separated.
+
+He points anyone who wants to understand the mechanism toward sparse coding theory
+taught in Stanford's statistics department (≈1:01:15), and does not attempt to teach
+it. *The transcript garbles both the surnames of the paper's authors and the
+statistician Manning recommends, so this page deliberately does not attribute
+either; check the
+[slides](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-spr2024-lecture02-wordvecs2.pdf) for the
+citations.*
+
+## Related pages
+
+- [word2vec](word2vec.md) — the one-vector-per-type model
+- [distributional semantics](distributional-semantics.md) — why high-dimensional
+  spaces let one vector sit near several meanings
+- [lecture 2](02-word-vectors-and-language-models.md) — the pike discussion and
+  the jaguar clustering results
