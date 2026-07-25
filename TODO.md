@@ -1,7 +1,44 @@
 # KB build — CS224N (Natural Language Processing with Deep Learning, Stanford, Spring 2024)
 
-Scope for this run: lectures 1–2 only (smoke test). The course has 23 lectures;
-the remaining 21 are listed under "Deferred" and are not part of this build.
+The course has 23 lectures, built incrementally.
+
+- **Run 1** (complete): lectures 1–2, plus the site crawl and `sources.md`.
+- **Run 2** (in progress): lectures 3–4.
+- Lectures 5–23 remain deferred; video ids are listed at the bottom.
+
+---
+
+# Run 2 — lectures 3–4
+
+## Transcripts
+- [x] 03 Backpropagation and Neural Networks — video HnliVHU2g9U (95 paragraphs)
+- [x] 04 Dependency Parsing — video KVKvde-_MYc (102 paragraphs)
+- [ ] Copy-edit both into readable sentences, keeping verbatim originals
+
+## Slides
+- [x] raw/slides/03-backpropagation-and-neural-networks.md — all 85 slides.
+      Printed numbers match PDF pages 1:1. Deck has two internal numbering quirks
+      (slide 10 headed "Lecture 4", slide 6 headed "7. Neural computation") —
+      leftovers from an earlier year's ordering, noted in the file.
+- [x] raw/slides/04-dependency-parsing.md — all 45 pages. Printed slide numbers run
+      1–49 but **4, 5, 8 and 13 are absent from the PDF** (hidden in the source deck,
+      never exported). 49 − 4 = 45 pages, so every page is accounted for. The file
+      cites printed numbers and states the offset.
+
+## Wiki
+- [ ] wiki/03-backpropagation-and-neural-networks.md
+- [ ] wiki/04-dependency-parsing.md
+- [ ] Topic pages: backpropagation, neural-network-basics, named-entity-recognition,
+      dependency-parsing, regularization-and-training-practices
+- [ ] Update existing topic pages that lectures 3–4 extend
+- [ ] Update INDEX.md table of contents
+
+## Publish
+- [ ] Commit and push (kbUrl already set — no link_kb.sh needed)
+
+---
+
+# Run 1 — lectures 1–2 (complete)
 
 ## Transcripts
 - [x] 01 Intro and Word Vectors — video DzpHeXVSC5I
