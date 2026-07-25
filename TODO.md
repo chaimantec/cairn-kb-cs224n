@@ -91,6 +91,14 @@ The course has 23 lectures, built incrementally.
   noise. Slice from the first `**[` marker before comparing.
 - Unicode sub/superscripts (h⁽ᵗ⁾, b₂, x₁) legitimately remove ASCII digits, so expect them
   in the number diff and account for them rather than reverting.
+- **Deck filenames stop matching catalog lecture numbers past roughly lecture 9.** The
+  crawled decks run `lecture01`-`lecture16` plus `lecture18` — there is no `lecture17`
+  file — while the catalog lists 23 lectures. Catalog 17 "ConvNets and TreeRNNs" is
+  `slides-cs224n-spr2024-lecture16-CNN-TreeRNN.pdf`, and catalog 18 is `lecture18-...`.
+  Match each catalog lecture to its deck **by title**, not by number, before transcribing,
+  and state the mapping in the slide file. Several later catalog entries (11 Post-training,
+  19-23 the guest lectures and tutorials) may have no deck at all and would be
+  transcript-only.
 
 ---
 
