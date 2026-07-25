@@ -3,8 +3,44 @@
 The course has 23 lectures, built incrementally.
 
 - **Run 1** (complete): lectures 1–2, plus the site crawl and `sources.md`.
-- **Run 2** (in progress): lectures 3–4.
-- Lectures 5–23 remain deferred; video ids are listed at the bottom.
+- **Run 2** (complete): lectures 3–4.
+- **Run 3** (in progress): lectures 5–6.
+- Lectures 7–23 remain deferred; video ids are listed at the bottom.
+
+---
+
+# Run 3 — lectures 5–6
+
+## Transcripts
+- [x] 05 Recurrent Neural Networks — video fyc0Jzr74y4 (102 paragraphs)
+- [x] 06 Sequence to Sequence Models — video Ba6Fn1-Jsfw (100 paragraphs)
+- [ ] Copy-edit both into readable sentences, keeping verbatim originals
+
+## Slides
+- [x] raw/slides/05-recurrent-neural-networks.md — all 72 slides. Printed numbers match
+      PDF pages 1:1; six pages (3–6, 11, 12) print no number but sit in sequence.
+      Deck title is "Language Models and Recurrent Neural Networks"; the catalog calls
+      the lecture "Recurrent Neural Networks".
+- [x] raw/slides/06-sequence-to-sequence-models.md — all 56 slides. Printed numbers
+      match PDF pages 1:1; four full-bleed image pages (19, 43, 44, 48) print no
+      number. Slides 4–18 re-run lecture 5's slides 49–63 as a recap; transcribed in
+      brief with pointers, except slide 15, which adds the "~7 tokens back" rule of
+      thumb that slide 25 contrasts LSTMs against. Deck title is "LSTM RNNs and Neural
+      Machine Translation"; the catalog calls the lecture "Sequence to Sequence Models".
+
+## Wiki
+- [ ] wiki/05-recurrent-neural-networks.md
+- [ ] wiki/06-sequence-to-sequence-models.md
+- [ ] Topic pages — candidates: language-modeling, n-gram-language-models,
+      recurrent-neural-networks, perplexity, vanishing-and-exploding-gradients, lstm,
+      machine-translation, seq2seq-and-encoder-decoder
+- [ ] Update existing topic pages that lectures 5–6 extend
+- [ ] Update INDEX.md table of contents
+- [ ] Update AGENTS.md — the "Slide N = PDF page N" line is stale since lecture 4
+- [ ] Link sweep
+
+## Publish
+- [ ] Commit and push (kbUrl already set from run 1, so no link_kb.sh needed)
 
 ---
 
