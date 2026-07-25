@@ -4,7 +4,7 @@ The course has 23 lectures, built incrementally.
 
 - **Run 1** (complete): lectures 1–2, plus the site crawl and `sources.md`.
 - **Run 2** (complete): lectures 3–4.
-- **Run 3** (in progress): lectures 5–6.
+- **Run 3** (complete): lectures 5–6.
 - Lectures 7–23 remain deferred; video ids are listed at the bottom.
 
 ---
@@ -43,18 +43,54 @@ The course has 23 lectures, built incrementally.
       Machine Translation"; the catalog calls the lecture "Sequence to Sequence Models".
 
 ## Wiki
-- [ ] wiki/05-recurrent-neural-networks.md
-- [ ] wiki/06-sequence-to-sequence-models.md
-- [ ] Topic pages — candidates: language-modeling, n-gram-language-models,
+- [x] wiki/05-recurrent-neural-networks.md
+- [x] wiki/06-sequence-to-sequence-models.md
+- [x] Topic pages — nine new: language-modeling, n-gram-language-models,
       recurrent-neural-networks, perplexity, vanishing-and-exploding-gradients, lstm,
-      machine-translation, seq2seq-and-encoder-decoder
-- [ ] Update existing topic pages that lectures 5–6 extend
-- [ ] Update INDEX.md table of contents
-- [ ] Update AGENTS.md — the "Slide N = PDF page N" line is stale since lecture 4
-- [ ] Link sweep
+      machine-translation, seq2seq-and-encoder-decoder, plus regularization-and-dropout.
+      The last was not in the plan but earned a page: lecture 5 slides 7-9 teach it
+      properly, including Manning's claim that modern practitioners no longer believe the
+      textbook overfitting picture. (Run 2 had dropped a regularization page on the
+      grounds that lectures 1-4 do not teach it; lecture 5 does.) Bidirectional and
+      multi-layer RNNs were folded into recurrent-neural-networks rather than split out —
+      they are variants of one architecture, not separate concepts.
+- [x] Update existing topic pages that lectures 5–6 extend — gradient-descent (Xavier
+      initialization, the adaptive optimizer family, gradient clipping),
+      backpropagation (backpropagation through time and truncation),
+      softmax-and-cross-entropy (the LM output layer, its loss, and perplexity as its
+      exponential), activation-functions (tanh in RNNs; sigmoid-as-gate vs tanh-as-content
+      in the LSTM)
+- [x] Update INDEX.md table of contents — coverage note now says lectures 1-6, 2 lecture
+      entries, 9 topic entries, slides section including lecture 6's recap caveat,
+      transcripts section listing the new garbles
+- [x] Update AGENTS.md — replaced the stale "Slide N = PDF page N" line with a convention
+      that states which decks are 1:1 and tells the reader to check the slide file header
+- [x] Link sweep: all 50 markdown files checked; every live relative link resolves, none
+      point into gitignored raw/pdfs/, every wiki page is reachable from INDEX.md, and all
+      three course PDF URLs verified against sources.md. Also fixed a stale illustrative
+      path in AGENTS.md left over from the skill's CS229 example.
 
 ## Publish
-- [ ] Commit and push (kbUrl already set from run 1, so no link_kb.sh needed)
+- [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (kbUrl already
+      set from run 1, so no link_kb.sh needed)
+
+## Notes for run 4
+
+- **Decks repeat each other.** Lecture 6's slides 4-18 re-run lecture 5's slides 49-63
+  verbatim as a recap. Transcribing them twice in full would bloat the KB and split
+  citations across two files; transcribing them in brief with a pointer to the first
+  occurrence, and calling out only what is *new* (slide 15's "~7 tokens back" bullet),
+  worked well. Check for this overlap before transcribing.
+- **Deck title and catalog title can disagree.** Lecture 5's deck is titled "Language
+  Models and Recurrent Neural Networks" but the catalog calls it "Recurrent Neural
+  Networks"; lecture 6's deck is "LSTM RNNs and Neural Machine Translation" against the
+  catalog's "Sequence to Sequence Models". File names follow the catalog (so transcript,
+  slides and wiki slugs match); both titles are stated in the slide file's front matter.
+- **Verify the number inventory on the transcript body only.** Diffing numbers between the
+  original and edited transcript picks up everything in the new header too, which is pure
+  noise. Slice from the first `**[` marker before comparing.
+- Unicode sub/superscripts (h⁽ᵗ⁾, b₂, x₁) legitimately remove ASCII digits, so expect them
+  in the number diff and account for them rather than reverting.
 
 ---
 

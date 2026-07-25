@@ -108,10 +108,39 @@ way to what you might expect (≈13:58).
 - **Recurrent networks:** **tanh** — the course uses it in Assignment 3 (≈10:06).
 - **Transformer-family models:** **GELU** or **Swish**.
 
+## In recurrent networks
+
+Lecture 5 confirms the recommendation above in the architecture it builds. The hidden-state
+update of a simple RNN, h⁽ᵗ⁾ = σ(W_h h⁽ᵗ⁻¹⁾ + W_e e⁽ᵗ⁾ + b₁), most commonly uses **tanh**,
+and Manning gives the reason: it is "balanced on the positive-negative side"
+([lecture 5](05-recurrent-neural-networks.md), ≈54:14).
+
+The [LSTM](lstm.md) uses two activations for two different jobs (lecture 6, slide 22), which
+is a clean illustration of the output/hidden distinction:
+
+- **Sigmoid on the three gates.** f, i and o are sigmoids precisely *because* the range is
+  (0, 1): a gate's value has to be interpretable as "how much of this to let through", so
+  each element must be open (1), closed (0) or somewhere in between. The lecture's phrasing
+  is that gates are "calculated things whose values are probabilities" (≈28:46). Here the
+  sigmoid's saturation is the point, not a defect.
+- **tanh on the cell content.** c̃⁽ᵗ⁾ and the read h⁽ᵗ⁾ = o⁽ᵗ⁾ ⊙ tanh c⁽ᵗ⁾ use tanh, because
+  these are *content*, not gates, and want a balanced range. Manning admits the tanh in the
+  h update is the part of the LSTM he finds hardest to justify — the argument being that the
+  cell can hold unbounded real numbers while the hidden state wants a bounded range —
+  "I guess they did it that way, it seemed to work well" (lecture 6, ≈35:49).
+
+The vanishing-gradient analysis in the same lectures runs through *f*′ as well: the linear
+proof sketch assumes σ is the identity so that ∂h⁽ᵗ⁾/∂h⁽ᵗ⁻¹⁾ = diag(σ′(·)) W_h reduces to
+W_h, and the nonlinear case only changes the eigenvalue threshold. See
+[vanishing and exploding gradients](vanishing-and-exploding-gradients.md).
+
 ## Related pages
 
 - [Backpropagation](backpropagation.md) — where *f*′(**z**) enters, as the diagonal local
   gradient diag(*f*′(**z**)).
+- [LSTM](lstm.md) — where sigmoid and tanh are used side by side for different purposes.
+- [Vanishing and exploding gradients](vanishing-and-exploding-gradients.md) — where σ′ shows
+  up in every Jacobian factor.
 - [Matrix calculus](matrix-calculus.md) — why the Jacobian of an element-wise activation is
   diagonal.
 - [Softmax, the logistic function, and cross-entropy](softmax-and-cross-entropy.md) — the

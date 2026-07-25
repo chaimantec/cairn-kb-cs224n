@@ -152,12 +152,47 @@ debug and improve models. The concrete example he promises for a later lecture i
 **exploding and vanishing gradients** in recurrent networks (≈1:12:20). The syllabus
 recommends Karpathy's "Yes you should understand backprop".
 
+## Backpropagation through time
+
+The RNN case (lecture 5, slides 41–43) is where the outward-branch rule above stops being a
+detail and becomes the whole algorithm. A [recurrent neural
+network](recurrent-neural-networks.md) applies the *same* weight matrix W_h at every
+timestep, so the question is how to differentiate with respect to a **repeated** weight:
+
+> The gradient with respect to a repeated weight is the **sum** of the gradient with respect
+> to each time it appears.
+
+    ∂J⁽ᵗ⁾/∂W_h = Σ_{i=1..t} ∂J⁽ᵗ⁾/∂W_h |₍ᵢ₎
+
+The justification is exactly "gradients sum at outward branches". Think of the single W_h as
+being copied by an identity function into W_h⁽¹⁾, W_h⁽²⁾, … at each timestep. Identity copies
+have partial derivative 1 with respect to each other, so applying the multivariable chain
+rule leaves each term multiplied by 1, and what remains is a plain sum (≈1:06:36). Slide 43
+writes the cancellation out.
+
+The algorithm — backpropagate over timesteps *i* = *t*, …, 0, summing gradients as you go —
+is **backpropagation through time** (Werbos 1988).
+
+In practice it is often **truncated** after around 20 timesteps for training efficiency
+(slide 43). The asymmetry is worth noting: the *forward* pass still uses the full context;
+only the backward pass is cut short (≈1:08:09).
+
+Over long sequences this repeated multiplication is also where backpropagation breaks down —
+see [vanishing and exploding gradients](vanishing-and-exploding-gradients.md), and note the
+conclusion that RNNs are particularly unstable precisely because the repeated matrix is the
+**same** one every step.
+
 ## Where it appears in this course
 
 - [Lecture 3](03-backpropagation-and-neural-networks.md) — introduced and derived in full.
 - [Lecture 4](04-dependency-parsing.md) — used in practice: the log loss of the neural
   dependency parser's softmax is backpropagated all the way into the word, POS-tag and
   dependency-label embeddings (slide 44).
+- [Lecture 5](05-recurrent-neural-networks.md) — backpropagation through time, and the
+  vanishing/exploding gradient analysis of what the repeated matrix does to the signal.
+- [Lecture 6](06-sequence-to-sequence-models.md) — backpropagating end-to-end through a
+  [seq2seq model](seq2seq-and-encoder-decoder.md), from the decoder's losses right back
+  through the encoder.
 
 ## Related pages
 
@@ -166,3 +201,6 @@ recommends Karpathy's "Yes you should understand backprop".
 - [Gradient descent](gradient-descent.md) — what consumes the gradients once computed.
 - [Activation functions](activation-functions.md) — why ReLU's constant slope of one gives
   such clean gradient backflow.
+- [Vanishing and exploding gradients](vanishing-and-exploding-gradients.md) — what happens to
+  these gradients over many steps, and how it is fixed.
+- [Recurrent neural networks](recurrent-neural-networks.md) — the architecture BPTT unrolls.

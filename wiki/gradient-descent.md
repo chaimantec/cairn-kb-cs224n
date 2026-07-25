@@ -70,6 +70,67 @@ values create symmetries that the gradient cannot break, since every unit receiv
 the same updates forever. So random initialization is not a nicety, it is what makes
 learning possible.
 
+Lecture 5 adds the scale rule that goes with this (slide 11): weights should be
+Uniform(−*r*, *r*) with *r* chosen so that numbers get neither too big nor too small under
+repeated matrix multiplication, hidden-layer biases 0, and output biases at the optimal value
+if the weights were 0. **Xavier initialization** picks the variance from the layer sizes:
+
+    Var(W_i) = 2 / (n_in + n_out)
+
+where *n_in* is the fan-in (previous layer size) and *n_out* the fan-out (next layer size).
+Manning notes this used to be treated as quite important and that the need for it largely
+goes away later, once **layer normalization** is used — though you must still initialize to
+*something* (lecture 5, ≈20:57).
+
+## Optimizers
+
+Lecture 5's slide 12. Plain SGD "will work just fine" for almost any problem if you fiddle
+enough — but fiddling means hand-tuning the learning rate, often with a schedule that starts
+higher and halves every *k* epochs, plus various other complications (≈22:29).
+
+**Adaptive optimizers** avoid that. For each parameter they accumulate a measure of what the
+gradient has been in the past, and use it to scale that parameter's step — so you get
+**differential per-parameter learning rates**, and much less sensitivity to hyperparameters
+(≈23:14). The family, in the order the slide gives it:
+
+- **AdaGrad** — the simplest member, co-invented by John Duchi at Stanford. Nice, but "tends
+  to stall early".
+- **RMSprop**
+- **Adam** — *"a fairly good, safe place to begin in many cases"*, and the one used in
+  Assignment 2. If you remember nothing else, remember Adam (≈24:46).
+- **AdamW**
+- **NAdamW** — can be better with word vectors and for speed (Nesterov acceleration).
+
+Start them at an initial learning rate of around **0.001**; most have other hyperparameters
+too.
+
+The **W** variants are worth knowing about specifically for word vectors: word vectors are
+updated *sparsely*, because particular words only turn up occasionally, and some optimizers
+have properties tuned for that (≈23:59). Beyond this there is a whole family of further ideas
+— momentum, Nesterov acceleration — that belong to a convex optimization class.
+
+## Gradient clipping
+
+The fix for **exploding gradients** (lecture 5, slide 62). If the norm of the gradient
+exceeds a threshold, scale it down *before* applying the update:
+
+```
+ĝ ← ∂E/∂θ
+if ‖ĝ‖ ≥ threshold then
+    ĝ ← (threshold / ‖ĝ‖) ĝ
+end if
+```
+
+The intuition is **same direction, smaller step**. Thresholds around 5, 10 or 20 for the
+gradient norm are typical (lecture 6, ≈19:33). Without it, one very large gradient produces
+an update that lands somewhere arbitrary and high-loss — Manning's image is "you think you've
+found a hill to climb, but suddenly you're in Iowa" — and in the worst case gives Inf or NaN
+and forces a restart from a checkpoint.
+
+He is candid that this "isn't high-falutin math, really — it's a crude hack", but it works,
+it is often essential, and it is one of lecture 6's four named takeaways (slide 56). See
+[vanishing and exploding gradients](vanishing-and-exploding-gradients.md).
+
 ## Computing the gradients
 
 For word2vec, the parameters are all the word vectors concatenated — with two
@@ -123,8 +184,14 @@ word vectors are updated by the same rule as everything else.
 - [matrix calculus](matrix-calculus.md) — Jacobians, the chain rule, and the shape
   convention that makes the update rule a plain subtraction
 - [backpropagation](backpropagation.md) — computing these gradients automatically
+- [vanishing and exploding gradients](vanishing-and-exploding-gradients.md) — what goes wrong
+  over long sequences, and why clipping is needed
+- [regularization and dropout](regularization-and-dropout.md) — the other half of lecture 5's
+  practical-technique set
 - [lecture 1](01-intro-and-word-vectors.md) — the full hand derivation
 - [lecture 2](02-word-vectors-and-language-models.md) — SGD, learning rates,
   initialization
 - [lecture 3](03-backpropagation-and-neural-networks.md) — gradients for an arbitrary
   network, by hand and algorithmically
+- [lecture 5](05-recurrent-neural-networks.md) — Xavier initialization, the adaptive
+  optimizer family, and gradient clipping

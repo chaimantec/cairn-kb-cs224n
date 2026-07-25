@@ -116,6 +116,37 @@ Note also that Manning deliberately avoids differentiating the loss in lecture 3
 gradients of the raw score *s* instead, because the derivative of the logistic is an
 Assignment 2 question (lecture 3, slide 27).
 
+## The language model output layer
+
+From lecture 5 onward this is the standard output of every
+[language model](language-modeling.md) in the course. A
+[recurrent neural network](recurrent-neural-networks.md) language model ends
+
+    ŷ⁽ᵗ⁾ = softmax( U h⁽ᵗ⁾ + b₂ ) ∈ ℝ^{|V|}
+
+— structurally identical to the parser's output layer, but with the number of classes now the
+**size of the vocabulary** rather than three (lecture 5, slide 32).
+
+The loss follows directly. Cross-entropy between the predicted distribution and the true next
+word, where the target y⁽ᵗ⁾ is one-hot for x⁽ᵗ⁺¹⁾, collapses to a single negative log
+probability (lecture 5, slide 34):
+
+    J⁽ᵗ⁾(θ) = CE(y⁽ᵗ⁾, ŷ⁽ᵗ⁾) = − Σ_{w∈V} y⁽ᵗ⁾_w log ŷ⁽ᵗ⁾_w = − log ŷ⁽ᵗ⁾_{x_{t+1}}
+
+and the overall objective is the average over positions, J(θ) = (1/T) Σₜ J⁽ᵗ⁾(θ). This is the
+same collapse as in the general case above: with a one-hot target every term but one is zero.
+
+**Perplexity is the exponential of this loss.** The standard evaluation metric for language
+models is exp(J(θ)) — the identity is derived on lecture 5's slide 49 and explained at length
+in lecture 6. This is why the cross-entropy loss is not just a training device but the thing
+the field reports numbers in. See [perplexity](perplexity.md), and note the warning there
+about logarithm base.
+
+The [LSTM](lstm.md) changes what produces h⁽ᵗ⁾ but not this layer: lecture 6's slide 24 draws
+the same ŷ = softmax(Uh + b₂) on top of the LSTM cell. The
+[seq2seq decoder](seq2seq-and-encoder-decoder.md) uses it too, with the losses at each
+position averaged and backpropagated through both decoder and encoder (lecture 6, slide 53).
+
 ## Related pages
 
 - [word2vec](word2vec.md) — where the softmax and negative sampling live
@@ -128,3 +159,8 @@ Assignment 2 question (lecture 3, slide 27).
 - [lecture 2](02-word-vectors-and-language-models.md) — logistic function, neural
   classifier, cross-entropy
 - [lecture 4](04-dependency-parsing.md) — softmax as the parser's output layer
+- [perplexity](perplexity.md) — the exponential of this loss, and how language models are
+  reported
+- [language modeling](language-modeling.md) — the task whose output layer this is from
+  lecture 5 onward
+- [lecture 5](05-recurrent-neural-networks.md) — the RNN-LM output layer and its loss

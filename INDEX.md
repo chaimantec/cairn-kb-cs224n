@@ -10,7 +10,7 @@ goals are that students learn the methods, gain some real understanding of human
 language and why it is hard for computers, and come out able to build working
 systems.
 
-> **Coverage note.** This knowledge base covers **lectures 1 to 4**: wiki pages,
+> **Coverage note.** This knowledge base covers **lectures 1 to 6**: wiki pages,
 > timestamped transcripts, and full slide-by-slide text for each. Slide *URLs* for
 > lectures 1–18 are listed in [sources.md](sources.md), so questions about later
 > lectures can be answered by pointing at the right PDF, but there are no transcripts,
@@ -47,6 +47,23 @@ systems.
   Pāṇini to Tesnière and the rise of treebanks and Universal Dependencies; the
   arc-standard transition system worked through on *I ate fish*; UAS and LAS; and why
   Chen & Manning's neural parser beat symbolic feature parsers on accuracy *and* speed.
+- [Lecture 5 — Recurrent Neural Networks](wiki/05-recurrent-neural-networks.md) — the
+  lecture Manning calls the most important in the class. Regularization and the modern
+  view that overfitting no longer matters, dropout, vectorization, Xavier initialization
+  and the adaptive optimizers; what a language model *is*, in two equivalent definitions;
+  *n*-gram models, their sparsity and storage failures, and the "today the price of gold"
+  generation demo; the fixed-window neural LM and why it lacks symmetry across positions;
+  the RNN, its training by teacher forcing, backpropagation through time, and roll-out
+  generation (including the paint-colour names); perplexity; and the vanishing/exploding
+  gradient problem with its eigenvalue proof sketch.
+- [Lecture 6 — Sequence to Sequence Models](wiki/06-sequence-to-sequence-models.md) —
+  perplexity explained properly, with Jelinek's 64-sided die; the ~7-token limit of a
+  simple RNN; the LSTM in full — cell state, three gates, the equations, the history from
+  Hochreiter and Schmidhuber through Graves to Hinton at Google, and why "the + sign is
+  the secret"; vanishing gradients as a general deep-network problem, with ResNet,
+  DenseNet and HighwayNet; bidirectional and stacked RNNs; machine translation from the
+  1950s code-breaking analogy through statistical MT to the 2014 neural breakthrough; and
+  the seq2seq encoder-decoder model, trained end-to-end.
 
 ## Topic pages
 
@@ -113,24 +130,75 @@ systems.
   problem. The global-vs-local ambiguity argument against programming languages, the four
   headline types with their newspaper examples, Catalan growth in the four-PP *Wall Street
   Journal* sentence, and why this is what defeated hand-written grammars.
+- [Language modeling](wiki/language-modeling.md) — the concept Manning calls the most
+  important in the class. The two equivalent definitions and why the chain rule makes them
+  the same, why it is not a 2022 invention, the old and new answers to why it matters, the
+  four ways the course builds one, conditional language models, and the distinction that a
+  recurrent neural network is *not* a language model. **Start here for anything about what
+  an LM is.**
+- [*n*-gram language models](wiki/n-gram-language-models.md) — how language models worked
+  from 1975 to 2012. The Markov assumption and counting, the "students opened their"
+  example and what discarding the proctor context costs, both sparsity problems with
+  smoothing and backoff, storage, why *n* stopped at 5, the generation demo, and why
+  "scale will solve everything" is an old story.
+- [Recurrent neural networks](wiki/recurrent-neural-networks.md) — the architecture and the
+  fixed-window problem it solves; the equations; advantages and the two disadvantages that
+  shape the rest of the course; training with teacher forcing and 100-word segments;
+  backpropagation through time and truncation; roll-out generation; sequence tagging,
+  sentence encoding and encoder uses; and the bidirectional and stacked variants with the
+  rule that bidirectionality cannot be used for generation.
+- [LSTM](wiki/lstm.md) — parsing the name, the history from Hochreiter and Schmidhuber 1997
+  through the Gers forget gate to Hinton at Google, hidden state vs cell state, the full
+  gate equations, why the cell and hidden state are separate (with the *King of Prussia*
+  example), and why the additive update gives ~100 timesteps of memory instead of ~7.
+  **The + sign is the secret.**
+- [Vanishing and exploding gradients](wiki/vanishing-and-exploding-gradients.md) — the
+  chain-rule intuition, the eigenvalue proof sketch for W_h^ℓ, the printer/tickets example,
+  the ~7-token rule of thumb, gradient clipping, and the generalization beyond RNNs to
+  ResNet, DenseNet and HighwayNet — plus why RNNs are worse than deep feed-forward networks
+  (the repeated matrix is the *same* one).
+- [Perplexity](wiki/perplexity.md) — the standard LM metric. The evaluation logic, the
+  formula, the identity perplexity = exp(cross-entropy), the warning about logarithm base,
+  Fred Jelinek's 64-sided-die explanation of why it exists at all, and the full results
+  table from Kneser-Ney at 67.6 down to LSTMs at 30.
+- [Machine translation](wiki/machine-translation.md) — where NLP started. The 1950s
+  code-breaking analogy and why it flopped, statistical MT and the Bayes-rule split into a
+  translation model and a language model, why that split let the translation model stay
+  dumb, the Aztec Empire sentence Google Translate kept failing, and the 2014 neural
+  breakthrough.
+- [Sequence-to-sequence and encoder-decoder models](wiki/seq2seq-and-encoder-decoder.md) —
+  the two-RNN architecture, seq2seq as a conditional language model, training end-to-end
+  with teacher forcing in the decoder, the "Conditioning = Bottleneck" note that attention
+  later solves, why you cannot just stack layers on the source, and the tasks beyond MT
+  the pattern covers.
+- [Regularization and dropout](wiki/regularization-and-dropout.md) — L2 and the classic
+  overfitting picture, and Manning's claim that modern practitioners do not believe it;
+  why models are now trained to memorize the training set; dropout's mechanics at train and
+  test time; and the three explanations of why it works, including the naïve-Bayes /
+  logistic-regression middle ground.
 
 ## Raw materials
 
 - [`raw/slides/`](raw/slides/) — **the full text of every slide, with slide numbers**,
   for lecture 1 ([40 slides](raw/slides/01-intro-and-word-vectors.md)), lecture 2
   ([47 slides](raw/slides/02-word-vectors-and-language-models.md)), lecture 3
-  ([85 slides](raw/slides/03-backpropagation-and-neural-networks.md)) and lecture 4
-  ([49 slides](raw/slides/04-dependency-parsing.md)). Each file opens
+  ([85 slides](raw/slides/03-backpropagation-and-neural-networks.md)), lecture 4
+  ([49 slides](raw/slides/04-dependency-parsing.md)), lecture 5
+  ([72 slides](raw/slides/05-recurrent-neural-networks.md)) and lecture 6
+  ([56 slides](raw/slides/06-sequence-to-sequence-models.md)). Each file opens
   with a section-to-slide-range table, then transcribes every slide in order —
   including the equations, the tables of numbers, the margin annotations, and prose
-  descriptions of the diagrams and plots. For lectures 1–3 **the printed slide number
-  equals the PDF page number**, so "slide 28" is page 28. **Lecture 4 is the exception:**
-  its printed numbers run 1–49 but the PDF has only 45 pages, because printed slides 4,
-  5, 8 and 13 were hidden in the source deck and never exported — cite the printed
-  number and expect it to sit a few pages later in the PDF. Use these files when a
+  descriptions of the diagrams and plots. For lectures 1–3, 5 and 6 **the printed slide
+  number equals the PDF page number**, so "slide 28" is page 28. **Lecture 4 is the
+  exception:** its printed numbers run 1–49 but the PDF has only 45 pages, because printed
+  slides 4, 5, 8 and 13 were hidden in the source deck and never exported — cite the printed
+  number and expect it to sit a few pages later in the PDF. One further caveat: **lecture
+  6's slides 4–18 repeat lecture 5's slides 49–63** as a recap, and are transcribed in brief
+  with pointers rather than in full — the exception is slide 15, which adds the "~7 tokens
+  back" rule of thumb that slide 25 then contrasts LSTMs against. Use these files when a
   learner asks where something is in the slides, wants an equation exactly as written,
   or when the transcript is unclear — the slides are the authority.
-- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 4,
+- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 6,
   grouped into paragraphs each prefixed with an `[MM:SS]` timestamp. Use these to
   point a learner at the exact moment something is explained ("Manning covers this
   around 42:00"), or to quote him directly — they read as sentences, so they quote
@@ -138,7 +206,10 @@ systems.
   punctuation and sentence boundaries added, filler and false starts removed, and
   mis-heard vocabulary restored (*word2vec* arrived as "word Tove" and "word DEC",
   *CBOW* as "sibo", *COALS* as "Kohl's", *ReLU* as "value", *tanh* as "10 H", and in
-  lecture 4 *parsing* itself as "paing" and *parser* as "paa"). No content was added,
+  lecture 4 *parsing* itself as "paing" and *parser* as "paa"; in lectures 5 and 6
+  *n-gram* as "engram", *Xavier* as "harier", *Hadamard* as "hadam mod", *eigenvalue* as
+  "ion value", and the names *Bengio*, *Jelinek*, *Feigenbaum*, *Hochreiter*, *Gers* and
+  *Olah* all beyond recognition). No content was added,
   removed or reordered, and every timestamp is preserved. Student questions are marked
   in italics. Where a garble could not be resolved from the slides, the text carries an
   inline `[Ed: …]` note saying so instead of guessing — treat those as known gaps, and
