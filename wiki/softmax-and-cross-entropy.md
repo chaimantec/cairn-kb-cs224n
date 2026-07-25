@@ -3,10 +3,14 @@
 These are the small pieces of machinery that turn raw scores into probabilities and
 probabilities into a training signal. They appear everywhere in the course, so it is
 worth being solid on them. Softmax is derived in
-[lecture 1](01-intro-and-word-vectors.md) (≈57:30–59:50); the logistic function
-appears in [lecture 2](02-word-vectors-and-language-models.md) with negative
-sampling (≈29:37) and again in the neural classifier (≈1:10:32); cross-entropy loss
-is covered at the end of lecture 2 (≈1:11:19–1:13:43).
+[lecture 1](01-intro-and-word-vectors.md) (≈57:30–59:50, **slide 30**); the logistic
+function appears in [lecture 2](02-word-vectors-and-language-models.md) with negative
+sampling (≈29:37, **slide 12**) and again in the neural classifier (≈1:10:32, **slides
+38 and 41**); cross-entropy loss is covered at the end of lecture 2
+(≈1:11:19–1:13:43, **slide 39**).
+
+Slide text: [lecture 1 slides](../raw/slides/01-intro-and-word-vectors.md) ·
+[lecture 2 slides](../raw/slides/02-word-vectors-and-language-models.md)
 
 ## Softmax
 
@@ -91,8 +95,9 @@ probability your model assigns to the correct class.
 Which is exactly the negative log likelihood you have been minimizing all along
 (≈1:13:43). Cross-entropy loss and negative log likelihood are the same objective
 in this setting; the only thing that changes is the name and the library function.
-Manning's practical instruction is simply to remember to use cross-entropy loss in
-PyTorch when building the model.
+Slide 39 says it directly — "Use this in PyTorch! `torch.nn.CrossEntropyLoss()`" — and
+adds the caveat that cross entropy *can* be used with a more interesting *p*, but for
+now you just want it as the loss in PyTorch.
 
 ## Related pages
 

@@ -50,9 +50,10 @@ pretends that subset is the whole dataset, and uses its gradient as the directio
 to walk (≈6:21). This is also called **mini-batch** gradient descent. The gradient
 you get is a noisy, inaccurate estimate of the true gradient.
 
-*(The transcript garbles the mini-batch size Manning quotes at ≈6:21 — it reads
-"16 or 2". Take the actual figure from the
-[slides](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-spr2024-lecture02-wordvecs2.pdf).)*
+*(The captions garble the mini-batch size Manning quotes at ≈6:21 — they read "16 or
+2" — and the slide does not give a number either
+([lecture 1 slide 39](../raw/slides/01-intro-and-word-vectors.md), repeated as
+lecture 2 slide 6), so this KB does not state one.)*
 
 The interesting part is that SGD is not merely a cheaper approximation you tolerate
 (≈7:07). Manning's point is that neural networks often work *better* with noise in

@@ -6,6 +6,14 @@ the remaining 21 are listed under "Deferred" and are not part of this build.
 ## Transcripts
 - [x] 01 Intro and Word Vectors — video DzpHeXVSC5I
 - [x] 02 Word Vectors and Language Models — video nBor4jfWetQ
+- [x] Clean ASR damage in both transcripts (word2vec was arriving as "word Tove").
+      Corrections recorded in raw/transcripts/asr-corrections.json; 110
+      substitutions, 878 fillers removed.
+
+## Slides
+- [x] raw/slides/01-intro-and-word-vectors.md — all 40 slides transcribed
+- [x] raw/slides/02-word-vectors-and-language-models.md — all 47 slides transcribed
+- [x] Cite slide numbers from the wiki pages so the chat can answer "which slide?"
 
 ## Crawl
 - [x] Fetch course site index: https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/

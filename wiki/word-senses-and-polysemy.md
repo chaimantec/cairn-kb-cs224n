@@ -19,15 +19,20 @@ example is *bank* — the financial institution and the side of a river — and 
 His set piece is the word **pike**, which he uses because it is a word you do not
 think of as ambiguous (≈52:49). The class comes up with, and he adds to:
 
-- a kind of fish
-- a spear (the medieval weapon)
+- a kind of fish (slide 31: "a type of elongated fish")
+- a spear — the medieval weapon (slide 31: "a sharp point or staff")
 - a road — *pike* as shorthand for *turnpike*, so named because of the spiked
   barrier originally used to count people through
 - a position in diving and gymnastics
-- a verb, as in to attack someone with a pike
+- a verb, as in to attack someone with a pike (slide 31: "to kill or pierce with a
+  pike")
 - "coming down the pike", a metaphorical extension of the road sense that ends up
   meaning the future
-- an Australian usage meaning to chicken out of something (≈55:07)
+- an Australian usage meaning to chicken out of something (≈55:07). Slide 31 gives the
+  example sentence: *"I reckon he could have climbed that cliff, but he piked!"*
+
+**Slide 31** lists two more the class did not produce: **a railroad line or system**,
+and **to make one's way** ("pike along") — nine senses in total.
 
 ## What one vector per word actually gives you
 
@@ -53,8 +58,11 @@ senses** (lecture 1, ≈45:48) — which he then makes precise in lecture 2.
 
 The direct fix: accept that words have several meanings, cluster the occurrences of
 each word by the similarity of their contexts, treat each cluster as a sense, and
-learn a separate vector for each (lecture 2, ≈54:20). Stanford did this in 2012,
-before word2vec.
+learn a separate vector for each (lecture 2, ≈54:20). This was done at Stanford in
+2012, before word2vec — **slide 32** cites it as *Improving Word Representations Via
+Global Context And Multiple Word Prototypes* (Huang et al. 2012), whose method is to
+cluster the word windows around a word and retrain with that word assigned to
+multiple clusters: bank₁, bank₂, and so on.
 
 It works well. Manning shows *bank₁* and *bank₂* separated, and *jaguar* split four
 ways (≈55:52):
@@ -111,19 +119,33 @@ vector is the sum of sense vectors, standard linear algebra says you cannot reco
 the individual senses from the single vector — the information is gone.
 
 But because these vector spaces are so high-dimensional and sparse, ideas from
-**sparse coding theory** can reconstruct the sense vectors from the one word vector.
-Manning shows a result recovering senses of *tie* from its single vector (≈1:02:03):
-the piece-of-clothing sense, the tied-game sense, the cable-tie sense (the kind you
-put on electrical cables), and the musical sense — four or five out of five,
-convincingly separated.
+**sparse coding theory** can reconstruct the sense vectors from the one word vector —
+provided the senses are relatively common.
 
-He points anyone who wants to understand the mechanism toward sparse coding theory
-taught in Stanford's statistics department (≈1:01:15), and does not attempt to teach
-it. *The transcript garbles both the surnames of the paper's authors and the
-statistician Manning recommends, so this page deliberately does not attribute
-either; check the
-[slides](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-spr2024-lecture02-wordvecs2.pdf) for the
-citations.*
+**Slide 33** attributes this to *Linear Algebraic Structure of Word Senses, with
+Applications to Polysemy* (Arora, …, Ma, …, TACL 2018) and writes the superposition
+out precisely:
+
+> `v_pike = α₁ v_pike₁ + α₂ v_pike₂ + α₃ v_pike₃`, where `α₁ = f₁ / (f₁ + f₂ + f₃)`
+> and so on, for sense frequency `f`
+
+— which is exactly the frequency-weighted average described above, made explicit.
+
+The recovered senses of **tie** (≈1:02:03, slide 33) come out as five cleanly separated
+columns of nearest words:
+
+| clothing | league standings | drawn game | cable tie | musical |
+| -------- | ---------------- | ---------- | --------- | ------- |
+| trousers | season | scoreline | wires | operatic |
+| blouse | teams | goalless | cables | soprano |
+| waistcoat | winning | equaliser | wiring | mezzo |
+| skirt | league | clinching | electrical | contralto |
+| sleeved | finished | scoreless | wire | baritone |
+| pants | championship | replay | cable | coloratura |
+
+Manning points anyone who wants to understand the mechanism toward sparse coding
+theory taught in Stanford's statistics department (≈1:01:15), and does not attempt to
+teach it.
 
 ## Related pages
 

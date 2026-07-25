@@ -10,11 +10,16 @@ goals are that students learn the methods, gain some real understanding of human
 language and why it is hard for computers, and come out able to build working
 systems.
 
-> **Coverage note.** This knowledge base currently has wiki pages for
-> **lectures 1 and 2 only**. Slides and handouts for lectures 1–18 are in
-> `raw/pdfs/`, so questions about later lectures can be answered by pointing at
-> those PDFs, but there are no transcripts or wiki pages for them yet. See
-> [TODO.md](TODO.md) for what remains.
+> **Coverage note.** This knowledge base covers **lectures 1 and 2 only**: wiki pages,
+> timestamped transcripts, and full slide-by-slide text for both. Slide *URLs* for
+> lectures 1–18 are listed in [sources.md](sources.md), so questions about later
+> lectures can be answered by pointing at the right PDF, but there are no transcripts,
+> wiki pages, or slide text for them yet. See [TODO.md](TODO.md) for what remains.
+>
+> **Citing sources.** Prefer citing a **slide number** for anything on a slide
+> (equations, tables, definitions) and a **timestamp** for anything Manning says aloud
+> (asides, worked reasoning, answers to student questions). The slide files in
+> `raw/slides/` carry the numbers; the transcripts carry the timestamps.
 
 ## Lecture pages
 
@@ -70,14 +75,24 @@ systems.
 
 ## Raw materials
 
-- [`raw/transcripts/`](raw/transcripts/) — verbatim lecture transcripts for
-  lectures 1 and 2, grouped into paragraphs each prefixed with an `[MM:SS]`
-  timestamp. Use these to point a learner at the exact moment something is
-  explained, or to quote Manning directly. Note that these are auto-generated
-  captions: technical terms are frequently mangled (*word2vec* appears as "word
-  Tove", *PyTorch* as "py talk", *CBOW* as "sibo"), and the dictated mathematical
-  notation in lecture 1 is unreliable. Each lecture page ends with a note on the
-  specific distortions in that transcript.
+- [`raw/slides/`](raw/slides/) — **the full text of every slide, with slide numbers**,
+  for lecture 1 ([40 slides](raw/slides/01-intro-and-word-vectors.md)) and lecture 2
+  ([47 slides](raw/slides/02-word-vectors-and-language-models.md)). Each file opens
+  with a section-to-slide-range table, then transcribes every slide in order —
+  including the equations, the tables of numbers, the margin annotations, and prose
+  descriptions of the diagrams and plots. **The printed slide number equals the PDF
+  page number**, so "slide 28" is page 28, and answers can cite a specific slide.
+  Use these when a learner asks where something is in the slides, wants an equation
+  exactly as written, or when the transcript is unclear — the slides are the
+  authority.
+- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 and 2,
+  grouped into paragraphs each prefixed with an `[MM:SS]` timestamp. Use these to
+  point a learner at the exact moment something is explained ("Manning covers this
+  around 42:00"), or to quote him directly. These are auto-generated captions whose
+  mangled technical terms have been **corrected** — *word2vec* arrived as "word Tove"
+  and "word DEC", *CBOW* as "sibo", *COALS* as "Kohl's" — with every change recorded
+  in [`asr-corrections.json`](raw/transcripts/asr-corrections.json) and fillers
+  stripped. Each transcript's header lists what is still unreliable in it.
 - [`sources.md`](sources.md) — the full inventory of course documents, with a
   canonical URL for each: lecture slides for lectures 1–18, supplementary readings
   (the 2019 course notes, the gradient and differential-calculus reviews, the

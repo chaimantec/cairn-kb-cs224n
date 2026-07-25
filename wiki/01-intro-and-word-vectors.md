@@ -8,9 +8,19 @@ word2vec objective function and a hand-derivation of its gradient. By the end yo
 should understand how a pile of text plus calculus produces vectors that know
 that *motel* and *hotel* are similar, with no supervision and no dictionary.
 
-Slides: [Lecture 1 — wordvecs1](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-spr2024-lecture01-wordvecs1.pdf) ·
+**Slide-by-slide text of this deck: [40 slides](../raw/slides/01-intro-and-word-vectors.md)**
+— cite slide numbers from there; the printed slide number equals the PDF page number.
+
+Slides PDF: [Lecture 1 — wordvecs1](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-spr2024-lecture01-wordvecs1.pdf) ·
 Notes: [lecture 1 notes draft](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/readings/cs224n_winter2023_lecture1_notes_draft.pdf) ·
 [Full transcript](../raw/transcripts/01-intro-and-word-vectors.md)
+
+The lecture's own plan (slide 2) is: the course (10 mins), human language and word
+meaning (15), word2vec introduction (15), word2vec objective function gradients
+(25), optimization basics (5), looking at word vectors (10 or less). Slide 2 also
+states the key takeaway in Manning's own words: "The (astounding!) result that word
+meaning can be represented rather well by a (high-dimensional) vector of real
+numbers."
 
 ## What the course is about
 
@@ -200,14 +210,16 @@ to read.
 
 The derivation takes the partial derivative of the log probability with respect
 to the center vector `v_c`. Splitting the log of the quotient gives a numerator
-term and a denominator term. The numerator is easy: log and exp cancel, leaving
-the derivative of `uᵀv_c` with respect to `v_c`, which is just `u`. Manning
-justifies that componentwise — the dot product expands to `u₁v₁ + u₂v₂ + …`, so
-the derivative with respect to `v₁` is `u₁` and every other term vanishes
-(≈1:10:49–1:11:34). The denominator requires the chain rule twice: once for the
-log, once for the exp inside the sum (≈1:12:20–1:15:33).
+term and a denominator term (**slide 34**). The numerator is easy: log and exp
+cancel, leaving the derivative of `uᵀv_c` with respect to `v_c`, which is just `u`.
+Manning justifies that componentwise — the dot product expands to `u₁v₁ + u₂v₂ + …`,
+so the derivative with respect to `v₁` is `u₁` and every other term vanishes
+(≈1:10:49–1:11:34; slide 34's margin note reads "Each term is zero except when
+i = j"). The denominator requires the chain rule twice: once for the log, once for
+the exp inside the sum (≈1:12:20–1:15:33; **slide 35**, which flags "Important to
+change index" — the inner sum has to be re-indexed before differentiating).
 
-Recombining the two pieces reproduces the softmax, and the answer is
+Recombining the two pieces reproduces the softmax, and the answer (**slide 36**) is
 
 > `u_o − Σ_x P(x | c) · u_x`
 
@@ -222,13 +234,20 @@ up at the start of [lecture 2](02-word-vectors-and-language-models.md).
 His closing note is that you should understand how this works, but that in
 practice computers will compute these derivatives for you.
 
-## A note on transcript quality
+## A note on source quality
 
-The transcript is auto-generated, and the speech recognizer mangles technical
-terms badly and consistently: *word2vec* appears as "word Tove", "word DEC",
-"word to VC" and "watch ve"; *PyTorch* as "py talk" and "payto watch"; *Jupyter*
-as "Jupiter". Where this page names a term, it has been reconstructed from
-surrounding context. The mathematical notation dictated aloud between ≈1:06:03
-and ≈1:17:05 is unreliable in the transcript — several symbols are transcribed as
-"[Music]" or as wrong subscripts — so the slides are the authority for the
-derivation, not the transcript.
+The transcript is auto-generated and the speech recognizer mangled technical terms
+badly — *word2vec* as "word Tove" and "word DEC", *PyTorch* as "py talk", *t-SNE* as
+"tne". Those have been corrected in
+[the transcript](../raw/transcripts/01-intro-and-word-vectors.md); every change is
+recorded in [`asr-corrections.json`](../raw/transcripts/asr-corrections.json).
+
+Two places remain genuinely unreliable, and the slides are the authority for both:
+
+- **The dictated mathematics** between ≈1:06:03 and ≈1:17:05 comes through with wrong
+  subscripts and stray "[Music]" markers. Manning himself says the iPad handwriting
+  was going badly and points at the website version (≈1:06:03). **Slides 33–36** are
+  that version, written out neatly, and are transcribed in full on the
+  [slide page](../raw/slides/01-intro-and-word-vectors.md).
+- **One phrase at ≈49:42** ("we learn ve word vectors") was left uncorrected rather
+  than guessed at.

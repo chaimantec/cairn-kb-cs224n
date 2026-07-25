@@ -14,7 +14,9 @@ function, gradient derivation) and
 [lecture 2](02-word-vectors-and-language-models.md) (variants, negative sampling,
 sampling distribution).
 
-Slides: [wordvecs1](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-spr2024-lecture01-wordvecs1.pdf),
+Slide text: [lecture 1, slides 25–36](../raw/slides/01-intro-and-word-vectors.md) ·
+[lecture 2, slides 7–14](../raw/slides/02-word-vectors-and-language-models.md).
+PDFs: [wordvecs1](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-spr2024-lecture01-wordvecs1.pdf),
 [wordvecs2](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-spr2024-lecture02-wordvecs2.pdf)
 
 ## The setup
@@ -142,10 +144,18 @@ assignment 2 is not the one to work from (lecture 2, ≈25:03).
 
 ## Skip-gram with negative sampling
 
-Instead of normalizing over the whole vocabulary, train a handful of simple
-logistic regressions: the true context word should score high, and a few randomly
-sampled words should score low (lecture 2, ≈28:51). The softmax is replaced by the
-**logistic function**, which maps any real number to a probability in (0, 1).
+Instead of normalizing over the whole vocabulary, train a handful of simple **binary**
+logistic regressions, each distinguishing a true pair (the center word with a word from
+its context window) from "noise" pairs (the center word with a random word) — lecture 2,
+≈28:51, **slides 11–12**. The softmax is replaced by the **logistic function**, which
+maps any real number to a probability in (0, 1).
+
+**Slide 12** states the objective in the course's notation, for *K* negative samples:
+
+> `J_neg-sample(u_o, v_c, U) = − log σ(u_oᵀ v_c) − Σ_{k ∈ K sampled indices} log σ(−u_kᵀ v_c)`
+
+annotated on the slide as "**sigmoid rather than softmax**". The first term drives the
+real outside word's probability up; the sum drives the sampled words' probabilities down.
 
 Manning points out that "sigmoid" merely means s-shaped, and there are infinitely
 many s-shaped functions — the one actually used is the logistic function (lecture
@@ -165,7 +175,21 @@ sampling but not all the way — all the way would correspond to an exponent of
 zero.
 
 Typically only five or ten negative samples are used per positive example
-(≈31:10).
+(≈31:10). Slide 12 writes the sampling distribution as **P(w) = U(w)^{3/4} / Z**, where
+U(w) is the unigram distribution and Z the normalizing constant.
+
+### Why this makes the gradients sparse
+
+An aside on **slides 13–14** that is easy to skip but explains why the method is fast in
+practice. In any one window there are at most **2m + 1** words plus **2km** negative
+samples, so the gradient ∇_θ J_t(θ) — a vector in ℝ^{2dV} — is **almost entirely zero**,
+with non-zero blocks only for the handful of words actually present.
+
+The engineering consequence (slide 14): you should only update the word vectors that
+actually appear, which needs either sparse matrix update operations touching just certain
+**rows** of the embedding matrices U and V, or a hash of word vectors. Slide 14 flags
+"rows not columns in actual DL packages!" and notes that with millions of word vectors
+and distributed training, avoiding gigantic update messages matters.
 
 ## What the learned vectors know
 

@@ -10,7 +10,8 @@ raw.githubusercontent.com and follows relative markdown links.
 | ------------------- | ------------------------------------------------------------- |
 | `INDEX.md`          | Entry point. Course summary + annotated table of contents.    |
 | `wiki/`             | Durable pages: one per lecture, plus cross-lecture topics.    |
-| `raw/transcripts/`  | Verbatim lecture transcripts with `[MM:SS]` paragraph marks. |
+| `raw/slides/`       | Full text of every slide, numbered. Slide N = PDF page N.     |
+| `raw/transcripts/`  | Lecture transcripts with `[MM:SS]` paragraph marks.           |
 | `sources.md`        | Every course document with its canonical URL and fetch date.  |
 | `TODO.md`           | Build tracker. Unchecked boxes are outstanding work.          |
 
@@ -29,10 +30,19 @@ slides at their source URL, not at a local path.
   `[transcript](../raw/transcripts/03-linear-regression.md)`). Absolute GitHub
   URLs break when the repo is renamed or forked. Course PDFs are the exception:
   link those at their canonical course-site URL, since they are not committed.
-- **Cite everything.** Claims trace back to a transcript timestamp or a slide.
-- **Never invent course content.** If the transcript is unclear at some point,
-  say so on the page. Do not fill the gap from outside knowledge — the chat
-  presents these pages as authoritative material from this course.
+- **Cite everything, and pick the right citation.** Use a **slide number** for what is
+  written on a slide (equations, tables, definitions) and an **`[MM:SS]` timestamp** for
+  what is said aloud (asides, worked reasoning, answers to students). Slide numbers
+  match PDF page numbers.
+- **Slides beat transcripts on conflict.** The transcripts are corrected auto-captions;
+  the slides are what the instructor wrote. Where the captions are garbled or the
+  dictated notation is unreliable, cite the slide.
+- **Never invent course content.** If a source is unclear at some point, say so on the
+  page. Do not fill the gap from outside knowledge — the chat presents these pages as
+  authoritative material from this course. Recovering a mangled term from unambiguous
+  context is reading the source; supplying a number or a name the sources do not
+  contain is not, and the KB says so explicitly where that happens (see the mini-batch
+  size in [gradient descent](wiki/gradient-descent.md)).
 - **Prose over fragments.** The chat quotes these pages to learners; bullet
   fragments quote badly.
 

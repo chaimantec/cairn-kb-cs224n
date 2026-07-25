@@ -97,9 +97,23 @@ Each row of that matrix is already a word vector.
 
 People did exactly this, and the vectors are ungainly (lecture 2, ≈35:01). With
 400,000 words in the vocabulary the matrix is 400,000 × 400,000, which is vastly
-worse than the 400,000 × 100 of learned vectors. So the standard move is to reduce
-the dimensionality, which points at PCA and — since it works for a matrix of any
-shape — the **singular value decomposition** (≈36:35).
+worse than the 400,000 × 100 of learned vectors. **Slide 17** adds the consequences
+beyond raw size: the vectors grow with the vocabulary, they need a lot of storage even
+though they are sparse, and — the subtler cost — **models trained on them have sparsity
+issues and are less robust**. The target it names is 25–1000 dimensions, "similar to
+word2vec".
+
+Two further details from **slide 15**: the matrix can be built over **windows** or over
+**full documents**. A window (as in word2vec) captures syntactic and semantic
+information — "word space". A **word-document** matrix instead yields general topics,
+since all sports terms get similar entries, and that is the route to latent semantic
+analysis — "document space".
+
+So the standard move is to reduce the dimensionality, which points at PCA and — since
+it works for a matrix of any shape — the **singular value decomposition** (≈36:35,
+**slide 18**, which notes this is HW1's method: X̂ is the best rank-*k* approximation to
+X in the least-squares sense, a classic linear algebra result, but expensive to compute
+for large matrices).
 
 SVD factors the matrix into three: two orthonormal matrices *U* and *V*, and a
 diagonal matrix of **singular values** ordered by size, which act as weights on
@@ -118,20 +132,30 @@ never worked very well" (lecture 2, ≈38:08). Running SVD on raw counts does no
 produce good vectors.
 
 The thread was kept alive, particularly in psychology, and in the early 2000s a
-graduate student named Doug Rohde improved on it substantially with an algorithm
-the transcript renders as COALS (lecture 2, ≈38:53). His improvements, several of
-which reappear in word2vec:
+graduate student named Doug Rohde improved on it substantially with an algorithm called
+**COALS** (lecture 2, ≈38:53). **Slide 19** attributes the improvements to Rohde et al.
+2005 and titles itself bluntly: "Running an SVD on raw counts doesn't work well!!!"
+
+The core problem it names is that **function words** (*the, he, has*) are so frequent
+that syntax swamps the signal. The fixes, several of which reappear in word2vec:
 
 - **Log the frequencies** rather than using raw counts.
-- **Ramp the window**, so that nearer context words count for more than distant
-  ones.
-- Use **Pearson correlations** instead of counts.
+- **Cap them**: `min(X, t)` with t ≈ 100.
+- **Ignore the function words** entirely.
+- **Ramp the window**, so that nearer context words count for more than distant ones.
+- Use **Pearson correlations** instead of counts, then **set negative values to 0**.
+
+Slide 19's summary is that "scaling the counts in the cells can help *a lot*" — and the
+[evaluation table](evaluating-word-vectors.md) bears that out, with scaled SVD nearly
+doubling raw SVD's score.
 
 Manning's aside is a nice piece of history (≈40:27): Rohde effectively discovered
-the linear semantic components that later made word2vec famous. A figure in his
-dissertation shows "doer of an event" as a linear direction in the space that you
-can follow from a verb to the noun for the person who does it. He did not become
-famous for it, because at the time nobody was paying attention.
+the linear semantic components that later made word2vec famous. **Slide 20** reproduces
+the figure — COALS vectors plotted in 2-D with arrows drawn DRIVE → DRIVER, SWIM →
+SWIMMER, TEACH → TEACHER, MARRY → PRIEST. The arrows are all roughly parallel and of
+similar length, which is the whole claim: "doer of an event" is a linear direction in
+the space that you can follow from a verb to the noun for the person who does it. Rohde
+did not become famous for it, because at the time nobody was paying attention.
 
 That observation — that count-based methods can also yield linear meaning
 structure — is what led directly to [GloVe](glove.md).

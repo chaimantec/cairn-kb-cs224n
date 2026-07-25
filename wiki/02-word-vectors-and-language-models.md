@@ -10,9 +10,21 @@ good, what to do about words with many meanings, and ends by building the
 smallest useful neural classifier — a window classifier for named entities — as
 the bridge into the rest of the course.
 
-Slides: [Lecture 2 — wordvecs2](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-spr2024-lecture02-wordvecs2.pdf) ·
+**Slide-by-slide text of this deck: [47 slides](../raw/slides/02-word-vectors-and-language-models.md)**
+— cite slide numbers from there; the printed slide number equals the PDF page number.
+
+Slides PDF: [Lecture 2 — wordvecs2](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-spr2024-lecture02-wordvecs2.pdf) ·
 Notes: [2019 notes 02 — wordvecs2](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/readings/cs224n-2019-notes02-wordvecs2.pdf) ·
 [Full transcript](../raw/transcripts/02-word-vectors-and-language-models.md)
+
+The deck's own title is "Word Vectors, Word Senses, and Neural Classifiers" (the
+YouTube video is titled "Word Vectors and Language Models"). Its plan (slide 2) runs:
+course organization (3 mins), optimization basics (5), review of word2vec and looking
+at word vectors (12), more on word2vec (8), can we capture word meaning more
+effectively by counting? (12), evaluating word vectors (10), word senses (10), review
+of classification and how neural nets differ (10), introducing neural networks (10).
+Slide 2's stated goal: "To be able to read and understand word embeddings papers by
+the end of class."
 
 ## Finishing the optimization story
 
@@ -34,9 +46,9 @@ But plain gradient descent is never actually used (≈5:33). Computing the objec
 over the entire training set before taking a single step is far too expensive.
 Instead neural networks use **stochastic gradient descent**: sample a small
 subset of the data, pretend it is the whole dataset, and use its noisy, inaccurate
-gradient as the direction to walk. (The transcript garbles the mini-batch size
-Manning quotes at ≈6:21 — it reads "16 or 2" — so take the specific number from
-the slides rather than from the transcript.) This is also called mini-batch
+gradient as the direction to walk. (The captions garble the mini-batch size Manning
+quotes at ≈6:21 — they read "16 or 2" — and slide 6 gives no number, so the figure
+is not recoverable from this course's materials.) This is also called mini-batch
 gradient descent. Manning's observation is that SGD is not merely a faster
 approximation: neural networks often work *better* with noise in the system,
 because the jiggle moves things around, so SGD wins on both speed and quality
@@ -318,13 +330,21 @@ let learning work out something useful for the intermediate units to do
 network re-represent its input in ways that make the final classification easier
 (≈1:18:28).
 
-## A note on transcript quality
+## A note on source quality
 
-As in lecture 1, the auto-generated captions mangle technical vocabulary
-consistently: *word2vec* appears as "word de", "word DEC", "word to VC" and
-"watch ve"; *CBOW* as "sibo"; *GloVe* as "glove" and "glav"; *Doug Rohde* and
-*COALS* as "Doug roie" and "Kohl's"; *Pearson* as "piercon"; *brioche, baguette,
-focaccia* as "Brios bagette fatcha". Terms on this page have been reconstructed
-from context. Two places where the transcript is genuinely unreliable and the
-slides should be preferred: the mini-batch size at ≈6:21, and the author names
-around the sparse coding result at ≈1:00:29–1:02:49.
+As in lecture 1, the auto-generated captions mangled technical vocabulary
+consistently: *word2vec* as "word de", "word DEC" and "watch ve"; *CBOW* as "sibo";
+*GloVe* as "glav"; *COALS* as "Kohl's"; *Doug Rohde* as "Doug roie"; *Pearson* as
+"piercon"; *brioche, baguette, focaccia* as "Brios bagette fatcha". These have been
+corrected in [the transcript](../raw/transcripts/02-word-vectors-and-language-models.md),
+with every change recorded in
+[`asr-corrections.json`](../raw/transcripts/asr-corrections.json).
+
+The citations the captions destroyed have been recovered **from the slides**, not
+guessed: Rohde et al. 2005 / COALS (slide 19–20), GloVe as Pennington, Socher and
+Manning EMNLP 2014 (slides 21–23), Huang et al. 2012 for multi-prototype senses
+(slide 32), and Arora et al. TACL 2018 for the sparse-coding result (slide 33).
+
+One thing remains unrecoverable: the **mini-batch size** Manning quotes aloud at
+≈6:21 comes through as "16 or 2", and slide 6 gives no number either, so this KB does
+not state one.
