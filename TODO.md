@@ -14,7 +14,21 @@ The course has 23 lectures, built incrementally.
 ## Transcripts
 - [x] 05 Recurrent Neural Networks — video fyc0Jzr74y4 (102 paragraphs)
 - [x] 06 Sequence to Sequence Models — video Ba6Fn1-Jsfw (100 paragraphs)
-- [ ] Copy-edit both into readable sentences, keeping verbatim originals
+- [x] Copy-edit both into readable sentences, keeping verbatim originals. Read and
+      rewritten by hand: punctuation and sentence boundaries added, filler and false
+      starts removed, mis-heard terms restored and checked against the slides, student
+      questions marked in italics. Lecture 5's captions destroyed *n-gram* ("engram",
+      "NRS", "Byram", "5 G"), *Xavier* ("harier"), *AdaGrad* ("adrad"), *Hadamard*
+      ("hadam mod") and *Bengio* ("Benjo"); lecture 6's destroyed *Jelinek* ("Fred
+      gelan"), *Feigenbaum* ("Ed Fen bam"), *Hochreiter* ("HW", "hot crater"), *Gers*
+      ("gz"), *Olah* ("Chris oler"), *Kneser-Ney* ("kessi") and *eigenvalue* ("ion
+      value"). All 102 + 100 timestamps preserved in order (verified by diff); number
+      inventories compared and every difference accounted for.
+- [x] Eight residual ambiguities left marked inline as `[Ed: ...]` rather than guessed —
+      an indistinct student answer and a garbled student question (L5); an unrecoverable
+      word in a backprop aside, a publication start year, and four heavily garbled
+      student questions (L6). Two dropped leading zeros in L5 were restored to 0.35 and
+      0.2 and verified against the cumulative distributions on slides 22-24.
 
 ## Slides
 - [x] raw/slides/05-recurrent-neural-networks.md — all 72 slides. Printed numbers match
