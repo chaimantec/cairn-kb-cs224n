@@ -1,0 +1,42 @@
+# How this knowledge base is organized
+
+This repo is the knowledge base for **CS224N — Natural Language Processing with Deep Learning (Stanford, Spring 2024)**. It is read
+by Cairn's in-extension AI chat, which fetches files over
+raw.githubusercontent.com and follows relative markdown links.
+
+## Layout
+
+| Path                | Contents                                                      |
+| ------------------- | ------------------------------------------------------------- |
+| `INDEX.md`          | Entry point. Course summary + annotated table of contents.    |
+| `wiki/`             | Durable pages: one per lecture, plus cross-lecture topics.    |
+| `raw/transcripts/`  | Verbatim lecture transcripts with `[MM:SS]` paragraph marks. |
+| `sources.md`        | Every course document with its canonical URL and fetch date.  |
+| `TODO.md`           | Build tracker. Unchecked boxes are outstanding work.          |
+
+Slide and handout **PDFs are not committed to this repo** — `sources.md` holds
+their canonical `web.stanford.edu` URLs instead. This KB is consumed by an agent
+that reads markdown and cannot extract text from a PDF blob, so the URL is the
+useful artifact and the decks would have added over 100MB to every clone. Link
+slides at their source URL, not at a local path.
+
+## Conventions
+
+- **INDEX.md is the front door.** The chat reads it first on every conversation.
+  Every wiki page must appear there with a one-line description of what it holds.
+  An unindexed page is effectively invisible.
+- **Relative links between KB pages** (`[gradient descent](gradient-descent.md)`,
+  `[transcript](../raw/transcripts/03-linear-regression.md)`). Absolute GitHub
+  URLs break when the repo is renamed or forked. Course PDFs are the exception:
+  link those at their canonical course-site URL, since they are not committed.
+- **Cite everything.** Claims trace back to a transcript timestamp or a slide.
+- **Never invent course content.** If the transcript is unclear at some point,
+  say so on the page. Do not fill the gap from outside knowledge — the chat
+  presents these pages as authoritative material from this course.
+- **Prose over fragments.** The chat quotes these pages to learners; bullet
+  fragments quote badly.
+
+## Rebuilding
+
+Built and updated by the `cairn-kb` skill. To add newly released lectures,
+append entries to `TODO.md` and re-run the skill — it only does unchecked work.
