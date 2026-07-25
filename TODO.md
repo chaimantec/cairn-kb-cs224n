@@ -13,7 +13,19 @@ The course has 23 lectures, built incrementally.
 ## Transcripts
 - [x] 03 Backpropagation and Neural Networks — video HnliVHU2g9U (95 paragraphs)
 - [x] 04 Dependency Parsing — video KVKvde-_MYc (102 paragraphs)
-- [ ] Copy-edit both into readable sentences, keeping verbatim originals
+- [x] Copy-edit both into readable sentences, keeping verbatim originals. Read and
+      rewritten by hand: punctuation and sentence boundaries added, filler and false
+      starts removed, mis-heard terms restored and checked against the slides, student
+      questions marked in italics. Lecture 3's captions destroyed *ReLU* ("value",
+      "realu"), *tanh* ("10 H") and *Swish/GELU* ("Swiss swis and Jello"); lecture 4's
+      destroyed *parsing* itself ("paing", "paa", "parza"), *Pāṇini*, *Nivre* and
+      *Tesnière*. All 95 + 102 timestamps preserved in order (verified by diff);
+      number inventories compared and every difference accounted for.
+- [x] Seven residual ambiguities left marked inline as `[Ed: …]` rather than guessed —
+      an assignment number, a decimal digit, a subscript, one word that inverted a
+      claim (L3); Danqi Chen's name, which the captions drop entirely, two parse
+      counts that contradict the Catalan formula on the slide, and a magazine name
+      (L4). Each names the slide that settles it, or says it is unrecoverable.
 
 ## Slides
 - [x] raw/slides/03-backpropagation-and-neural-networks.md — all 85 slides.
