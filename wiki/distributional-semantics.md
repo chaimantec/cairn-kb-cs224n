@@ -169,6 +169,21 @@ shows plain SVD performing terribly, SVD over log counts already reasonable, the
 CBOW and skip-gram, then GloVe — see
 [evaluating word vectors](evaluating-word-vectors.md).
 
+## The same argument, applied to things that are not words
+
+Lecture 4 extends the idea past the vocabulary, and it is a clean illustration of what
+distributed representations actually buy you. The neural dependency parser embeds not only
+words but **part-of-speech tags and dependency labels** (lecture 4, slide 41). These are
+small discrete sets — a few dozen symbols, not hundreds of thousands — so sparsity is not
+the motivation. The motivation is that the symbols exhibit similarities that a one-hot
+encoding throws away: NNS (plural noun) should end up close to NN (singular noun), and
+`nummod` (numerical modifier) close to `amod` (adjective modifier).
+
+The payoff is the same as for words. A parser configuration that never occurred in training
+still resembles configurations that did, so the model can generalize to it — which is
+exactly what the sparse symbolic features it replaced could not do. See
+[transition-based parsing](transition-based-parsing.md).
+
 ## Related pages
 
 - [word2vec](word2vec.md) — the prediction-based implementation
@@ -177,3 +192,6 @@ CBOW and skip-gram, then GloVe — see
   word costs you
 - [evaluating word vectors](evaluating-word-vectors.md) — how these approaches
   compare
+- [transition-based parsing](transition-based-parsing.md) — distributed representations of
+  POS tags and dependency labels, and why they beat indicator features
+- [lecture 4](04-dependency-parsing.md) — the parser that uses them

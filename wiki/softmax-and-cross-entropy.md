@@ -99,11 +99,32 @@ Slide 39 says it directly — "Use this in PyTorch! `torch.nn.CrossEntropyLoss()
 adds the caveat that cross entropy *can* be used with a more interesting *p*, but for
 now you just want it as the loss in PyTorch.
 
+## Seen again as an output layer
+
+Lecture 4's neural dependency parser is the first place in the course where this is used as
+the output layer of a real system rather than as a derivation. Its architecture ends
+
+    y = softmax(Uh + b₂)
+
+over the three possible transitions { Shift, Left-Arc_r, Right-Arc_r }, and the log loss —
+cross-entropy error — is **backpropagated all the way into the embeddings**, so the word,
+part-of-speech and dependency-label vectors are themselves learned by it (lecture 4,
+slide 44). The hidden layer beneath it exists precisely so that a *linear* softmax is
+enough to separate the classes; see [transition-based parsing](transition-based-parsing.md).
+
+Note also that Manning deliberately avoids differentiating the loss in lecture 3, computing
+gradients of the raw score *s* instead, because the derivative of the logistic is an
+Assignment 2 question (lecture 3, slide 27).
+
 ## Related pages
 
 - [word2vec](word2vec.md) — where the softmax and negative sampling live
 - [gradient descent](gradient-descent.md) — differentiating through these
   functions, including the chain rule through log and exp
+- [activation functions](activation-functions.md) — the hidden-layer non-linearities, as
+  opposed to these output-layer functions
+- [backpropagation](backpropagation.md) — how this loss reaches the parameters
 - [lecture 1](01-intro-and-word-vectors.md) — softmax derivation
 - [lecture 2](02-word-vectors-and-language-models.md) — logistic function, neural
   classifier, cross-entropy
+- [lecture 4](04-dependency-parsing.md) — softmax as the parser's output layer

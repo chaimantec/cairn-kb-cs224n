@@ -105,11 +105,26 @@ and you will not compute these by hand on a regular basis. The transcript is
 unreliable for the notation in this section — several symbols come through as
 "[Music]" or wrong subscripts — so use the slides.
 
+## Getting the gradients for an arbitrary network
+
+Lectures 1 and 2 derive gradients for one specific objective. Lecture 3 answers the
+general question — how do you compute ∇_θ J(θ) for *any* function — and gives two answers
+that are the same answer (lecture 3, slide 9): **by hand**, using
+[matrix calculus](matrix-calculus.md), and **algorithmically**, using
+[backpropagation](backpropagation.md) over a computation graph. One thing worth carrying
+back to this page: in deep learning θ includes the **data representation** itself, so the
+word vectors are updated by the same rule as everything else.
+
 ## Related pages
 
 - [word2vec](word2vec.md) — the objective these gradients are taken of
 - [softmax and cross-entropy](softmax-and-cross-entropy.md) — the functions inside
   the objective
+- [matrix calculus](matrix-calculus.md) — Jacobians, the chain rule, and the shape
+  convention that makes the update rule a plain subtraction
+- [backpropagation](backpropagation.md) — computing these gradients automatically
 - [lecture 1](01-intro-and-word-vectors.md) — the full hand derivation
 - [lecture 2](02-word-vectors-and-language-models.md) — SGD, learning rates,
   initialization
+- [lecture 3](03-backpropagation-and-neural-networks.md) — gradients for an arbitrary
+  network, by hand and algorithmically

@@ -38,12 +38,23 @@ The course has 23 lectures, built incrementally.
       cites printed numbers and states the offset.
 
 ## Wiki
-- [ ] wiki/03-backpropagation-and-neural-networks.md
-- [ ] wiki/04-dependency-parsing.md
-- [ ] Topic pages: backpropagation, neural-network-basics, named-entity-recognition,
-      dependency-parsing, regularization-and-training-practices
-- [ ] Update existing topic pages that lectures 3–4 extend
-- [ ] Update INDEX.md table of contents
+- [x] wiki/03-backpropagation-and-neural-networks.md
+- [x] wiki/04-dependency-parsing.md
+- [x] Topic pages — six new: backpropagation, matrix-calculus, activation-functions,
+      dependency-grammar, transition-based-parsing, syntactic-ambiguity.
+      (Planned "neural-network-basics" was split into backpropagation +
+      matrix-calculus + activation-functions, which is how lecture 3 actually divides.
+      "named-entity-recognition" and "regularization-and-training-practices" dropped:
+      NER appears only as the running example and is already covered under
+      evaluating-word-vectors; regularization is not taught in lectures 1-4 at all.)
+- [x] Update existing topic pages that lectures 3–4 extend — gradient-descent
+      (general gradients, backprop), softmax-and-cross-entropy (parser output layer),
+      distributional-semantics (embedding POS tags and dependency labels),
+      evaluating-word-vectors (UAS/LAS, the arrival of evaluation)
+- [x] Update INDEX.md table of contents — coverage note, 2 lecture entries, 6 topic
+      entries, slides/transcripts sections including lecture 4's page-number caveat
+- [x] Link sweep: all relative links resolve; no wiki page points into gitignored
+      raw/pdfs/; all six course PDF URLs verified against sources.md
 
 ## Publish
 - [ ] Commit and push (kbUrl already set — no link_kb.sh needed)

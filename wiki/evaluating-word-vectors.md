@@ -142,11 +142,23 @@ NER returns at the end of lecture 2 as the task for the first neural classifier,
 in that context Manning notes it is usually followed by **entity linking**, mapping
 each found entity to a canonical form such as a Wikipedia page (≈1:04:22).
 
+## Task metrics elsewhere in the course
+
+The intrinsic/extrinsic distinction recurs, but so does the more basic point that a task
+needs an agreed metric at all. Lecture 4 makes it historically: through the 1950s, 60s and
+70s nobody evaluated NLP systems — you demonstrated a good parser by running it, typing in a
+sentence, and saying *look, it worked* — and being able to measure against a thousand
+hand-parsed sentences was itself a revolutionary development of the late 1980s
+(lecture 4, ≈44:55). The parsing metrics that came out of it, **UAS** and **LAS**, are
+defined in [transition-based parsing](transition-based-parsing.md).
+
 ## Related pages
 
 - [word2vec](word2vec.md) — CBOW and skip-gram, the models being scored
 - [GloVe](glove.md) — the top-scoring model in the table
 - [distributional semantics](distributional-semantics.md) — the SVD baselines and
   why log counts matter
+- [transition-based parsing](transition-based-parsing.md) — UAS and LAS, the parsing
+  equivalents of the extrinsic scores here
 - [lecture 2](02-word-vectors-and-language-models.md) — full context, including the
   demo Manning admits was cherry-picked

@@ -1,0 +1,168 @@
+# Backpropagation
+
+Backpropagation is how the gradients that train a neural network are computed. Manning's
+deflationary summary is worth holding onto: it is **only two things** — you apply the chain
+rule, and you store intermediate results so you never recompute the same quantity twice
+(≈44:57 in [lecture 3](03-backpropagation-and-neural-networks.md)). Its invention made
+people famous because it gave an effective learning algorithm, but there is no third idea
+hiding in it.
+
+Primary source: lecture 3, slides 48–85
+([slide text](../raw/slides/03-backpropagation-and-neural-networks.md)).
+
+## The computation graph
+
+Software represents a network's equations as a graph (slide 49): **source nodes** are
+inputs, **interior nodes** are operations, and **edges** carry the result of each operation
+to the next. The lecture's running network,
+
+    s = uᵀh
+    h = f(z)
+    z = Wx + b
+
+becomes the chain **x** → [·] → **Wx** → [+] → **z** → [*f*] → **h** → [·] → *s*, with
+**W**, **b** and **u** entering from below (slide 50).
+
+Running the graph left to right is **forward propagation**: it computes the function, and
+it saves the intermediate values (slide 51). Running it right to left, passing gradients
+back along the edges, is **backpropagation** (slide 52). The backward pass is seeded with
+∂s/∂s = 1.
+
+## The rule at a single node
+
+This is the entire algorithm, and everything else is bookkeeping (slides 53–56). A node
+computing **h** = *f*(**z**) has three gradients associated with it:
+
+- the **upstream gradient** ∂s/∂**h**, handed to it from the output side;
+- its **local gradient** ∂**h**/∂**z**, the derivative of its own output with respect to
+  its own input — this is the only part that knows what the node does;
+- the **downstream gradient** ∂s/∂**z**, which it computes and passes back.
+
+The relation between them is the chain rule drawn as a picture:
+
+    [downstream gradient] = [upstream gradient] × [local gradient]
+
+A node with several inputs, such as **z** = **Wx**, simply has one local gradient per input
+and sends one downstream gradient back along each incoming edge (slides 57–58).
+
+## Gradients sum at outward branches
+
+The rule people get wrong. If a variable feeds more than one downstream node, gradient
+flows back to it along every one of those paths, and its total gradient is their **sum**
+(slides 70–71):
+
+    ∂f/∂y = (∂f/∂a)(∂a/∂y) + (∂f/∂b)(∂b/∂y)
+
+In the lecture's worked example (slides 59–69), *f*(*x*, *y*, *z*) = (*x* + *y*)·max(*y*, *z*)
+at *x* = 1, *y* = 2, *z* = 0, the variable *y* feeds both the `+` node and the `max` node.
+It receives 2 back from one and 3 from the other, so ∂f/∂y = 5 — while ∂f/∂x = 2 and
+∂f/∂z = 0. Manning verifies this numerically: nudging *y* to 2.1 gives
+3.1 × 2.1 = 6.51, up about 0.5 from 6, which is a gradient of 5 (≈55:12).
+
+## What the common nodes do to a gradient
+
+Three intuitions worth memorizing, because they let you sanity-check a backward pass by
+eye (slides 72–74):
+
+| Node | Effect on the upstream gradient |
+| --- | --- |
+| `+` | **distributes** it — each summand gets the same gradient, unchanged |
+| `max` | **routes** it — all of it goes to the largest input, zero to the others |
+| `*` | **switches** it — each input gets the gradient times the *other* input's forward value |
+
+## Computing all gradients at once
+
+The naive approach — compute ∂s/∂**b**, then separately ∂s/∂**W**, then ∂s/∂**x** — walks
+the shared part of the graph once per parameter (slides 75–76). The correct approach is a
+single backward sweep that computes every gradient together (slide 77). This is exactly the
+δ trick from the by-hand derivation in the same lecture: δ = ∂s/∂**h** · ∂**h**/∂**z** is
+the shared **upstream gradient**, or *error signal*, computed once and reused for both
+∂s/∂**b** and ∂s/∂**W** (slide 40). See [matrix calculus](matrix-calculus.md).
+
+## The general algorithm
+
+Backpropagation is not restricted to tidy layer structures; it works on any directed
+acyclic graph (slide 78):
+
+1. **Fprop** — visit nodes in topological sort order, computing each node's value from its
+   predecessors.
+2. **Bprop** — initialize the output gradient to 1, then visit nodes in reverse topological
+   order, computing each node's gradient from its successors' gradients:
+
+       ∂z/∂x = Σᵢ (∂z/∂yᵢ)(∂yᵢ/∂x)   for {y₁ … yₙ} the successors of x
+
+The correctness invariant to remember: done correctly, **fprop and bprop have the same
+big-O complexity**. If your backward pass costs asymptotically more than your forward pass,
+you are recomputing work you already did (≈1:02:09).
+
+## Automatic differentiation, and what frameworks actually do
+
+In principle the backward pass can be derived from the symbolic form of the forward pass —
+**automatic differentiation** (slide 79). **Theano**, out of the Université de Montréal,
+tried exactly this: you stated the forward computation symbolically and it produced the
+backward pass for you. It did not fully win, whether because it was too heavyweight, or
+awkward for unusual cases, or because people prefer writing their own Python (≈1:03:47).
+
+So modern frameworks are in one sense *less* automated. PyTorch and TensorFlow manage the
+computation graph and run both passes, but whoever writes a layer or node must supply its
+forward computation **and its local gradient**, and the framework calls that and assumes it
+is correct (slides 79–80). One implementation detail follows from this (slides 81–82): the
+`forward` method must stash its inputs on the object —
+
+```python
+def forward(x, y):
+    z = x*y
+    self.x = x   # must keep these around!
+    self.y = y
+    return z
+
+def backward(dz):
+    dx = self.y * dz
+    dy = self.x * dz
+    return [dx, dy]
+```
+
+— because `backward` receives only the upstream gradient and cannot produce a downstream
+gradient without knowing the values the function was evaluated at (≈1:07:37).
+
+## Gradient checking
+
+Since you write the local gradient by hand, you can get it wrong. The check is a numeric
+gradient (slide 83):
+
+    f′(x) ≈ ( f(x + h) − f(x − h) ) / 2h
+
+with *h* around 10⁻⁴ — there is no magic value, it depends on the function. Compare against
+what your backward pass produces and expect agreement to within about 10⁻².
+
+Two points Manning stresses. Use the **two-sided** estimate, not the one-sided
+(*f*(*x*+*h*) − *f*(*x*))/*h* taught in calculus classes: evaluating equally on both sides
+is much more accurate and stable (≈1:09:59). And this is a *check*, not a training method —
+it costs a full re-evaluation of *f* for **every parameter**, which is precisely the cost
+backpropagation exists to avoid. In the days before frameworks, when everything was written
+by hand, doing this everywhere was the key test; now it is mainly for confirming a
+newly-written layer is correct.
+
+## Why understand it if the framework does it
+
+Frameworks compute gradients for you, which is why deep learning projects turn up at high
+school science fairs (slide 85). Manning's argument for learning it anyway is that
+backpropagation does not always work out of the box, and understanding why is what lets you
+debug and improve models. The concrete example he promises for a later lecture is
+**exploding and vanishing gradients** in recurrent networks (≈1:12:20). The syllabus
+recommends Karpathy's "Yes you should understand backprop".
+
+## Where it appears in this course
+
+- [Lecture 3](03-backpropagation-and-neural-networks.md) — introduced and derived in full.
+- [Lecture 4](04-dependency-parsing.md) — used in practice: the log loss of the neural
+  dependency parser's softmax is backpropagated all the way into the word, POS-tag and
+  dependency-label embeddings (slide 44).
+
+## Related pages
+
+- [Matrix calculus](matrix-calculus.md) — the by-hand version of the same computation, and
+  where δ comes from.
+- [Gradient descent](gradient-descent.md) — what consumes the gradients once computed.
+- [Activation functions](activation-functions.md) — why ReLU's constant slope of one gives
+  such clean gradient backflow.
