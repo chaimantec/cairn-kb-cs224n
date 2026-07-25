@@ -24,8 +24,23 @@ the remaining 21 are listed under "Deferred" and are not part of this build.
 - [x] INDEX.md table of contents
 
 ## Publish
-- [ ] Commit and push
-- [ ] PATCH kbUrl onto the catalog entry
+- [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (public)
+- [x] PATCH kbUrl onto the catalog entry — verified set on course
+      b102c48c-0c1b-4fc5-be6d-4c6d1e7211d1
+
+## Build decisions worth remembering for the next run
+
+- **PDF binaries are not committed.** `sources.md` carries the canonical
+  `web.stanford.edu` URL for all 76 documents instead. The KB is read by an agent
+  that navigates markdown and cannot use a PDF blob, and the decks totalled 163MB
+  (one was 62MB). Wiki pages link slides at their source URL. `raw/pdfs/` is
+  gitignored; the downloaded copies remain on disk locally, so building
+  lectures 3-23 needs no re-crawl.
+- **Student final-project reports are excluded** from the crawl
+  (`--exclude final-reports --exclude reports_20`) — student work, not course
+  material, and inappropriate to redistribute in a public repo.
+- Slides for lectures 1-18 are already inventoried, so the next run only needs
+  transcripts plus wiki pages.
 
 ## Deferred (not in this run)
 
