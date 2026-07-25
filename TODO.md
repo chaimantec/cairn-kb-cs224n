@@ -57,7 +57,20 @@ The course has 23 lectures, built incrementally.
       raw/pdfs/; all six course PDF URLs verified against sources.md
 
 ## Publish
-- [ ] Commit and push (kbUrl already set — no link_kb.sh needed)
+- [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (kbUrl already
+      set from run 1, so no link_kb.sh needed)
+
+## Notes for run 3
+
+- **Slide decks do not all number cleanly.** Lecture 4's PDF has 45 pages but printed
+  numbers 1–49; slides 4, 5, 8 and 13 were hidden in the source deck and never
+  exported. Always check printed number against PDF page and state the mapping —
+  `mdls -name kMDItemNumberOfPages -raw <pdf>` gives a trustworthy page count
+  (counting `/Type /Page` with a regex does not).
+- **Reading a PDF in 20-page chunks can silently skip pages.** Verify by checking the
+  printed numbers on the returned slides against the page count, and re-request the
+  gaps individually.
+- Lecture decks get long: lecture 3 is 85 slides. Budget for that.
 
 ---
 
