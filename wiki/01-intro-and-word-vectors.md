@@ -236,11 +236,12 @@ practice computers will compute these derivatives for you.
 
 ## A note on source quality
 
-The transcript is auto-generated and the speech recognizer mangled technical terms
-badly — *word2vec* as "word Tove" and "word DEC", *PyTorch* as "py talk", *t-SNE* as
-"tne". Those have been corrected in
-[the transcript](../raw/transcripts/01-intro-and-word-vectors.md); every change is
-recorded in [`asr-corrections.json`](../raw/transcripts/asr-corrections.json).
+The captions are auto-generated, unpunctuated, and mangled technical terms badly —
+*word2vec* as "word Tove" and "word DEC", *PyTorch* as "py talk", *t-SNE* as "tne".
+[The transcript](../raw/transcripts/01-intro-and-word-vectors.md) has been copy-edited
+into readable sentences with those terms restored; the raw captions are kept at
+[`original/`](../raw/transcripts/original/01-intro-and-word-vectors.md) if you need to
+check what was actually said.
 
 Two places remain genuinely unreliable, and the slides are the authority for both:
 

@@ -88,11 +88,16 @@ systems.
 - [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 and 2,
   grouped into paragraphs each prefixed with an `[MM:SS]` timestamp. Use these to
   point a learner at the exact moment something is explained ("Manning covers this
-  around 42:00"), or to quote him directly. These are auto-generated captions whose
-  mangled technical terms have been **corrected** — *word2vec* arrived as "word Tove"
-  and "word DEC", *CBOW* as "sibo", *COALS* as "Kohl's" — with every change recorded
-  in [`asr-corrections.json`](raw/transcripts/asr-corrections.json) and fillers
-  stripped. Each transcript's header lists what is still unreliable in it.
+  around 42:00"), or to quote him directly — they read as sentences, so they quote
+  cleanly. These are auto-generated captions that have been **copy-edited**:
+  punctuation and sentence boundaries added, filler and false starts removed, and
+  mis-heard vocabulary restored (*word2vec* arrived as "word Tove" and "word DEC",
+  *CBOW* as "sibo", *COALS* as "Kohl's"). No content was added, removed or reordered,
+  and every timestamp is preserved. Student questions are marked in italics. Each
+  header notes what remains unreliable in that lecture.
+- [`raw/transcripts/original/`](raw/transcripts/original/) — the untouched verbatim
+  captions, kept only for reference. **Prefer the edited transcripts above**; reach for
+  these only to check exactly what the speech recognizer produced.
 - [`sources.md`](sources.md) — the full inventory of course documents, with a
   canonical URL for each: lecture slides for lectures 1–18, supplementary readings
   (the 2019 course notes, the gradient and differential-calculus reviews, the

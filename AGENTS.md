@@ -11,7 +11,8 @@ raw.githubusercontent.com and follows relative markdown links.
 | `INDEX.md`          | Entry point. Course summary + annotated table of contents.    |
 | `wiki/`             | Durable pages: one per lecture, plus cross-lecture topics.    |
 | `raw/slides/`       | Full text of every slide, numbered. Slide N = PDF page N.     |
-| `raw/transcripts/`  | Lecture transcripts with `[MM:SS]` paragraph marks.           |
+| `raw/transcripts/`  | Edited lecture transcripts with `[MM:SS]` paragraph marks.    |
+| `raw/transcripts/original/` | Verbatim captions. Reference only — prefer the edited ones. |
 | `sources.md`        | Every course document with its canonical URL and fetch date.  |
 | `TODO.md`           | Build tracker. Unchecked boxes are outstanding work.          |
 

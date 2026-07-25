@@ -335,10 +335,12 @@ network re-represent its input in ways that make the final classification easier
 As in lecture 1, the auto-generated captions mangled technical vocabulary
 consistently: *word2vec* as "word de", "word DEC" and "watch ve"; *CBOW* as "sibo";
 *GloVe* as "glav"; *COALS* as "Kohl's"; *Doug Rohde* as "Doug roie"; *Pearson* as
-"piercon"; *brioche, baguette, focaccia* as "Brios bagette fatcha". These have been
-corrected in [the transcript](../raw/transcripts/02-word-vectors-and-language-models.md),
-with every change recorded in
-[`asr-corrections.json`](../raw/transcripts/asr-corrections.json).
+"piercon"; *brioche, baguette, focaccia* as "Brios bagette fatcha"; and the sampling
+exponent 3/4 as "34".
+[The transcript](../raw/transcripts/02-word-vectors-and-language-models.md) has been
+copy-edited into readable sentences with those restored, and student questions marked;
+the raw captions are kept at
+[`original/`](../raw/transcripts/original/02-word-vectors-and-language-models.md).
 
 The citations the captions destroyed have been recovered **from the slides**, not
 guessed: Rohde et al. 2005 / COALS (slide 19–20), GloVe as Pennington, Socher and

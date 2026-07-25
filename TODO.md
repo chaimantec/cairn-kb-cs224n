@@ -6,9 +6,12 @@ the remaining 21 are listed under "Deferred" and are not part of this build.
 ## Transcripts
 - [x] 01 Intro and Word Vectors — video DzpHeXVSC5I
 - [x] 02 Word Vectors and Language Models — video nBor4jfWetQ
-- [x] Clean ASR damage in both transcripts (word2vec was arriving as "word Tove").
-      Corrections recorded in raw/transcripts/asr-corrections.json; 110
-      substitutions, 878 fillers removed.
+- [x] Copy-edit both transcripts into readable sentences (word2vec was arriving as
+      "word Tove", and the captions had no punctuation at all). Read and rewritten by
+      hand, not by find-and-replace: punctuation and sentence boundaries added, filler
+      and false starts removed, mis-heard terms and names restored, student questions
+      marked. All 103 + 102 timestamps preserved in order; verified no numbers lost.
+      Verbatim originals kept in raw/transcripts/original/ for reference.
 
 ## Slides
 - [x] raw/slides/01-intro-and-word-vectors.md — all 40 slides transcribed
