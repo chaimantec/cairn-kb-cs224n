@@ -55,9 +55,39 @@ Repo files use the catalog position (`10-…`), per the convention set in run 3 
 deck-vs-catalog title disagreements.
 
 ## Transcripts
-- [ ] 09 Pretraining — video DGfCRXuNA2w (102 paragraphs)
-- [ ] 10 Natural Language Generation — video N9L32bFieEY (102 paragraphs)
-- [ ] Copy-edit both by hand, verbatim originals kept in `raw/transcripts/original/`.
+- [x] 09 Pretraining — video DGfCRXuNA2w (102 paragraphs)
+- [x] 10 Natural Language Generation — video N9L32bFieEY (102 paragraphs)
+- [x] Copy-edited both by hand, verbatim originals kept in `raw/transcripts/original/`.
+      All 102+102 `[MM:SS]` timestamps verified identical and in order; number inventories
+      compared and every difference explained (ASR-spaced "17 000"→17,000, "40 000"→40,000,
+      "7 000"→7,000; ".03"→0.03; spelled-out numbers rendered as digits — the Fibonacci
+      sequence on slide 17, "assignment five", "homework one"; dictated notation written in
+      symbols — `w_{1:t−1}`, `y_{t+1}`; garbles that happened to contain digits removed —
+      "12K decoding"→top-k, "chaiji 50"→ChatGPT; one false start dropped, L10 at 37:50,
+      where "you will get 10 — you will very likely get 10 different outputs" repeats the
+      same number).
+- [x] Restored against the slides: L9 — *word2vec* ("word to VEC", "where to back"), *UNK*
+      ("ankh", "UNC"), *BERT* ("Birch", "burp model"), *RoBERTa* ("Brita"), *Iroh* ("Ira",
+      "IRL"), *Adam*/*AdaGrad* ("atom", "add a grad"), *salient span masking* ("salience
+      band masking"), GPT input format `[START]`/`[DELIM]`/`[EXTRACT]` from slide 44. L10 —
+      *NLG* itself ("an LG", "analogy", "energy"), *autoregressive* ("other aggressive"),
+      *n-gram* ("unground", "engram"), *softmax* ("solve Max"), *nucleus sampling* ("nuclear
+      sampling"), *BLEU*/*ROUGE*/*BERTScore*/*BLEURT*/*MAUVE* ("Google score", "root score",
+      "Bird score", "Port", "mouth score"), *DAgger*, *RLHF* ("rlhs"), *Dirac delta*
+      ("direct Delta"), the slide-53 exchange ("hack yes"→"Heck yes!"), and slide 56's Word
+      Mover's Distance example ("the president Grace the press"→"The President greets the
+      press in Chicago").
+- [x] Ten residual ambiguities left marked inline as `[Ed: …]` rather than guessed — L9 has
+      four (two garbled student questions, one unrecoverable word inside a third, and the
+      BERT corpus sizes at 52:30, where the lecturer corrects himself and the captions
+      mangle the figures he lands on; slide 27 named as the figure of record). L10 has six
+      (four garbled student questions, one unrecoverable example word at 27:01, and one
+      place at 27:46 where the captions say "quickly" where slide 30 says "slowly" — keeping
+      the caption would have made the sentence contradict itself).
+- [x] One reading resolved by date rather than by slide: L9's captions give "people using
+      GPT uh three four simple programming things" (1:14:49). The lecture is February 2023
+      and GPT-4 shipped the following month, so this is "GPT-3 **for** simple programming
+      things", not a GPT-4 reference. Noted in the transcript header.
 
 ## Slides
 - [x] raw/slides/09-pretraining.md — all 54 slides. Printed numbers match PDF pages 1:1;
