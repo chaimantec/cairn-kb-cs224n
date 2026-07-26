@@ -14,50 +14,52 @@ Primary source: lecture 3, slides 48–85
 
 Software represents a network's equations as a graph (slide 49): **source nodes** are
 inputs, **interior nodes** are operations, and **edges** carry the result of each operation
-to the next. The lecture's running network,
+to the next. The lecture's running network, with input $x$, weight matrix $W$, bias $b$,
+non-linearity $f$, hidden layer $h$ and scalar score $s$,
 
-    s = uᵀh
-    h = f(z)
-    z = Wx + b
+$$s = u^{\top} h, \qquad h = f(z), \qquad z = Wx + b$$
 
-becomes the chain **x** → [·] → **Wx** → [+] → **z** → [*f*] → **h** → [·] → *s*, with
-**W**, **b** and **u** entering from below (slide 50).
+becomes the chain $x \to [\cdot] \to Wx \to [+] \to z \to [f] \to h \to [\cdot] \to s$, with
+$W$, $b$ and $u$ entering from below (slide 50).
 
 Running the graph left to right is **forward propagation**: it computes the function, and
 it saves the intermediate values (slide 51). Running it right to left, passing gradients
 back along the edges, is **backpropagation** (slide 52). The backward pass is seeded with
-∂s/∂s = 1.
+$\partial s / \partial s = 1$.
 
 ## The rule at a single node
 
 This is the entire algorithm, and everything else is bookkeeping (slides 53–56). A node
-computing **h** = *f*(**z**) has three gradients associated with it:
+computing $h = f(z)$ has three gradients associated with it:
 
-- the **upstream gradient** ∂s/∂**h**, handed to it from the output side;
-- its **local gradient** ∂**h**/∂**z**, the derivative of its own output with respect to
-  its own input — this is the only part that knows what the node does;
-- the **downstream gradient** ∂s/∂**z**, which it computes and passes back.
+- the **upstream gradient** $\dfrac{\partial s}{\partial h}$, handed to it from the output
+  side;
+- its **local gradient** $\dfrac{\partial h}{\partial z}$, the derivative of its own output
+  with respect to its own input — this is the only part that knows what the node does;
+- the **downstream gradient** $\dfrac{\partial s}{\partial z}$, which it computes and passes
+  back.
 
 The relation between them is the chain rule drawn as a picture:
 
-    [downstream gradient] = [upstream gradient] × [local gradient]
+$$\underbrace{\frac{\partial s}{\partial z}}_{\text{downstream}} = \underbrace{\frac{\partial s}{\partial h}}_{\text{upstream}} \times \underbrace{\frac{\partial h}{\partial z}}_{\text{local}}$$
 
-A node with several inputs, such as **z** = **Wx**, simply has one local gradient per input
+A node with several inputs, such as $z = Wx$, simply has one local gradient per input
 and sends one downstream gradient back along each incoming edge (slides 57–58).
 
 ## Gradients sum at outward branches
 
 The rule people get wrong. If a variable feeds more than one downstream node, gradient
-flows back to it along every one of those paths, and its total gradient is their **sum**
-(slides 70–71):
+flows back to it along every one of those paths, and its total gradient is their **sum**.
+For a variable $y$ feeding two nodes $a$ and $b$ (slides 70–71):
 
-    ∂f/∂y = (∂f/∂a)(∂a/∂y) + (∂f/∂b)(∂b/∂y)
+$$\frac{\partial f}{\partial y} = \frac{\partial f}{\partial a}\frac{\partial a}{\partial y} + \frac{\partial f}{\partial b}\frac{\partial b}{\partial y}$$
 
-In the lecture's worked example (slides 59–69), *f*(*x*, *y*, *z*) = (*x* + *y*)·max(*y*, *z*)
-at *x* = 1, *y* = 2, *z* = 0, the variable *y* feeds both the `+` node and the `max` node.
-It receives 2 back from one and 3 from the other, so ∂f/∂y = 5 — while ∂f/∂x = 2 and
-∂f/∂z = 0. Manning verifies this numerically: nudging *y* to 2.1 gives
-3.1 × 2.1 = 6.51, up about 0.5 from 6, which is a gradient of 5 (≈55:12).
+In the lecture's worked example (slides 59–69),
+$f(x, y, z) = (x + y) \cdot \max(y, z)$ at $x = 1$, $y = 2$, $z = 0$, the variable $y$ feeds
+both the `+` node and the `max` node. It receives 2 back from one and 3 from the other, so
+$\partial f/\partial y = 5$ — while $\partial f/\partial x = 2$ and
+$\partial f/\partial z = 0$. Manning verifies this numerically: nudging $y$ to 2.1 gives
+$3.1 \times 2.1 = 6.51$, up about 0.5 from 6, which is a gradient of 5 (≈55:12).
 
 ## What the common nodes do to a gradient
 
@@ -72,12 +74,17 @@ eye (slides 72–74):
 
 ## Computing all gradients at once
 
-The naive approach — compute ∂s/∂**b**, then separately ∂s/∂**W**, then ∂s/∂**x** — walks
-the shared part of the graph once per parameter (slides 75–76). The correct approach is a
-single backward sweep that computes every gradient together (slide 77). This is exactly the
-δ trick from the by-hand derivation in the same lecture: δ = ∂s/∂**h** · ∂**h**/∂**z** is
-the shared **upstream gradient**, or *error signal*, computed once and reused for both
-∂s/∂**b** and ∂s/∂**W** (slide 40). See [matrix calculus](matrix-calculus.md).
+The naive approach — compute $\partial s/\partial b$, then separately $\partial s/\partial W$,
+then $\partial s/\partial x$ — walks the shared part of the graph once per parameter
+(slides 75–76). The correct approach is a single backward sweep that computes every gradient
+together (slide 77). This is exactly the $\delta$ trick from the by-hand derivation in the
+same lecture:
+
+$$\delta = \frac{\partial s}{\partial h} \cdot \frac{\partial h}{\partial z}$$
+
+is the shared **upstream gradient**, or *error signal*, computed once and reused for both
+$\partial s/\partial b$ and $\partial s/\partial W$ (slide 40). See
+[matrix calculus](matrix-calculus.md).
 
 ## The general algorithm
 
@@ -89,7 +96,7 @@ acyclic graph (slide 78):
 2. **Bprop** — initialize the output gradient to 1, then visit nodes in reverse topological
    order, computing each node's gradient from its successors' gradients:
 
-       ∂z/∂x = Σᵢ (∂z/∂yᵢ)(∂yᵢ/∂x)   for {y₁ … yₙ} the successors of x
+$$\frac{\partial z}{\partial x} = \sum_{i=1}^{n} \frac{\partial z}{\partial y_i} \frac{\partial y_i}{\partial x} \qquad \text{for } \{y_1, \dots, y_n\} \text{ the successors of } x$$
 
 The correctness invariant to remember: done correctly, **fprop and bprop have the same
 big-O complexity**. If your backward pass costs asymptotically more than your forward pass,
@@ -130,15 +137,16 @@ gradient without knowing the values the function was evaluated at (≈1:07:37).
 Since you write the local gradient by hand, you can get it wrong. The check is a numeric
 gradient (slide 83):
 
-    f′(x) ≈ ( f(x + h) − f(x − h) ) / 2h
+$$f'(x) \approx \frac{f(x + h) - f(x - h)}{2h}$$
 
-with *h* around 10⁻⁴ — there is no magic value, it depends on the function. Compare against
-what your backward pass produces and expect agreement to within about 10⁻².
+with the perturbation $h$ around $10^{-4}$ — there is no magic value, it depends on the
+function. Compare against what your backward pass produces and expect agreement to within
+about $10^{-2}$.
 
 Two points Manning stresses. Use the **two-sided** estimate, not the one-sided
-(*f*(*x*+*h*) − *f*(*x*))/*h* taught in calculus classes: evaluating equally on both sides
+$\big(f(x+h) - f(x)\big)/h$ taught in calculus classes: evaluating equally on both sides
 is much more accurate and stable (≈1:09:59). And this is a *check*, not a training method —
-it costs a full re-evaluation of *f* for **every parameter**, which is precisely the cost
+it costs a full re-evaluation of $f$ for **every parameter**, which is precisely the cost
 backpropagation exists to avoid. In the days before frameworks, when everything was written
 by hand, doing this everywhere was the key test; now it is mainly for confirming a
 newly-written layer is correct.
@@ -156,21 +164,23 @@ recommends Karpathy's "Yes you should understand backprop".
 
 The RNN case (lecture 5, slides 41–43) is where the outward-branch rule above stops being a
 detail and becomes the whole algorithm. A [recurrent neural
-network](recurrent-neural-networks.md) applies the *same* weight matrix W_h at every
+network](recurrent-neural-networks.md) applies the *same* weight matrix $W_h$ at every
 timestep, so the question is how to differentiate with respect to a **repeated** weight:
 
 > The gradient with respect to a repeated weight is the **sum** of the gradient with respect
 > to each time it appears.
 
-    ∂J⁽ᵗ⁾/∂W_h = Σ_{i=1..t} ∂J⁽ᵗ⁾/∂W_h |₍ᵢ₎
+$$\frac{\partial J^{(t)}}{\partial W_h} = \sum_{i=1}^{t} \left. \frac{\partial J^{(t)}}{\partial W_h} \right|_{(i)}$$
 
-The justification is exactly "gradients sum at outward branches". Think of the single W_h as
-being copied by an identity function into W_h⁽¹⁾, W_h⁽²⁾, … at each timestep. Identity copies
+where $J^{(t)}$ is the loss at timestep $t$ and $|_{(i)}$ marks the contribution from the
+$i$-th application of $W_h$. The justification is exactly "gradients sum at outward
+branches". Think of the single $W_h$ as being copied by an identity function into
+$W_h^{(1)}, W_h^{(2)}, \dots$ at each timestep. Identity copies
 have partial derivative 1 with respect to each other, so applying the multivariable chain
 rule leaves each term multiplied by 1, and what remains is a plain sum (≈1:06:36). Slide 43
 writes the cancellation out.
 
-The algorithm — backpropagate over timesteps *i* = *t*, …, 0, summing gradients as you go —
+The algorithm — backpropagate over timesteps $i = t, \dots, 0$, summing gradients as you go —
 is **backpropagation through time** (Werbos 1988).
 
 In practice it is often **truncated** after around 20 timesteps for training efficiency
@@ -197,7 +207,7 @@ conclusion that RNNs are particularly unstable precisely because the repeated ma
 ## Related pages
 
 - [Matrix calculus](matrix-calculus.md) — the by-hand version of the same computation, and
-  where δ comes from.
+  where $\delta$ comes from.
 - [Gradient descent](gradient-descent.md) — what consumes the gradients once computed.
 - [Activation functions](activation-functions.md) — why ReLU's constant slope of one gives
   such clean gradient backflow.

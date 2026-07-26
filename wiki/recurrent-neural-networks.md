@@ -14,9 +14,9 @@ A fixed-window neural language model concatenates the embeddings of a fixed numb
 preceding words, runs them through a hidden layer, and softmaxes over the vocabulary
 (lecture 5, slides 27–30). Two things are wrong with it:
 
-- **The window is fixed**, enlarging it enlarges *W*, and no window is ever big enough.
-- **There is no symmetry across positions.** x⁽¹⁾ and x⁽²⁾ are multiplied by completely
-  different sub-parts of *W*. What the model learns about *student* in position 1 is learned
+- **The window is fixed**, enlarging it enlarges $W$, and no window is ever big enough.
+- **There is no symmetry across positions.** $x^{(1)}$ and $x^{(2)}$ are multiplied by
+  completely different sub-parts of $W$. What the model learns about *student* in position 1 is learned
   separately from what it learns about *student* in position 2, even though the evidence is
   the same. Manning's example: *the students opened their* and *the students slowly opened
   their* differ only in linguistic structure, but the parameters used are entirely different
@@ -27,18 +27,22 @@ to register "I saw the word *student*" regardless of where it occurred.
 
 ## The architecture
 
-**Core idea** (lecture 5, slide 31): apply the same weights *W* repeatedly, across successive
-positions in the text. A simple RNN language model (slide 32):
+**Core idea** (lecture 5, slide 31): apply the same weights $W$ repeatedly, across successive
+positions in the text. A simple RNN language model (slide 32), where $x^{(t)}$ is the one-hot
+word at step $t$, $E$ the embedding matrix, $W_h$ and $W_e$ the recurrent and input weight
+matrices, $b_1$ and $b_2$ biases, $U$ the output matrix and $|V|$ the vocabulary size:
 
-    e⁽ᵗ⁾ = E x⁽ᵗ⁾                                    word embeddings
-    h⁽ᵗ⁾ = σ( W_h h⁽ᵗ⁻¹⁾ + W_e e⁽ᵗ⁾ + b₁ )           hidden state
-    ŷ⁽ᵗ⁾ = softmax( U h⁽ᵗ⁾ + b₂ ) ∈ ℝ^|V|            output distribution
+$$e^{(t)} = E x^{(t)} \qquad \text{(word embeddings)}$$
 
-h⁽⁰⁾ is the initial hidden state and can simply be zeros. The hidden state accumulates a
+$$h^{(t)} = \sigma\left(W_h h^{(t-1)} + W_e e^{(t)} + b_1\right) \qquad \text{(hidden state)}$$
+
+$$\hat{y}^{(t)} = \operatorname{softmax}\left(U h^{(t)} + b_2\right) \in \mathbb{R}^{|V|} \qquad \text{(output distribution)}$$
+
+$h^{(0)}$ is the initial hidden state and can simply be zeros. The hidden state accumulates a
 memory of everything seen so far. Outputs at each step are **optional** — an RNN produces
 them only if the task needs them.
 
-The nonlinearity σ has most commonly been **tanh** for RNNs, chosen because it is balanced
+The nonlinearity $\sigma$ has most commonly been **tanh** for RNNs, chosen because it is balanced
 across positive and negative (lecture 5, ≈54:14). See
 [activation functions](activation-functions.md).
 
@@ -48,9 +52,9 @@ Slide 33 lists both, and both matter for the rest of the course.
 
 **Advantages:**
 - Processes **any length** of input.
-- Computation at step *t* can, in theory, use information from many steps back.
+- Computation at step $t$ can, in theory, use information from many steps back.
 - **Model size does not increase** with context length — the representation of arbitrarily
-  long context stays a fixed-size vector h, so there is no exponential blow-up as with
+  long context stays a fixed-size vector $h$, so there is no exponential blow-up as with
   [*n*-grams](n-gram-language-models.md).
 - Same weights at every timestep, so there is symmetry in how inputs are processed.
 
@@ -67,11 +71,11 @@ Slide 33 lists both, and both matter for the rest of the course.
 
 ## Training an RNN language model
 
-**The loss** (lecture 5, slide 34) at step *t* is the cross-entropy between the predicted
-distribution ŷ⁽ᵗ⁾ and the true next word, which for a one-hot target reduces to a negative
-log probability; the overall loss is the average across positions:
+**The loss** (lecture 5, slide 34) at step $t$ is the cross-entropy between the predicted
+distribution $\hat{y}^{(t)}$ and the true next word, which for a one-hot target reduces to a
+negative log probability; the overall loss is the average across the $T$ positions:
 
-    J⁽ᵗ⁾(θ) = − log ŷ⁽ᵗ⁾_{x_{t+1}}          J(θ) = (1/T) Σₜ J⁽ᵗ⁾(θ)
+$$J^{(t)}(\theta) = -\log \hat{y}^{(t)}_{x_{t+1}} \qquad\qquad J(\theta) = \frac{1}{T} \sum_{t=1}^{T} J^{(t)}(\theta)$$
 
 See [softmax, the logistic function, and cross-entropy](softmax-and-cross-entropy.md).
 
@@ -92,16 +96,18 @@ of prior context (≈1:13:35).
 
 ## Backpropagation through time
 
-W_h appears at every timestep, so the question is how to differentiate with respect to a
+$W_h$ appears at every timestep, so the question is how to differentiate with respect to a
 **repeated** weight matrix (lecture 5, slides 41–43). The answer:
 
 > The gradient with respect to a repeated weight is the **sum** of the gradient with respect
 > to each time it appears.
 
-    ∂J⁽ᵗ⁾/∂W_h = Σ_{i=1..t} ∂J⁽ᵗ⁾/∂W_h |₍ᵢ₎
+$$\frac{\partial J^{(t)}}{\partial W_h} = \sum_{i=1}^{t} \left. \frac{\partial J^{(t)}}{\partial W_h} \right|_{(i)}$$
 
+where $|_{(i)}$ marks the contribution from the $i$-th application of $W_h$.
 The justification is lecture 3's rule that **gradients sum at outward branches**, applied
-here by treating W_h as being copied by identity into W_h⁽¹⁾, W_h⁽²⁾, … at each timestep;
+here by treating $W_h$ as being copied by identity into
+$W_h^{(1)}, W_h^{(2)}, \dots$ at each timestep;
 identity copies have partial derivative 1 with respect to each other, so the multivariable
 chain rule leaves a plain sum (≈1:06:36). The algorithm is called **backpropagation through
 time** (Werbos 1988).
@@ -113,7 +119,7 @@ the backward pass is cut short (≈1:08:09). See [backpropagation](backpropagati
 
 ## Generating text
 
-**Roll-out** (lecture 5, slide 44): sample from ŷ⁽ᵗ⁾, feed the sampled word back in as the
+**Roll-out** (lecture 5, slide 44): sample from $\hat{y}^{(t)}$, feed the sampled word back in as the
 next input, repeat. Start from a special `<s>` pseudo-word — which has its own embedding —
 rather than from a real word, and stop when `</s>` is generated (≈1:08:57). Manning notes
 this is exactly what ChatGPT does with a more complicated model, and that because it is
@@ -152,15 +158,18 @@ Lecture 6, slides 33–37. The motivation is a limitation of contextual represen
 context "the movie was terribly", and knows nothing about *exciting* — which is exactly what
 flips *terribly* from negative to positive.
 
-So run a second RNN backwards and concatenate the two states at each position:
+So run a second RNN backwards and concatenate the two states at each position (slide 35):
 
-    h→⁽ᵗ⁾ = RNN_FW( h→⁽ᵗ⁻¹⁾, x⁽ᵗ⁾ )
-    h←⁽ᵗ⁾ = RNN_BW( h←⁽ᵗ⁺¹⁾, x⁽ᵗ⁾ )
-    h⁽ᵗ⁾  = [ h→⁽ᵗ⁾ ; h←⁽ᵗ⁾ ]
+$$\overrightarrow{h}^{(t)} = \mathrm{RNN}_{\mathrm{FW}}\left(\overrightarrow{h}^{(t-1)}, x^{(t)}\right)$$
 
-The two directions generally have **separate weights**. RNN_FW is deliberately generic
-notation — it can be a simple RNN step or an [LSTM](lstm.md) step. The concatenation is what
-counts as "the hidden state" and gets passed to the rest of the network.
+$$\overleftarrow{h}^{(t)} = \mathrm{RNN}_{\mathrm{BW}}\left(\overleftarrow{h}^{(t+1)}, x^{(t)}\right)$$
+
+$$h^{(t)} = \left[ \overrightarrow{h}^{(t)} ; \overleftarrow{h}^{(t)} \right]$$
+
+The two directions generally have **separate weights**. $\mathrm{RNN}_{\mathrm{FW}}$ is
+deliberately generic notation — it can be a simple RNN step or an [LSTM](lstm.md) step. The
+concatenation is what counts as "the hidden state" and gets passed to the rest of the
+network.
 
 **The constraint** (slide 37) is important and easy to forget: bidirectional RNNs need the
 **entire input sequence**, so they are **not applicable to language modeling**, where you
@@ -171,7 +180,7 @@ Representations from Transformers) is built on exactly this idea.
 ## Multi-layer (stacked) RNNs
 
 Lecture 6, slides 38–40. RNNs are already deep along the time dimension; you can also stack
-them, with layer *i*'s hidden states as layer *i*+1's inputs. Lower layers compute
+them, with layer $i$'s hidden states as layer $i+1$'s inputs. Lower layers compute
 lower-level features, higher layers higher-level ones. Manning's answer to "does this
 actually do anything, or are they just big vectors above the words?" is that the extra layer
 buys the same successive-feature-extraction advantage depth buys any neural network (≈53:44).

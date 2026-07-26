@@ -19,14 +19,17 @@ score, but it is an **unbounded real number** — it can be positive or negative
 (lecture 1, ≈57:30). What you want is a probability distribution. Softmax gets you
 there in two steps:
 
-1. **Exponentiate.** `e^x` is positive for any real `x`, so this makes every score
+1. **Exponentiate.** $e^x$ is positive for any real $x$, so this makes every score
    positive (≈57:30).
 2. **Normalize.** Compute the numerator for every possible outcome, sum them, and
    divide through. Manning describes this as turning the numbers into a
    distribution "in the dumbest way possible" (≈57:30).
 
-> `softmax(x)ᵢ = exp(xᵢ) / Σⱼ exp(xⱼ)`
+For a vector of $n$ scores $x_1, \dots, x_n$, slide 30 writes the $i$-th output as
 
+$$\operatorname{softmax}(x_i) = \frac{\exp(x_i)}{\sum_{j=1}^{n} \exp(x_j)} = p_i$$
+
+so softmax is a map $\mathbb{R}^n \to (0,1)^n$.
 The result sums to one by construction (≈58:18). In word2vec this gives a
 distribution over which context word appears, from nothing but dot products — see
 [word2vec](word2vec.md).
@@ -37,12 +40,12 @@ it is **soft** because smaller items still receive some probability rather than
 being zeroed out. He points out the name is a bit odd, since a real max picks out
 exactly one thing while softmax turns a bunch of real numbers into a distribution.
 
-Its ubiquity is the thing to take away: any time you want to turn a vector in ℝⁿ
-into probabilities, you push it through a softmax (≈59:50).
+Its ubiquity is the thing to take away: any time you want to turn a vector in
+$\mathbb{R}^n$ into probabilities, you push it through a softmax (≈59:50).
 
 ## The logistic (sigmoid) function
 
-> `σ(x) = 1 / (1 + e^(−x))`
+$$\sigma(x) = \frac{1}{1 + e^{-x}}$$
 
 The logistic function maps any real number to a probability between 0 and 1
 (lecture 2, ≈29:37). It is what you use when there is a single score to convert
@@ -79,11 +82,11 @@ likelihood, but when you start writing PyTorch in assignment 2 you will use
 (lecture 2, ≈1:11:19), because the mismatch in vocabulary is confusing if nobody
 tells you they are the same thing.
 
-Cross entropy comes from information theory. Given a true distribution *p* and your
-model's distribution *q*, the cross entropy is the expectation under *p* of the
-negative log of *q*:
+Cross entropy comes from information theory. Given a true distribution $p$ and your
+model's distribution $q$ over classes $c$, the cross entropy is the expectation under
+$p$ of the negative log of $q$:
 
-> `H(p, q) = − Σ_c p(c) log q(c)`
+$$H(p, q) = -\sum_{c} p(c) \log q(c)$$
 
 The special case that matters is when your labels are **one-hot** — ground truth,
 gold, or target data where the correct class has probability 1 and everything else
@@ -104,16 +107,17 @@ now you just want it as the loss in PyTorch.
 Lecture 4's neural dependency parser is the first place in the course where this is used as
 the output layer of a real system rather than as a derivation. Its architecture ends
 
-    y = softmax(Uh + b₂)
+$$y = \operatorname{softmax}(U h + b_2)$$
 
-over the three possible transitions { Shift, Left-Arc_r, Right-Arc_r }, and the log loss —
+where $h$ is the hidden layer, $U$ the output weight matrix and $b_2$ its bias, over the
+three possible transitions $\{\text{Shift}, \text{Left-Arc}_r, \text{Right-Arc}_r\}$, and the log loss —
 cross-entropy error — is **backpropagated all the way into the embeddings**, so the word,
 part-of-speech and dependency-label vectors are themselves learned by it (lecture 4,
 slide 44). The hidden layer beneath it exists precisely so that a *linear* softmax is
 enough to separate the classes; see [transition-based parsing](transition-based-parsing.md).
 
 Note also that Manning deliberately avoids differentiating the loss in lecture 3, computing
-gradients of the raw score *s* instead, because the derivative of the logistic is an
+gradients of the raw score $s$ instead, because the derivative of the logistic is an
 Assignment 2 question (lecture 3, slide 27).
 
 ## The language model output layer
@@ -122,28 +126,34 @@ From lecture 5 onward this is the standard output of every
 [language model](language-modeling.md) in the course. A
 [recurrent neural network](recurrent-neural-networks.md) language model ends
 
-    ŷ⁽ᵗ⁾ = softmax( U h⁽ᵗ⁾ + b₂ ) ∈ ℝ^{|V|}
+$$\hat{y}^{(t)} = \operatorname{softmax}\left(U h^{(t)} + b_2\right) \in \mathbb{R}^{|V|}$$
 
-— structurally identical to the parser's output layer, but with the number of classes now the
+where $h^{(t)}$ is the hidden state at step $t$ and $|V|$ the vocabulary size —
+structurally identical to the parser's output layer, but with the number of classes now the
 **size of the vocabulary** rather than three (lecture 5, slide 32).
 
-The loss follows directly. Cross-entropy between the predicted distribution and the true next
-word, where the target y⁽ᵗ⁾ is one-hot for x⁽ᵗ⁺¹⁾, collapses to a single negative log
-probability (lecture 5, slide 34):
+The loss follows directly. Cross-entropy between the predicted distribution
+$\hat{y}^{(t)}$ and the true next word, where the target $y^{(t)}$ is one-hot for the word
+$x^{(t+1)}$ that actually came next, collapses to a single negative log probability
+(lecture 5, slide 34):
 
-    J⁽ᵗ⁾(θ) = CE(y⁽ᵗ⁾, ŷ⁽ᵗ⁾) = − Σ_{w∈V} y⁽ᵗ⁾_w log ŷ⁽ᵗ⁾_w = − log ŷ⁽ᵗ⁾_{x_{t+1}}
+$$J^{(t)}(\theta) = \mathrm{CE}\left(y^{(t)}, \hat{y}^{(t)}\right) = -\sum_{w \in V} y^{(t)}_w \log \hat{y}^{(t)}_w = -\log \hat{y}^{(t)}_{x_{t+1}}$$
 
-and the overall objective is the average over positions, J(θ) = (1/T) Σₜ J⁽ᵗ⁾(θ). This is the
-same collapse as in the general case above: with a one-hot target every term but one is zero.
+and the overall objective is the average over the $T$ positions,
+
+$$J(\theta) = \frac{1}{T} \sum_{t=1}^{T} J^{(t)}(\theta)$$
+
+This is the same collapse as in the general case above: with a one-hot target every term
+but one is zero.
 
 **Perplexity is the exponential of this loss.** The standard evaluation metric for language
-models is exp(J(θ)) — the identity is derived on lecture 5's slide 49 and explained at length
+models is $\exp(J(\theta))$ — the identity is derived on lecture 5's slide 49 and explained at length
 in lecture 6. This is why the cross-entropy loss is not just a training device but the thing
 the field reports numbers in. See [perplexity](perplexity.md), and note the warning there
 about logarithm base.
 
-The [LSTM](lstm.md) changes what produces h⁽ᵗ⁾ but not this layer: lecture 6's slide 24 draws
-the same ŷ = softmax(Uh + b₂) on top of the LSTM cell. The
+The [LSTM](lstm.md) changes what produces $h^{(t)}$ but not this layer: lecture 6's slide 24
+draws the same $\hat{y} = \operatorname{softmax}(U h + b_2)$ on top of the LSTM cell. The
 [seq2seq decoder](seq2seq-and-encoder-decoder.md) uses it too, with the losses at each
 position averaged and backpropagated through both decoder and encoder (lecture 6, slide 53).
 

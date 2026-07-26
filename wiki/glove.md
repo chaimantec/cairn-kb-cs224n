@@ -37,7 +37,11 @@ Manning's example uses *ice* and *steam*. Think about which words occur near eac
 
 Looking at any single one of these probabilities does not give you a meaning
 component — you just get a number that is large or small. But take the **ratio** of
-the two co-occurrence probabilities, P(x | ice) / P(x | steam), and structure
+the two co-occurrence probabilities,
+
+$$\frac{P(x \mid \text{ice})}{P(x \mid \text{steam})}$$
+
+where $P(x \mid w)$ is the probability of seeing word $x$ near word $w$, and structure
 appears (≈42:46):
 
 - For *solid* the ratio is large.
@@ -57,9 +61,9 @@ rather than a random word:
 
 | | solid | gas | water | fashion |
 | - | ----- | --- | ----- | ------- |
-| P(x\|ice) | 1.9 × 10⁻⁴ | 6.6 × 10⁻⁵ | 3.0 × 10⁻³ | 1.7 × 10⁻⁵ |
-| P(x\|steam) | 2.2 × 10⁻⁵ | 7.8 × 10⁻⁴ | 2.2 × 10⁻³ | 1.8 × 10⁻⁵ |
-| **ratio** | **8.9** | **8.5 × 10⁻²** | 1.36 | 0.96 |
+| $P(x \mid \text{ice})$ | $1.9 \times 10^{-4}$ | $6.6 \times 10^{-5}$ | $3.0 \times 10^{-3}$ | $1.7 \times 10^{-5}$ |
+| $P(x \mid \text{steam})$ | $2.2 \times 10^{-5}$ | $7.8 \times 10^{-4}$ | $2.2 \times 10^{-3}$ | $1.8 \times 10^{-5}$ |
+| **ratio** | $\mathbf{8.9}$ | $\mathbf{8.5 \times 10^{-2}}$ | $1.36$ | $0.96$ |
 
 The two discriminating words land two orders of magnitude apart from each other, while
 *water* (related to both) and *fashion* (related to neither) both sit near 1 — so a
@@ -72,9 +76,11 @@ probabilities to correspond to a *difference* of vectors, take logs: a log turns
 the ratio into a subtraction. So build a **log-bilinear** model in which the dot
 product of two word vectors models the log co-occurrence probability:
 
-> `w_i · w_j = log P(i | j)`
->
-> and with vector differences: `w_x · (w_a − w_b) = log [ P(x|a) / P(x|b) ]`
+$$w_i \cdot w_j = \log P(i \mid j)$$
+
+and with vector differences,
+
+$$w_x \cdot (w_a - w_b) = \log \frac{P(x \mid a)}{P(x \mid b)}$$
 
 The second line (both are on **slide 23**) is the whole point: the difference between
 two word vectors *is* the log of the ratio of their co-occurrence probabilities —
@@ -85,10 +91,13 @@ Manning notes the real model adds bias terms and frequency thresholds, and
 explicitly skips them as unimportant to the intuition (≈44:19). For completeness,
 slide 23 gives the actual loss:
 
-> `J = Σ_{i,j=1}^{V} f(X_ij) ( w_iᵀ w̃_j + b_i + b̃_j − log X_ij )²`
+$$J = \sum_{i,j=1}^{V} f(X_{ij}) \left( w_i^{\top} \tilde{w}_j + b_i + \tilde{b}_j - \log X_{ij} \right)^2$$
 
-— a weighted least-squares fit of the dot product, plus per-word bias terms `b_i` and
-`b̃_j`, to `log X_ij`, the log co-occurrence count. The weighting function `f` rises
+where $X_{ij}$ is the number of times word $j$ occurs in the context of word $i$, $V$ is
+the vocabulary size, and $w_i$ and $\tilde{w}_j$ are the two vectors GloVe keeps per word
+(the same center/outside split as [word2vec](word2vec.md)). It is a weighted
+least-squares fit of the dot product, plus per-word bias terms $b_i$ and $\tilde{b}_j$,
+to $\log X_{ij}$. The weighting function $f$ rises
 from zero, grows roughly linearly, then **saturates flat at 1.0** past a cutoff, which
 is what stops extremely frequent pairs from dominating the fit — the "frequency
 threshold" Manning skips over. Slide 23 lists the payoff as fast training and
@@ -102,8 +111,9 @@ components — is the part worth knowing.
 The demo in lecture 2 (≈11:45 onward) uses 100-dimensional GloVe vectors loaded via
 gensim, and Manning flags up front that strictly speaking these are not word2vec
 vectors, though they behave in exactly the same way (≈12:32). Everything shown
-there — *croissant* returning brioche, baguette and focaccia; `king − man + woman ≈
-queen`; Australia:beer::Russia:vodka — is GloVe output. The model was built in 2014,
+there — *croissant* returning brioche, baguette and focaccia;
+$\text{king} - \text{man} + \text{woman} \approx \text{queen}$;
+Australia:beer::Russia:vodka — is GloVe output. The model was built in 2014,
 which is why it cannot answer questions about the last decade of politics
 (≈19:34).
 

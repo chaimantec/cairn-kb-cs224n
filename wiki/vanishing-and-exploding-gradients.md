@@ -12,8 +12,9 @@ Lecture 5's slides 52–56 build it one chain-rule factor at a time. To get the 
 loss at step 4 with respect to a hidden state at step 1, you multiply Jacobians along the
 chain:
 
-    ∂J⁽⁴⁾/∂h⁽¹⁾ = (∂h⁽²⁾/∂h⁽¹⁾) × (∂h⁽³⁾/∂h⁽²⁾) × (∂h⁽⁴⁾/∂h⁽³⁾) × (∂J⁽⁴⁾/∂h⁽⁴⁾)
+$$\frac{\partial J^{(4)}}{\partial h^{(1)}} = \frac{\partial h^{(2)}}{\partial h^{(1)}} \times \frac{\partial h^{(3)}}{\partial h^{(2)}} \times \frac{\partial h^{(4)}}{\partial h^{(3)}} \times \frac{\partial J^{(4)}}{\partial h^{(4)}}$$
 
+where $h^{(t)}$ is the hidden state at step $t$ and $J^{(t)}$ the loss there.
 Slide 56 asks the question that matters: *what happens if these are small?*
 
 > **Vanishing gradient problem:** when these factors are small, the gradient signal gets
@@ -22,23 +23,30 @@ Slide 56 asks the question that matters: *what happens if these are small?*
 ## The proof sketch
 
 Slides 57–58 make it precise in the linear case. Recall
-h⁽ᵗ⁾ = σ(W_h h⁽ᵗ⁻¹⁾ + W_x x⁽ᵗ⁾ + b₁). If σ were the identity, then
+$h^{(t)} = \sigma(W_h h^{(t-1)} + W_x x^{(t)} + b_1)$, with $W_h$ the recurrent weight
+matrix and $W_x$ the input weight matrix. If $\sigma$ were the identity, then by the chain
+rule
 
-    ∂h⁽ᵗ⁾/∂h⁽ᵗ⁻¹⁾ = diag( σ′(·) ) W_h = I W_h = W_h
+$$\frac{\partial h^{(t)}}{\partial h^{(t-1)}} = \operatorname{diag}\left(\sigma'(\cdot)\right) W_h = I W_h = W_h$$
 
-exactly. So the gradient of a loss at step *i* with respect to a hidden state at an earlier
-step *j*, with ℓ = *i* − *j*, carries a factor of **W_h^ℓ**:
+exactly. So the gradient of a loss at step $i$ with respect to a hidden state at an earlier
+step $j$, writing $\ell = i - j$ for the distance between them, carries a factor of
+$W_h^{\ell}$:
 
-    ∂J⁽ⁱ⁾(θ)/∂h⁽ʲ⁾ = ( ∂J⁽ⁱ⁾(θ)/∂h⁽ⁱ⁾ ) · W_h^ℓ
+$$\frac{\partial J^{(i)}(\theta)}{\partial h^{(j)}} = \frac{\partial J^{(i)}(\theta)}{\partial h^{(i)}} \prod_{j < t \le i} \frac{\partial h^{(t)}}{\partial h^{(t-1)}} = \frac{\partial J^{(i)}(\theta)}{\partial h^{(i)}} W_h^{\ell}$$
 
-What is wrong with W_h^ℓ? Write it in the eigenvector basis of W_h. If all eigenvalues are
-less than 1 — a **sufficient but not necessary** condition, as the slide notes —
+What is wrong with $W_h^{\ell}$? Write it in the eigenvector basis of $W_h$, with
+eigenvalues $\lambda_1, \dots, \lambda_n$ and eigenvectors $q_1, \dots, q_n$. If all
+eigenvalues are less than 1 — a **sufficient but not necessary** condition, as the slide
+notes —
 
-    ( ∂J⁽ⁱ⁾(θ)/∂h⁽ⁱ⁾ ) W_h^ℓ = Σ_{i=1..n} cᵢ λᵢ^ℓ qᵢ ≈ 0   for large ℓ
+$$\frac{\partial J^{(i)}(\theta)}{\partial h^{(i)}} W_h^{\ell} = \sum_{i=1}^{n} c_i \lambda_i^{\ell} q_i \approx 0 \quad \text{for large } \ell$$
 
-because λᵢ^ℓ → 0. For nonlinear activations the argument is essentially the same, with the
-condition λᵢ < γ for some γ depending on dimensionality and σ. Source: **Pascanu et al.
-(2013)**, "On the difficulty of training recurrent neural networks".
+because $\lambda_i^{\ell} \to 0$ (the $c_i$ are the coefficients of the upstream gradient in
+that basis; the slide reuses $i$ as the summation index). For nonlinear activations the
+argument is essentially the same, with the condition $\lambda_i < \gamma$ for some $\gamma$
+depending on dimensionality and $\sigma$. Source: **Pascanu et al. (2013)**, "On the
+difficulty of training recurrent neural networks".
 
 Manning's version in lecture 6 (≈13:19) is the compact statement: either all eigenvalues are
 below one and the gradient shrinks as you go further back, or some are above one and it
@@ -81,20 +89,24 @@ it feels like" (≈17:13).
 ## Exploding gradients, and clipping
 
 The mirror image (lecture 5, slides 61–62), and by comparison an easy problem. If the
-gradient becomes too large, the SGD step θ^new = θ^old − α ∇J(θ) becomes too large, and you
-land in a weird, bad, high-loss part of parameter space. Manning's line for it: *"You think
-you've found a hill to climb, but suddenly you're in Iowa."* Worst case you get **Inf** or
-**NaN** in the network and have to restart from an earlier checkpoint.
+gradient becomes too large, the SGD step
+$\theta^{\text{new}} = \theta^{\text{old}} - \alpha \nabla_{\theta} J(\theta)$ becomes too
+large, and you land in a weird, bad, high-loss part of parameter space. Manning's line for
+it: *"You think you've found a hill to climb, but suddenly you're in Iowa."* Worst case you
+get **Inf** or **NaN** in the network and have to restart from an earlier checkpoint.
 
 **Gradient clipping** is the fix: if the norm of the gradient exceeds a threshold, scale it
-down before applying the update.
+down before applying the update. Slide 62's pseudo-code, with $E$ the error and $\hat{g}$ the
+gradient about to be applied:
 
-```
-ĝ ← ∂E/∂θ
-if ‖ĝ‖ ≥ threshold then
-    ĝ ← (threshold / ‖ĝ‖) ĝ
-end if
-```
+$$
+\begin{aligned}
+& \hat{g} \leftarrow \frac{\partial E}{\partial \theta} \\
+& \textbf{if } \lVert \hat{g} \rVert \ge \text{threshold} \textbf{ then} \\
+& \qquad \hat{g} \leftarrow \frac{\text{threshold}}{\lVert \hat{g} \rVert} \hat{g} \\
+& \textbf{end if}
+\end{aligned}
+$$
 
 The intuition is *same direction, smaller step*. Thresholds are typically around 5, 10 or 20
 for the gradient norm (lecture 6, ≈19:33). Manning is candid that this "isn't high-falutin
@@ -107,12 +119,13 @@ do it is one of the lecture's four named takeaways (lecture 6, slide 56). See
 Slide 63 states what has to change:
 
 > The main problem is that *it's too difficult for the RNN to learn to preserve information
-> over many timesteps*. In a vanilla RNN, the hidden state is constantly being **rewritten**:
-> h⁽ᵗ⁾ = σ( W_h h⁽ᵗ⁻¹⁾ + W_x x⁽ᵗ⁾ + b )
+> over many timesteps*. In a vanilla RNN, the hidden state is constantly being **rewritten**.
+
+$$h^{(t)} = \sigma\left(W_h h^{(t-1)} + W_x x^{(t)} + b\right)$$
 
 Manning expands on this in lecture 6 (≈20:20): you take the previous hidden vector, multiply
 it by a matrix that changes it entirely, and add in the input. If what you want is "there is
-useful stuff in h⁽ᵗ⁻¹⁾, please keep it around for a while", then learning weights that mostly
+useful stuff in $h^{(t-1)}$, please keep it around for a while", then learning weights that mostly
 preserve what was there is not an obvious thing for gradient descent to find.
 
 Two families of fix are named:
@@ -124,7 +137,9 @@ Two families of fix are named:
 ## Why the LSTM fixes it
 
 The short version, spelled out under [LSTM](lstm.md): the cell state is updated by
-c⁽ᵗ⁾ = f⁽ᵗ⁾ ⊙ c⁽ᵗ⁻¹⁾ + i⁽ᵗ⁾ ⊙ c̃⁽ᵗ⁾ — **additively**. In a simple RNN the next hidden state
+$c^{(t)} = f^{(t)} \odot c^{(t-1)} + i^{(t)} \odot \tilde{c}^{(t)}$ — **additively**, where
+$f^{(t)}$ is the forget gate, $i^{(t)}$ the input gate and $\tilde{c}^{(t)}$ the candidate
+new cell content. In a simple RNN the next hidden state
 comes out of multiplicative operations, which makes preserving information hard; **the plus
 sign is the secret** (lecture 6, slide 24 and ≈41:19). Set the forget gate to 1 and the input
 gate to 0 for some cell dimension and that dimension is preserved indefinitely. The result:
@@ -149,8 +164,8 @@ The fix is the same idea applied vertically: **add more direct connections** so 
 can flow.
 
 - **Residual connections / "ResNet"**, also called **skip-connections** (He et al. 2015). A
-  block computes ℱ(x), and an identity connection carries x around it to be added back:
-  ℱ(x) + x. The identity connection **preserves information by default**, and this is what
+  block computes $\mathcal{F}(x)$, and an identity connection carries $x$ around it to be
+  added back: $\mathcal{F}(x) + x$. The identity connection **preserves information by default**, and this is what
   made deep computer vision models much more learnable than plain networks (≈46:44).
 - **Dense connections / "DenseNet"** (Huang et al. 2017). Connect each layer directly to all
   later layers — every layer takes all preceding feature maps as input.
@@ -176,7 +191,7 @@ eigenvalue argument bites so hard (≈44:25).
   problem.
 - [Backpropagation](backpropagation.md) — the chain-rule machinery being unrolled here.
 - [Gradient descent](gradient-descent.md) — the update step that clipping modifies.
-- [Activation functions](activation-functions.md) — the σ whose derivative appears in every
-  Jacobian factor.
+- [Activation functions](activation-functions.md) — the $\sigma$ whose derivative appears in
+  every Jacobian factor.
 - [Lecture 5 — Recurrent Neural Networks](05-recurrent-neural-networks.md)
 - [Lecture 6 — Sequence to Sequence Models](06-sequence-to-sequence-models.md)

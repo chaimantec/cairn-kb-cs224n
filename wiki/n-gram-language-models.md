@@ -19,16 +19,16 @@ Shannon's 1951 paper does use "digram"; the idea died there and everyone says "b
 
 ## The Markov assumption and counting
 
-Two steps (lecture 5, slide 18). First assume x⁽ᵗ⁺¹⁾ depends only on the preceding *n* − 1
-words — throw the rest of the context away:
+Two steps (lecture 5, slide 18). First assume the next word $x^{(t+1)}$ depends only on the
+preceding $n - 1$ words — throw the rest of the context away:
 
-    P( x⁽ᵗ⁺¹⁾ | x⁽ᵗ⁾, …, x⁽¹⁾ ) ≈ P( x⁽ᵗ⁺¹⁾ | x⁽ᵗ⁾, …, x⁽ᵗ⁻ⁿ⁺²⁾ )
+$$P\left(x^{(t+1)} \mid x^{(t)}, \dots, x^{(1)}\right) \approx P\left(x^{(t+1)} \mid x^{(t)}, \dots, x^{(t-n+2)}\right)$$
 
 Then, by the definition of conditional probability, that equals the probability of an
-*n*-gram over the probability of an (*n*−1)-gram — and both are estimated by counting in a
+$n$-gram over the probability of an $(n-1)$-gram — and both are estimated by counting in a
 large corpus:
 
-    ≈ count( x⁽ᵗ⁺¹⁾, x⁽ᵗ⁾, …, x⁽ᵗ⁻ⁿ⁺²⁾ ) / count( x⁽ᵗ⁾, …, x⁽ᵗ⁻ⁿ⁺²⁾ )
+$$\approx \frac{\operatorname{count}\left(x^{(t+1)}, x^{(t)}, \dots, x^{(t-n+2)}\right)}{\operatorname{count}\left(x^{(t)}, \dots, x^{(t-n+2)}\right)}$$
 
 There is no training. You count, and you divide (≈38:45).
 
@@ -38,8 +38,10 @@ Slide 19. Learning a 4-gram model on *as the proctor started the clock, the stud
 their ___*, you discard everything but "students opened their". If in the corpus:
 
 - "students opened their" occurred 1000 times
-- "students opened their **books**" occurred 400 → P(books | …) = **0.4**
-- "students opened their **exams**" occurred 100 → P(exams | …) = **0.1**
+- "students opened their **books**" occurred 400, so
+  $P(\text{books} \mid \text{students opened their}) = 400/1000 = \mathbf{0.4}$
+- "students opened their **exams**" occurred 100, so
+  $P(\text{exams} \mid \text{students opened their}) = 100/1000 = \mathbf{0.1}$
 
 The slide's own annotation is the objection: *should we have discarded the "proctor"
 context?* Knowing a proctor started a clock makes *exams* much more likely, but the model
@@ -51,14 +53,15 @@ helpful words to look at — but it is clearly primitive.
 
 Two distinct failures (slide 20), both raised by students in the lecture (≈33:23–34:10):
 
-**Sparsity problem 1 — zero numerator.** The continuation *w* never occurred after that
-context, so P(w | …) = 0. Manning stresses why zero is especially bad in probability: once
+**Sparsity problem 1 — zero numerator.** The continuation $w$ never occurred after that
+context, so $P(w \mid \cdot) = 0$. Manning stresses why zero is especially bad in probability: once
 you have a zero, any computation involving it instantly goes to zero (≈34:56). And unseen
 continuations are common — *students opened their accounts*, or, if it is a biology
 dissection class, *students opened their frogs*.
 
-*Partial fix:* **smoothing**. Add a small δ to every count — e.g. 0.25, so things never seen
-get a count of 0.25 and things seen once get 1.25, and nothing is impossible (≈35:41).
+*Partial fix:* **smoothing**. Add a small $\delta$ to every count — e.g. $\delta = 0.25$, so
+things never seen get a count of 0.25 and things seen once get 1.25, and nothing is
+impossible (≈35:41).
 
 **Sparsity problem 2 — zero denominator.** The context itself never occurred, so no
 distribution can be computed at all.
@@ -77,7 +80,7 @@ The two pressures conflict (≈37:14). Longer context gives a better estimate in
 but makes both sparsity and storage worse — sparsity so much worse that you almost
 necessarily hit zeros. In practice things maxed out at **5**, with occasional 6- and 7-grams.
 Google's famous *n*-gram release from the 2000s, built on a **trillion-word** web corpus,
-gave counts up to *n* = 5 and stopped there (≈38:00).
+gave counts up to $n = 5$ and stopped there (≈38:00).
 
 Compare this with the ~7-token effective limit of a simple RNN, which lecture 6 uses to
 argue that vanilla RNNs did not actually buy much: "in practice, because of vanishing
@@ -103,7 +106,7 @@ The full sample (slide 26):
 Manning's assessment (≈41:54): **surprisingly grammatical** — "the bank intervened just
 after it considered and rejected an IMF demand" makes sense as a piece of text — but
 completely **incoherent**. The conclusion on the slide: you need to consider more than three
-words at a time, but increasing *n* worsens sparsity and model size.
+words at a time, but increasing $n$ worsens sparsity and model size.
 
 ## "Scale will solve everything" is an old story
 

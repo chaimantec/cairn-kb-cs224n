@@ -19,10 +19,13 @@ See [language modeling](language-modeling.md).
 
 ## The definition
 
-    perplexity = ∏_{t=1..T} ( 1 / P_LM( x⁽ᵗ⁺¹⁾ | x⁽ᵗ⁾, …, x⁽¹⁾ ) )^{1/T}
+For a text of $T$ words $x^{(1)}, \dots, x^{(T)}$ and a language model $P_{\text{LM}}$
+(slide 49):
+
+$$\text{perplexity} = \prod_{t=1}^{T} \left( \frac{1}{P_{\text{LM}}\left(x^{(t+1)} \mid x^{(t)}, \dots, x^{(1)}\right)} \right)^{1/T}$$
 
 Take the model's probability at each position, **invert** it, take the product across all
-positions, and take the geometric average — the 1/T exponent normalizes by number of words,
+positions, and take the geometric average — the $1/T$ exponent normalizes by number of words,
 so texts of different lengths are comparable. Manning's inversion example: a probability of
 0.002 becomes 500 (lecture 6, ≈3:12).
 
@@ -31,14 +34,20 @@ so texts of different lengths are comparable. Manning's inversion example: a pro
 ## It is the exponential of cross-entropy
 
 The identity on slide 49 is the one to remember, because the course otherwise works in
-negative log likelihoods:
+negative log likelihoods. Writing $\hat{y}^{(t)}$ for the model's predicted distribution at
+step $t$, so that $\hat{y}^{(t)}_{x_{t+1}}$ is the probability it gave the word that actually
+came next:
 
-    perplexity = ∏ₜ ( 1 / ŷ⁽ᵗ⁾_{x_{t+1}} )^{1/T}
-               = exp( (1/T) Σₜ − log ŷ⁽ᵗ⁾_{x_{t+1}} )
-               = exp( J(θ) )
+$$
+\begin{aligned}
+\text{perplexity} &= \prod_{t=1}^{T} \left( \frac{1}{\hat{y}^{(t)}_{x_{t+1}}} \right)^{1/T} \\
+&= \exp\left( \frac{1}{T} \sum_{t=1}^{T} -\log \hat{y}^{(t)}_{x_{t+1}} \right) \\
+&= \exp\left( J(\theta) \right)
+\end{aligned}
+$$
 
 So if you already have a per-word negative log likelihood, just exponentiate it (lecture 6,
-≈4:02). J(θ) here is exactly the training loss of an
+≈4:02). $J(\theta)$ here is exactly the training loss of an
 [RNN language model](recurrent-neural-networks.md). See
 [softmax, the logistic function, and cross-entropy](softmax-and-cross-entropy.md).
 

@@ -41,8 +41,15 @@ should not.
 ## The objective function
 
 Written as a likelihood, you get a product over every position in the text and
-every word in the window at that position. Three conventional adjustments turn it
-into the objective actually minimized (lecture 1, ≈52:03–54:23):
+every word in the window at that position. Writing $T$ for the number of positions
+in the corpus, $m$ for the half-width of the window, $w_t$ for the center word at
+position $t$, and $\theta$ for every parameter of the model stacked into one long
+vector, that is (slide 28)
+
+$$L(\theta) = \prod_{t=1}^{T} \prod_{\substack{-m \le j \le m \\ j \ne 0}} P(w_{t+j} \mid w_t ; \theta)$$
+
+Three conventional adjustments turn it into the objective actually minimized
+(lecture 1, ≈52:03–54:23):
 
 1. **A minus sign.** For entirely arbitrary historical reasons everyone minimizes
    rather than maximizes, which is why the algorithms are called gradient
@@ -52,15 +59,22 @@ into the objective actually minimized (lecture 1, ≈52:03–54:23):
 3. **Division by the number of words.** Otherwise the value grows with corpus
    size.
 
-The result is the **average negative log likelihood**. Minimizing it maximizes the
-probability of the words that actually appear in context.
+The result is the **average negative log likelihood** (slide 28):
+
+$$J(\theta) = -\frac{1}{T} \log L(\theta) = -\frac{1}{T} \sum_{t=1}^{T} \sum_{\substack{-m \le j \le m \\ j \ne 0}} \log P(w_{t+j} \mid w_t ; \theta)$$
+
+Minimizing it maximizes the probability of the words that actually appear in
+context — the slide's own gloss is "minimizing objective function ⟺ maximizing
+predictive accuracy".
 
 The probability itself is defined entirely in terms of the word vectors — there
-are no other parameters in the model (lecture 1, ≈55:11):
+are no other parameters in the model (lecture 1, ≈55:11; slide 29). For a center
+word $c$ and an outside word $o$,
 
-> `P(o | c) = exp(uₒᵀ v_c) / Σ_w exp(u_wᵀ v_c)`
+$$P(o \mid c) = \frac{\exp(u_o^{\top} v_c)}{\sum_{w \in V} \exp(u_w^{\top} v_c)}$$
 
-This is a **softmax** over the dot products; see
+where $v_c$ is the center vector of $c$, $u_o$ the outside vector of $o$, and $V$
+the vocabulary. This is a **softmax** over the dot products; see
 [softmax and cross-entropy](softmax-and-cross-entropy.md). A high dot product
 means high co-occurrence probability. Manning flags that this notion of
 "similarity" is a strange one (lecture 1, ≈56:44): it has to make *hotel* and
@@ -69,8 +83,8 @@ ends up similar to essentially every noun.
 
 ## Two vectors per word
 
-Each word gets **two** vectors: `v` for when it is the center word, `u` for when
-it is an outside word. The reason is purely mathematical convenience (lecture 1,
+Each word $w$ gets **two** vectors: $v_w$ for when it is the center word, $u_w$ for
+when it is an outside word. The reason is purely mathematical convenience (lecture 1,
 ≈1:02:11; explained fully in lecture 2, ≈25:49). If a word used one vector for
 both roles, then while summing over every candidate outside word for the softmax
 denominator you would eventually reach the center word itself, producing a
@@ -84,9 +98,11 @@ people estimate the two separately and **average** them at the end (lecture 2,
 every pair in both configurations: *octopus* as center with *legs* outside, then a
 few steps later *legs* as center with *octopus* outside (lecture 2, ≈22:42).
 
-The parameter count is just the vectors. With a 400,000-word vocabulary and
-100-dimensional vectors: 400,000 × 2 × 100 = **80 million parameters** (lecture 1,
-≈1:02:56).
+The parameter count is just the vectors. With $d$-dimensional vectors and a
+vocabulary of $V$ words, $\theta$ is the stacked column vector of all of them, so
+$\theta \in \mathbb{R}^{2dV}$ (slide 31). With a 400,000-word vocabulary and
+100-dimensional vectors that is $400{,}000 \times 2 \times 100 =$ **80 million
+parameters** (lecture 1, ≈1:02:56).
 
 ## It is a bag of words model
 
@@ -110,7 +126,7 @@ in practice with stochastic gradient descent over mini-batches. See
 The gradient with respect to the center vector, derived by hand in lecture 1
 (≈1:05:16–1:18:42), comes out as
 
-> `∂/∂v_c log P(o | c) = u_o − Σ_x P(x | c) · u_x`
+$$\frac{\partial}{\partial v_c} \log P(o \mid c) = u_o - \sum_{x \in V} P(x \mid c)\, u_x$$
 
 which Manning reads as **observed minus expected**: the outside vector that
 actually occurred, minus the average outside vector the model currently predicts,
@@ -150,12 +166,18 @@ its context window) from "noise" pairs (the center word with a random word) — 
 ≈28:51, **slides 11–12**. The softmax is replaced by the **logistic function**, which
 maps any real number to a probability in (0, 1).
 
-**Slide 12** states the objective in the course's notation, for *K* negative samples:
+**Slide 12** states the objective in the course's notation, for $K$ negative samples:
 
-> `J_neg-sample(u_o, v_c, U) = − log σ(u_oᵀ v_c) − Σ_{k ∈ K sampled indices} log σ(−u_kᵀ v_c)`
+$$J_{\text{neg-sample}}(u_o, v_c, U) = -\log \sigma(u_o^{\top} v_c) - \sum_{k \in \{K \text{ sampled indices}\}} \log \sigma(-u_k^{\top} v_c)$$
 
-annotated on the slide as "**sigmoid rather than softmax**". The first term drives the
-real outside word's probability up; the sum drives the sampled words' probabilities down.
+where $u_k$ is the outside vector of the $k$-th sampled word and $\sigma$ is the
+logistic function, also given on slide 12 as
+
+$$\sigma(x) = \frac{1}{1 + e^{-x}}$$
+
+with the aside "(we'll become good friends soon)". The slide annotates it "**sigmoid rather
+than softmax**". The first term drives the real outside word's probability up; the
+sum drives the sampled words' probabilities down.
 
 Manning points out that "sigmoid" merely means s-shaped, and there are infinitely
 many s-shaped functions — the one actually used is the logistic function (lecture
@@ -175,19 +197,25 @@ sampling but not all the way — all the way would correspond to an exponent of
 zero.
 
 Typically only five or ten negative samples are used per positive example
-(≈31:10). Slide 12 writes the sampling distribution as **P(w) = U(w)^{3/4} / Z**, where
-U(w) is the unigram distribution and Z the normalizing constant.
+(≈31:10). Slide 12 writes the sampling distribution as
+
+$$P(w) = \frac{U(w)^{3/4}}{Z}$$
+
+where $U(w)$ is the unigram distribution and $Z$ the normalizing constant that makes
+the result sum to one.
 
 ### Why this makes the gradients sparse
 
 An aside on **slides 13–14** that is easy to skip but explains why the method is fast in
-practice. In any one window there are at most **2m + 1** words plus **2km** negative
-samples, so the gradient ∇_θ J_t(θ) — a vector in ℝ^{2dV} — is **almost entirely zero**,
-with non-zero blocks only for the handful of words actually present.
+practice. In any one window there are at most $2m + 1$ words plus $2km$ negative samples,
+where $m$ is the window half-width and $k$ the number of negatives per word, so the
+gradient of that window's loss, $\nabla_{\theta} J_t(\theta) \in \mathbb{R}^{2dV}$, is
+**almost entirely zero** — non-zero blocks only for the handful of words actually
+present.
 
 The engineering consequence (slide 14): you should only update the word vectors that
 actually appear, which needs either sparse matrix update operations touching just certain
-**rows** of the embedding matrices U and V, or a hash of word vectors. Slide 14 flags
+**rows** of the embedding matrices $U$ and $V$, or a hash of word vectors. Slide 14 flags
 "rows not columns in actual DL packages!" and notes that with millions of word vectors
 and distributed training, avoiding gigantic update messages matters.
 
@@ -196,7 +224,7 @@ and distributed training, avoiding gigantic update messages matters.
 See [lecture 2](02-word-vectors-and-language-models.md) for the notebook demo, and
 [evaluating word vectors](evaluating-word-vectors.md) for how this is measured. In
 brief: nearest neighbours are sensible (*croissant* → brioche, baguette,
-focaccia), and the vectors support **analogies** — `king − man + woman ≈ queen` —
+focaccia), and the vectors support **analogies** — $\text{king} - \text{man} + \text{woman} \approx \text{queen}$ —
 because meaning differences show up as directions in the space, which was the most
 celebrated property discovered about them (lecture 2, ≈15:38). Manning is candid
 that essentially nobody uses these vectors directly anymore (≈17:58), but the

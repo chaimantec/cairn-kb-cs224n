@@ -7,21 +7,25 @@ either a way of building a language model or a use of one.
 
 ## Two definitions, and why they are the same
 
-**As next-word prediction** (lecture 5, slide 13). Given a sequence of words x⁽¹⁾, …, x⁽ᵗ⁾,
-compute the probability distribution over the next word:
+**As next-word prediction** (lecture 5, slide 13). Given a sequence of words
+$x^{(1)}, \dots, x^{(t)}$, compute the probability distribution over the next word:
 
-    P( x⁽ᵗ⁺¹⁾ | x⁽ᵗ⁾, …, x⁽¹⁾ )
+$$P\left(x^{(t+1)} \mid x^{(t)}, \dots, x^{(1)}\right)$$
 
-where x⁽ᵗ⁺¹⁾ can be any word in the vocabulary V, and the probabilities over V sum to one.
-A system that does this is a **language model**. The canonical example throughout the course
-is *the students opened their ___*, with *books*, *laptops*, *exams* and *minds* as
+where $x^{(t+1)}$ can be any word in the vocabulary $V$, and the probabilities over $V$ sum
+to one. A system that does this is a **language model**. The canonical example throughout the
+course is *the students opened their ___*, with *books*, *laptops*, *exams* and *minds* as
 candidate continuations.
 
 **As a probability over text** (lecture 5, slide 14). A language model is a system that
-assigns a probability to a piece of text:
+assigns a probability to a piece of text $x^{(1)}, \dots, x^{(T)}$:
 
-    P( x⁽¹⁾, …, x⁽ᵀ⁾ ) = P(x⁽¹⁾) · P(x⁽²⁾|x⁽¹⁾) ⋯ P(x⁽ᵀ⁾|x⁽ᵀ⁻¹⁾,…,x⁽¹⁾)
-                        = ∏ₜ P( x⁽ᵗ⁾ | x⁽ᵗ⁻¹⁾, …, x⁽¹⁾ )
+$$
+\begin{aligned}
+P\left(x^{(1)}, \dots, x^{(T)}\right) &= P\left(x^{(1)}\right) \cdot P\left(x^{(2)} \mid x^{(1)}\right) \cdots P\left(x^{(T)} \mid x^{(T-1)}, \dots, x^{(1)}\right) \\
+&= \prod_{t=1}^{T} P\left(x^{(t)} \mid x^{(t-1)}, \dots, x^{(1)}\right)
+\end{aligned}
+$$
 
 The second definition follows from the first by the **chain rule of probability**: each
 factor in the decomposition is exactly what definition 1 provides (lecture 5, ≈26:23). This
@@ -59,7 +63,8 @@ The old answer is not merely historical. [Statistical machine
 translation](machine-translation.md) factored translation into a translation model and a
 language model precisely so that the language model could carry most of the work — the
 translation model could stay simple and know nothing about target-language word order or
-grammar, because P(y) handled fluency (lecture 6, ≈1:00:41).
+grammar, because the language model $P(y)$ over target sentences $y$ handled fluency
+(lecture 6, ≈1:00:41).
 
 ## Ways to build one
 

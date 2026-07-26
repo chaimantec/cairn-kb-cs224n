@@ -39,10 +39,10 @@ too early."
 
 ## Hidden state and cell state
 
-Slide 21. On each step there are now **two** vectors, both of length *n*:
+Slide 21. On each step there are now **two** vectors, both of length $n$:
 
-- the **hidden state** h⁽ᵗ⁾, as before, and
-- the **cell state** c⁽ᵗ⁾, which stores long-term information.
+- the **hidden state** $h^{(t)}$, as before, and
+- the **cell state** $c^{(t)}$, which stores long-term information.
 
 The LSTM can **read**, **erase** and **write** the cell — the slide's phrasing is that the
 cell "becomes conceptually rather like RAM in a computer".
@@ -54,29 +54,42 @@ are **dynamic** — computed from the current context, not fixed parameters.
 
 ## The equations
 
-Slide 22. Each gate is a sigmoid of the same shape of expression a vanilla RNN step uses;
-the sigmoid is what forces values into [0, 1].
+Slide 22. Given a sequence of inputs $x^{(t)}$, each gate is a sigmoid of the same shape of
+expression a vanilla RNN step uses; the sigmoid is what forces values into $[0, 1]$. The
+three gates:
 
-    f⁽ᵗ⁾ = σ( W_f h⁽ᵗ⁻¹⁾ + U_f x⁽ᵗ⁾ + b_f )     forget gate:  what to keep from the last cell state
-    i⁽ᵗ⁾ = σ( W_i h⁽ᵗ⁻¹⁾ + U_i x⁽ᵗ⁾ + b_i )     input gate:   what of the new content to write
-    o⁽ᵗ⁾ = σ( W_o h⁽ᵗ⁻¹⁾ + U_o x⁽ᵗ⁾ + b_o )     output gate:  what of the cell to expose to h
+$$
+\begin{aligned}
+f^{(t)} &= \sigma\left(W_f h^{(t-1)} + U_f x^{(t)} + b_f\right) && \text{forget gate: what to keep from the last cell state} \\
+i^{(t)} &= \sigma\left(W_i h^{(t-1)} + U_i x^{(t)} + b_i\right) && \text{input gate: what of the new content to write} \\
+o^{(t)} &= \sigma\left(W_o h^{(t-1)} + U_o x^{(t)} + b_o\right) && \text{output gate: what of the cell to expose to } h
+\end{aligned}
+$$
 
-    c̃⁽ᵗ⁾ = tanh( W_c h⁽ᵗ⁻¹⁾ + U_c x⁽ᵗ⁾ + b_c )  candidate new cell content
-    c⁽ᵗ⁾ = f⁽ᵗ⁾ ⊙ c⁽ᵗ⁻¹⁾ + i⁽ᵗ⁾ ⊙ c̃⁽ᵗ⁾          erase, then write
-    h⁽ᵗ⁾ = o⁽ᵗ⁾ ⊙ tanh c⁽ᵗ⁾                     read
+and the content they act on:
 
-⊙ is the **element-wise (Hadamard) product** — that is how a gate is applied. The candidate
-content c̃ uses tanh rather than a sigmoid because it is content, not a gate.
+$$
+\begin{aligned}
+\tilde{c}^{(t)} &= \tanh\left(W_c h^{(t-1)} + U_c x^{(t)} + b_c\right) && \text{candidate new cell content} \\
+c^{(t)} &= f^{(t)} \odot c^{(t-1)} + i^{(t)} \odot \tilde{c}^{(t)} && \text{erase, then write} \\
+h^{(t)} &= o^{(t)} \odot \tanh c^{(t)} && \text{read}
+\end{aligned}
+$$
+
+Here $W_\bullet$ and $U_\bullet$ are the recurrent and input weight matrices for each gate,
+$b_\bullet$ their biases, and $\odot$ is the **element-wise (Hadamard) product** — that is
+how a gate is applied. The candidate content $\tilde{c}$ uses $\tanh$ rather than a sigmoid
+because it is content, not a gate.
 
 Two remarks from the lecture:
 
 - **The forget gate is misnamed.** It computes how much you *remember*, so "remember gate"
   would make more sense (≈29:32).
-- **All four of f, i, o and c̃ have the same shape**, so in practice you stack the weight
-  matrices into one big matrix and compute all four in a single multiply (≈34:16).
+- **All four of $f$, $i$, $o$ and $\tilde{c}$ have the same shape**, so in practice you stack
+  the weight matrices into one big matrix and compute all four in a single multiply (≈34:16).
 
-The output layer on top is unchanged from a vanilla RNN-LM: ŷ = softmax(Uh + b₂) over the
-vocabulary (slide 24). See
+The output layer on top is unchanged from a vanilla RNN-LM:
+$\hat{y} = \operatorname{softmax}(U h + b_2)$ over the vocabulary (slide 24). See
 [softmax, the logistic function, and cross-entropy](softmax-and-cross-entropy.md) and
 [activation functions](activation-functions.md).
 
@@ -97,10 +110,10 @@ it may matter for future words — without it interfering with the current predi
 
 So the **cell is the memory**, and the **output gate controls how much of it is exposed** for
 generating the current word. When a student asks whether the output gate is redundant given
-the forget and input gates, that is the answer: you want to keep information in c⁽ᵗ⁾ for the
-future while masking it from the current output (≈35:02–35:49).
+the forget and input gates, that is the answer: you want to keep information in $c^{(t)}$ for
+the future while masking it from the current output (≈35:02–35:49).
 
-Manning also admits the part he finds hardest to justify: why there is a tanh on the cell
+Manning also admits the part he finds hardest to justify: why there is a $\tanh$ on the cell
 state in the h update. The argument he offers is that the cell can hold unbounded real
 numbers while the hidden state wants a bounded range — "I guess they did it that way, it
 seemed to work well" (≈35:49).
@@ -115,10 +128,11 @@ probabilistically to different extents. The hope is that it learns cues: seeing 
 
 Slides 23–24 use the well-known diagrams from **Chris Olah**'s "Understanding LSTMs" post
 (colah.github.io) — Manning notes Olah now works at Anthropic (≈37:23). The cell state runs
-straight across the top of the cell, crossed first by a ⊗ (forget) and then a ⊕ (write); the
-gates are computed by yellow sigmoid layers below it from h⁽ᵗ⁻¹⁾ and x⁽ᵗ⁾.
+straight across the top of the cell, crossed first by a $\otimes$ (forget) and then a
+$\oplus$ (write); the gates are computed by yellow sigmoid layers below it from $h^{(t-1)}$
+and $x^{(t)}$.
 
-Slide 24 annotates every part and adds the callout that matters: pointing at the ⊕,
+Slide 24 annotates every part and adds the callout that matters: pointing at the $\oplus$,
 **"The + sign is the secret!"**
 
 ## Why it fixes vanishing gradients
@@ -134,7 +148,7 @@ additive.
 
 The concrete consequence on slide 25: **set the forget gate to 1 for a cell dimension and the
 input gate to 0, and the information in that dimension is preserved indefinitely.** A vanilla
-RNN would have to learn a recurrent weight matrix W_h that happens to preserve information,
+RNN would have to learn a recurrent weight matrix $W_h$ that happens to preserve information,
 which is much harder.
 
 **In practice you get about 100 timesteps rather than about 7.**

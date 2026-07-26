@@ -27,10 +27,17 @@ directions (lecture 2, ≈3:58).
 
 ## The update rule
 
-> `θ_new = θ_old − α ∇J(θ)`
+Writing $\theta$ for the vector of all parameters and $J(\theta)$ for the cost function,
+one step of gradient descent is (lecture 1, slide 33)
 
-α is the **step size** or **learning rate**, and in practice it is a very small
-number — Manning quotes 10⁻³, 10⁻⁴, or even 10⁻⁵ (lecture 2, ≈4:46).
+$$\theta^{\text{new}} = \theta^{\text{old}} - \alpha \nabla_{\theta} J(\theta)$$
+
+or, one parameter at a time (slide 33),
+
+$$\theta_j^{\text{new}} = \theta_j^{\text{old}} - \alpha \frac{\partial}{\partial \theta_j^{\text{old}}} J(\theta)$$
+
+$\alpha$ is the **step size** or **learning rate**, and in practice it is a very small
+number — Manning quotes $10^{-3}$, $10^{-4}$, or even $10^{-5}$ (lecture 2, ≈4:46).
 
 The learning rate has to be small for a concrete reason (≈5:33): the gradient tells
 you the downhill direction *at the point where you computed it*, and that direction
@@ -70,14 +77,16 @@ values create symmetries that the gradient cannot break, since every unit receiv
 the same updates forever. So random initialization is not a nicety, it is what makes
 learning possible.
 
-Lecture 5 adds the scale rule that goes with this (slide 11): weights should be
-Uniform(−*r*, *r*) with *r* chosen so that numbers get neither too big nor too small under
-repeated matrix multiplication, hidden-layer biases 0, and output biases at the optimal value
-if the weights were 0. **Xavier initialization** picks the variance from the layer sizes:
+Lecture 5 adds the scale rule that goes with this (slide 11): weights should be drawn
+$\sim \mathrm{Uniform}(-r, r)$ with $r$ chosen so that numbers get neither too big nor too
+small under repeated matrix multiplication, hidden-layer biases 0, and output biases at the
+optimal value if the weights were 0. **Xavier initialization** picks the variance from the
+layer sizes:
 
-    Var(W_i) = 2 / (n_in + n_out)
+$$\mathrm{Var}(W_i) = \frac{2}{n_{\text{in}} + n_{\text{out}}}$$
 
-where *n_in* is the fan-in (previous layer size) and *n_out* the fan-out (next layer size).
+where $n_{\text{in}}$ is the fan-in (previous layer size) and $n_{\text{out}}$ the fan-out
+(next layer size).
 Manning notes this used to be treated as quite important and that the need for it largely
 goes away later, once **layer normalization** is used — though you must still initialize to
 *something* (lecture 5, ≈20:57).
@@ -86,7 +95,7 @@ goes away later, once **layer normalization** is used — though you must still 
 
 Lecture 5's slide 12. Plain SGD "will work just fine" for almost any problem if you fiddle
 enough — but fiddling means hand-tuning the learning rate, often with a schedule that starts
-higher and halves every *k* epochs, plus various other complications (≈22:29).
+higher and halves every $k$ epochs, plus various other complications (≈22:29).
 
 **Adaptive optimizers** avoid that. For each parameter they accumulate a measure of what the
 gradient has been in the past, and use it to scale that parameter's step — so you get
@@ -112,14 +121,18 @@ have properties tuned for that (≈23:59). Beyond this there is a whole family o
 ## Gradient clipping
 
 The fix for **exploding gradients** (lecture 5, slide 62). If the norm of the gradient
-exceeds a threshold, scale it down *before* applying the update:
+exceeds a threshold, scale it down *before* applying the update. The slide's pseudo-code,
+from Pascanu et al. 2013, with $E$ the error and $\hat{g}$ the gradient about to be
+applied:
 
-```
-ĝ ← ∂E/∂θ
-if ‖ĝ‖ ≥ threshold then
-    ĝ ← (threshold / ‖ĝ‖) ĝ
-end if
-```
+$$
+\begin{aligned}
+& \hat{g} \leftarrow \frac{\partial E}{\partial \theta} \\
+& \textbf{if } \lVert \hat{g} \rVert \ge \text{threshold} \textbf{ then} \\
+& \qquad \hat{g} \leftarrow \frac{\text{threshold}}{\lVert \hat{g} \rVert} \hat{g} \\
+& \textbf{end if}
+\end{aligned}
+$$
 
 The intuition is **same direction, smaller step**. Thresholds around 5, 10 or 20 for the
 gradient norm are typical (lecture 6, ≈19:33). Without it, one very large gradient produces
@@ -144,17 +157,21 @@ it relies on are worth listing, because the same moves recur all course:
 
 - The derivative of a **sum** is the sum of the derivatives, so a gradient over a
   big summed objective decomposes into per-term gradients (≈1:08:26).
-- **log of a quotient** splits into log numerator minus log denominator (≈1:09:13).
-- log and exp **cancel** (≈1:10:02).
-- The derivative of `uᵀv` with respect to `v` is `u`. Manning justifies it
-  componentwise: the dot product expands to `u₁v₁ + u₂v₂ + u₃v₃ + …`, so
-  differentiating with respect to `v₁` leaves `u₁` and kills every other term; do
-  that along the whole vector and you get `u` back (≈1:10:49–1:11:34).
+- **log of a quotient** splits into log numerator minus log denominator,
+  $\log(a/b) = \log a - \log b$ (≈1:09:13).
+- log and exp **cancel**: $\log \exp(x) = x$ (≈1:10:02).
+- The derivative of $u^{\top} v$ with respect to $v$ is $u$. Manning justifies it
+  componentwise: the dot product expands to $u_1 v_1 + u_2 v_2 + u_3 v_3 + \cdots$, so
+  differentiating with respect to $v_1$ leaves $u_1$ and kills every other term; do
+  that along the whole vector and you get $u$ back (≈1:10:49–1:11:34).
 - The **chain rule**, applied twice — once for the outer log, once for the exp
   inside the sum (≈1:12:20–1:15:33).
 
-The result for the center vector is `u_o − Σ_x P(x | c) · u_x`, which Manning reads
-as **observed minus expected** (≈1:17:56). It compares the outside vector that
+The result for the center vector $v_c$ is
+
+$$\frac{\partial}{\partial v_c} \log P(o \mid c) = u_o - \sum_{x \in V} P(x \mid c)\, u_x$$
+
+which Manning reads as **observed minus expected** (≈1:17:56). It compares the outside vector that
 actually occurred against the weighted average of what the model predicted. When
 expectation matches observation the derivative is zero and you have reached a
 maximum. He notes this observed-minus-expected form "you see quite a bit in these
@@ -169,11 +186,11 @@ unreliable for the notation in this section — several symbols come through as
 ## Getting the gradients for an arbitrary network
 
 Lectures 1 and 2 derive gradients for one specific objective. Lecture 3 answers the
-general question — how do you compute ∇_θ J(θ) for *any* function — and gives two answers
-that are the same answer (lecture 3, slide 9): **by hand**, using
+general question — how do you compute $\nabla_{\theta} J(\theta)$ for *any* function — and
+gives two answers that are the same answer (lecture 3, slide 9): **by hand**, using
 [matrix calculus](matrix-calculus.md), and **algorithmically**, using
 [backpropagation](backpropagation.md) over a computation graph. One thing worth carrying
-back to this page: in deep learning θ includes the **data representation** itself, so the
+back to this page: in deep learning $\theta$ includes the **data representation** itself, so the
 word vectors are updated by the same rule as everything else.
 
 ## Related pages
