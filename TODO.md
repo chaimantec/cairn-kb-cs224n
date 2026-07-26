@@ -8,7 +8,7 @@ The course has 23 lectures, built incrementally.
 - **Run 4** (complete): no new lectures — converted all mathematics in the wiki to LaTeX.
 - **Run 5** (complete): lectures 7–8.
 - **Run 6** (complete): lectures 9–10.
-- **Run 7** (in progress): lectures 11–12 — Post-training (Archit Sharma) and
+- **Run 7** (complete): lectures 11–12 — Post-training (Archit Sharma) and
   Benchmarking (Yann Dubois).
 - Lectures 13–23 remain deferred; video ids are listed at the bottom.
 
@@ -98,7 +98,23 @@ match the Spring 2024 decks crawled in run 1:
       the illustrative `[gradient descent](gradient-descent.md)` examples inside AGENTS.md)
 
 ## Publish
-- [ ] Commit and push (kbUrl already set — no link_kb.sh needed)
+- [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (3 commits: slides,
+      transcripts, wiki). `kbUrl` was already set on catalog course
+      b102c48c-0c1b-4fc5-be6d-4c6d1e7211d1, so no `link_kb.sh` was needed.
+
+## Notes for the next run
+
+- Lectures 13–23 remain. The Spring 2024 decks for 13–18 are already on disk in
+  `raw/pdfs/` from the run-1 crawl, so no re-crawl is needed; lectures 19–23
+  (multimodal, interpretability, and the three tutorials) have **no deck on the
+  Spring 2024 site** and will need either a Winter-2023-style hunt or a
+  transcript-only build.
+- `slides-cs224n-spr2024-lecture13-speech-bci.pdf` is **62MB** — over GitHub's 50MB
+  warning threshold. It is gitignored like the rest, so this only matters if anyone
+  ever reverses the no-PDF-commits decision.
+- Two lecture-11 and lecture-12 residuals worth revisiting if better captions appear:
+  the benchmark a student names at L11 27:00 (almost certainly ImageNet) and the
+  phrase the captions render as "selfie station" at L12 1:16:58.
 
 ---
 
