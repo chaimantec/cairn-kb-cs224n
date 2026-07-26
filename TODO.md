@@ -7,7 +7,89 @@ The course has 23 lectures, built incrementally.
 - **Run 3** (complete): lectures 5–6.
 - **Run 4** (complete): no new lectures — converted all mathematics in the wiki to LaTeX.
 - **Run 5** (complete): lectures 7–8.
-- Lectures 9–23 remain deferred; video ids are listed at the bottom.
+- **Run 6** (in progress): lectures 9–10.
+- Lectures 11–23 remain deferred; video ids are listed at the bottom.
+
+---
+
+# Run 6 — lectures 9–10
+
+Catalog positions 9 and 10. Note the catalog's own titles: position 9 is
+"Lecture 9 - Pretraining", position 10 is "Lecture 11 - Natural Language Generation".
+
+## Provenance — these two videos are Winter 2023, not Spring 2024
+
+Lectures 1–8 were Spring 2024 recordings that matched the Spring 2024 decks. These two
+are not. Evidence, gathered before any transcription:
+
+- The Spring 2024 schedule has **no** Natural Language Generation lecture at all. Its
+  week-5 Thursday slot is Post-training (Archit Sharma).
+- Lecture 9's lecturer says "this lecture, the Transformers lecture, and then to a lesser
+  extent **Thursday's lecture on natural language generation**" (≈0:05) — a Thursday NLG
+  lecture only exists in Winter 2023 (Thu Feb 9).
+- Both lecturers refer to **Assignment 5**. Spring 2024 ran only A1–A4; Winter 2023's site
+  links `assignments/a5.pdf` from the NLG row.
+- The decks confirm it outright. `cs224n-2023-lecture9-pretraining.pdf` page 1 reads "John
+  Hewitt / Lecture 9: Pretraining" and page 2 reads "Assignment 5 is out on Thursday! It
+  covers lecture 8 and lecture 9 (Today)!", both matching the transcript word for word.
+  The NLG deck's announcement slide matches Lisa Li's spoken announcements item for item
+  (AWS by midnight, proposals Tuesday, A4 just due, A5 due Fri Feb 17, HuggingFace tutorial
+  Friday).
+
+So the decks for this run come from the **Winter 2023** archive
+(`cs224n.1234`), not from the Spring 2024 site the run-1 crawl covered.
+
+## Lecture numbering for NLG
+
+This one lecture carries four different numbers. Stated here and in the slide file so a
+citation is never ambiguous:
+
+| Where | Number |
+|---|---|
+| Cairn catalog position | 10 |
+| Catalog / YouTube title | "Lecture 11" |
+| Deck's own title slide | "Lecture 12: Neural Language Generation" |
+| Deck filename on the W23 site | `cs224n-2023-lecture10-nlg.pdf` |
+
+Repo files use the catalog position (`10-…`), per the convention set in run 3 for
+deck-vs-catalog title disagreements.
+
+## Transcripts
+- [ ] 09 Pretraining — video DGfCRXuNA2w (102 paragraphs)
+- [ ] 10 Natural Language Generation — video N9L32bFieEY (102 paragraphs)
+- [ ] Copy-edit both by hand, verbatim originals kept in `raw/transcripts/original/`.
+
+## Slides
+- [x] raw/slides/09-pretraining.md — all 54 slides. Printed numbers match PDF pages 1:1;
+      pages 38, 39 and 46 print no number but sit in sequence. Deck title is "Lecture 9:
+      Pretraining" (John Hewitt), matching the catalog. Noted that slide 2's lecture plan
+      lists decoders/encoders/encoder-decoders but the deck presents them in the order
+      encoders → encoder-decoders → decoders, which is what the lecture follows.
+- [x] raw/slides/10-natural-language-generation.md — all 71 pages, cited by the deck's
+      **printed** numbers, which run 1–76. Printed 35, 41, 47, 54 and 66 are absent from the
+      PDF (hidden in the source deck); 76 − 5 = 71, so every page is accounted for. The
+      offset accumulates rather than being constant, so the file carries a full page↔slide
+      mapping table. Pages printing no number: the title page and printed 10, 11, 12, 53, 64.
+      Slides 39, 40 and part of 42 re-show figures from 22, 24 and 26; transcribed with a
+      pointer rather than twice in full, per run 3's convention.
+- [x] The three ethics slides (73, 74, and the jailbreak screenshot on 70) reproduce hate
+      speech, sexual violence and profanity in full on the deck. The slide file states
+      precisely what each figure shows and what the finding is, and cites the source paper,
+      but does not reproduce the passages — this repo is public and the pedagogical content
+      is the finding, not the invective. Slide 72's stereotype table is transcribed in full,
+      since the stereotypes *are* the data.
+
+## Wiki
+- [ ] wiki/09-pretraining.md
+- [ ] wiki/10-natural-language-generation.md
+- [ ] Topic pages (new)
+- [ ] Update existing topic pages that these lectures extend
+- [ ] Update INDEX.md
+- [ ] Update sources.md with the two Winter 2023 deck URLs
+- [ ] Link sweep + KaTeX validation
+
+## Publish
+- [ ] Commit and push (kbUrl already set, no re-link needed)
 
 ---
 
