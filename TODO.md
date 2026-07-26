@@ -41,9 +41,35 @@ match the Spring 2024 decks crawled in run 1:
 | Repo file prefix | `11-` | `12-` |
 
 ## Transcripts
-- [ ] 11 Post-training — video 35X6zlhoCy4 (104 paragraphs)
-- [ ] 12 Benchmarking — video TO0CqzqiArM (110 paragraphs)
-- [ ] Copy-edit both by hand; keep verbatim originals in `raw/transcripts/original/`
+- [x] 11 Post-training — video 35X6zlhoCy4 (104 paragraphs)
+- [x] 12 Benchmarking — video TO0CqzqiArM (110 paragraphs)
+- [x] Copy-edited both by hand, verbatim originals kept in `raw/transcripts/original/`.
+      All 104+110 `[MM:SS]` timestamps verified identical and in order; number inventories
+      compared paragraph by paragraph and every difference explained in the file headers.
+- [x] Restored against the slides: L11 — *ChatGPT* ("CH GPD", "chargy GPD", "chbt"),
+      *GPT-2/3/4* ("gpd2", "gp22", "gbd3", "gbd4"), *InstructGPT* ("instruct gbt"), *RLHF*
+      ("rlf", "rhf", "rft"), *DPO*/*PPO* ("DP", "BP", "po"), *Bradley–Terry* ("Brad lary",
+      "broadly ter"), *Kullback–Leibler* ("cbak LI Li"), *Boltzmann* ("boltzman"), *MMLU*
+      ("mlu"), *Flan-T5* ("FL T5"), *PaLM* ("power models"), *LIMA* / *Less Is More for
+      Alignment* ("LMA", "paperless as more for alignment"), *Mistral* ("mistol"), *TL;DR*
+      ("TLD drr"). L12 — *SuperGLUE* ("super clue"), *BoolQ* ("bull Q"), *BLEU*/*ROUGE*
+      ("blur", "rou", "RK"), *BERTScore*/*BLEURT* ("bir", "blurt"), *AlpacaEval*/*AlpacaFarm*
+      ("Paka eval", "back a EV", "alpaca form"), *MT-Bench* ("empty bench"), *Chatbot Arena*
+      ("chadbad Arena"), *Penn Treebank* ("pentry bank"), *CoNLL* ("caral"), *scikit-learn*
+      ("es learn"), *Codeforces* ("code Force"), *Phi-1.5* ("F 1.5"), *DynaBench* ("Dynam
+      Ben"), *MLPerf* ("ml puff"), *DiscrimEval* ("dis remal"), *Anthropic* ("entropic"),
+      *Horace He* ("harass he"), *Zygote* ("Z zigot"), and Chris Potts ("Chris Peach").
+- [x] Numbers corrected against the slides rather than kept as heard, each flagged in the
+      header: L11 22:20 "60-year-old"→six-year-old (slide 36), 19:17 "5 40 billion"→540
+      billion, 11:35 "gp22"→GPT-2, 1:12:32 "th000 tasks"→a thousand tasks, 1:10:11 "199"→the
+      student's "plus one versus plus 99". L12 24:43 "7%"→67% for "Heck no!" (slide 18 scores
+      it 0.67, the same as "Yes!", which is the point of the false-positive example) and
+      1:06:13 "63 3.7"→63.7 (slide 51 gives 0.637).
+- [x] Eleven residual ambiguities left marked inline as `[Ed: …]` rather than guessed — L11
+      has five (four garbled student questions plus the benchmark a student names at 27:00,
+      almost certainly ImageNet), L12 has six (five garbled student questions or
+      interjections, and the phrase the captions render as "selfie station" at 1:16:58 inside
+      the lecturer's account of the OpinionQA result).
 
 ## Slides
 - [x] raw/slides/11-post-training.md — all 94 pages transcribed (printed 1–99;
