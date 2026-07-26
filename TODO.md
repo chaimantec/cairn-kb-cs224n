@@ -8,7 +8,58 @@ The course has 23 lectures, built incrementally.
 - **Run 4** (complete): no new lectures — converted all mathematics in the wiki to LaTeX.
 - **Run 5** (complete): lectures 7–8.
 - **Run 6** (complete): lectures 9–10.
-- Lectures 11–23 remain deferred; video ids are listed at the bottom.
+- **Run 7** (in progress): lectures 11–12 — Post-training (Archit Sharma) and
+  Benchmarking (Yann Dubois).
+- Lectures 13–23 remain deferred; video ids are listed at the bottom.
+
+---
+
+# Run 7 — lectures 11–12
+
+Catalog positions 11 and 12. The catalog's own titles are "Lecture 10 - Post-training by
+Archit Sharma" and "Lecture 11 - Benchmarking by Yann Dubois". Repo files use the catalog
+**position** (`11-…`, `12-…`), per the convention set in run 3.
+
+## Provenance — both are Spring 2024, unlike run 6
+
+Lectures 9–10 were Winter 2023 recordings. These two are back on the Spring 2024 track and
+match the Spring 2024 decks crawled in run 1:
+
+- Position 11 ↔ `cs224n-spr2024-lecture10-prompting-rlhf.pdf`, whose title slide reads
+  "Archit Sharma / Lecture 10: Prompting, Instruction Finetuning, and DPO/RLHF (Based on
+  slides from Jesse Mu)".
+- Position 12 ↔ `cs224n-spr2024-lecture11-evaluation-yann.pdf`, whose title slide reads
+  "Yann Dubois / Lecture 11: Benchmarking and Evaluation".
+
+## Lecture numbering
+
+| Where | Post-training | Benchmarking |
+|---|---|---|
+| Cairn catalog position | 11 | 12 |
+| Catalog / YouTube title | "Lecture 10" | "Lecture 11" |
+| Deck's own title slide | "Lecture 10" | "Lecture 11" |
+| Repo file prefix | `11-` | `12-` |
+
+## Transcripts
+- [ ] 11 Post-training — video 35X6zlhoCy4 (104 paragraphs)
+- [ ] 12 Benchmarking — video TO0CqzqiArM (110 paragraphs)
+- [ ] Copy-edit both by hand; keep verbatim originals in `raw/transcripts/original/`
+
+## Slides
+- [x] raw/slides/11-post-training.md — all 94 pages transcribed (printed 1–99;
+      printed 58, 59, 60, 64 and 84 are hidden slides absent from the PDF)
+- [x] raw/slides/12-benchmarking.md — all 65 pages transcribed (printed numbers 1:1)
+
+## Wiki
+- [ ] wiki/11-post-training.md
+- [ ] wiki/12-benchmarking.md
+- [ ] Topic pages: prompting, chain-of-thought, instruction-finetuning, rlhf,
+      direct-preference-optimization, reward-modeling, evaluating-llms, llm-as-a-judge,
+      benchmark-contamination
+- [ ] Update INDEX.md table of contents
+
+## Publish
+- [ ] Commit and push (kbUrl already set — no link_kb.sh needed)
 
 ---
 
