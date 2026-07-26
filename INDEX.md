@@ -10,20 +10,24 @@ goals are that students learn the methods, gain some real understanding of human
 language and why it is hard for computers, and come out able to build working
 systems.
 
-> **Coverage note.** This knowledge base covers **lectures 1 to 10**: wiki pages,
+> **Coverage note.** This knowledge base covers **lectures 1 to 12**: wiki pages,
 > timestamped transcripts, and full slide-by-slide text for each. Slide *URLs* for
 > lectures 1–18 are listed in [sources.md](sources.md), so questions about later
 > lectures can be answered by pointing at the right PDF, but there are no transcripts,
 > wiki pages, or slide text for them yet. See [TODO.md](TODO.md) for what remains.
 >
-> **Lectures 9 and 10 are Winter 2023 recordings**, unlike lectures 1–8. Spring 2024 had no
+> **Lectures 9 and 10 are Winter 2023 recordings**, unlike lectures 1–8 and 11–12. Spring 2024 had no
 > Natural Language Generation lecture at all, and its Pretraining lecture is not the one in
 > the playlist — so both decks come from the Winter 2023 course archive
 > (`cs224n.1234`), not the Spring 2024 site. Lecture 9 is taught by **John Hewitt** and
 > lecture 10 by **Xiang Lisa Li**, not by Manning. Lecture 10 also carries four different
 > numbers (catalog position 10, video title "Lecture 11", deck title "Lecture 12", filename
 > `lecture10-nlg`); this KB uses the catalog position throughout, and the slide file records
-> all four.
+> all four. **Lectures 11 and 12 are back on the Spring 2024 track** and use the Spring 2024
+> decks, but their titles are off by one against this KB's numbering: catalog position 11 is
+> titled "Lecture 10 - Post-training" (Archit Sharma) and position 12 "Lecture 11 -
+> Benchmarking" (Yann Dubois). Repo files use the position; slide citations use each deck's
+> own printed numbers.
 >
 > **Citing sources.** Prefer citing a **slide number** for anything on a slide
 > (equations, tables, definitions) and a **timestamp** for anything Manning says aloud
@@ -109,6 +113,22 @@ systems.
   (nucleus), typical and epsilon sampling, temperature and re-ranking; exposure bias and the
   four responses to it, ending at RLHF; the three families of evaluation metric and why all of
   them fall short; and the ethics of deploying generation systems.
+- [Lecture 11 — Post-training](wiki/11-post-training.md) (Archit Sharma) — how a pretrained
+  model becomes an assistant, in three escalating routes. The alignment gap, shown by GPT-3
+  answering "explain the moon landing to a 6 year old" with four more questions; zero-shot and
+  few-shot in-context learning and why they are emergent; chain-of-thought and the "let's think
+  step by step" trigger; instruction finetuning, Flan-T5's bigger-model-bigger-gain table, and
+  its three subtler limitations; then reward modelling from pairwise comparisons, the
+  KL-penalized RLHF objective, the full DPO derivation, and what all of this costs — reward
+  hacking, over-optimization, and whose preferences get encoded.
+- [Lecture 12 — Benchmarking and Evaluation](wiki/12-benchmarking.md) (Yann Dubois) — how you
+  know any of it worked. Why train, develop, select, deploy and publish each need a *different*
+  metric; close-ended evaluation and its three traps; open-ended evaluation, the "Heck yes!"
+  failure case, and the finding that reference-based metrics are only as good as their
+  references; human evaluation's 67% inter-annotator agreement and 5% reproducibility; Chatbot
+  Arena, LLM judges, AlpacaEval and length control; the three current regimes (perplexity,
+  "everything", arena-like); and what is broken — MMLU's three incompatible implementations,
+  contamination, benchmark saturation, English monoculture and judge bias.
 
 ## Topic pages
 
@@ -289,6 +309,49 @@ systems.
   BERTScore, BLEURT); MAUVE for open-ended settings and why it discretizes the embedding
   space; and human evaluation — the gold standard, and slow, expensive, inconsistent and
   precision-only.
+- [Prompting and in-context learning](wiki/prompting.md) — getting a task out of a fixed model
+  by writing the input carefully. Zero-shot learning as it emerged in GPT-2 (including the
+  `TL;DR:` summarization trick), few-shot prompting and why the first example buys most of the
+  gain, the word-unscrambling curves that make in-context learning look emergent, and the
+  "dark art" of prompt engineering — jailbreaks, style incantations and all.
+- [Chain-of-thought prompting](wiki/chain-of-thought.md) — making a model write out its
+  reasoning before its answer. Few-shot CoT and the tennis-balls exemplar, the GSM8K scaling
+  curves where CoT only helps at the top end, zero-shot "Let's think step by step" (17.7 → 78.7
+  on MultiArith), and the trigger-phrase table whose winner was written by a language model.
+- [Instruction finetuning](wiki/instruction-finetuning.md) — finetuning on (instruction, output)
+  pairs across many tasks so a model generalizes to unseen ones. The Flan-T5 table where the
+  gain grows with model size (+6.1 at 80M to +26.6 at 11B), Super-NaturalInstructions' 1.6K
+  tasks, synthetic data from bigger models (Alpaca) and LIMA's less-is-more result — and the
+  three limitations that motivate preference optimization.
+- [Reward modeling](wiki/reward-modeling.md) — turning "which answer would a human prefer?" into
+  a scalar you can optimize. Why direct ratings are uncalibrated, why pairwise comparisons are
+  the fix, the Bradley–Terry loss in full, and the shift-invariance it introduces — which DPO
+  later exploits. **Start here before RLHF or DPO.**
+- [RLHF](wiki/rlhf.md) — the three-step pipeline behind InstructGPT and ChatGPT. The objective,
+  why optimizing a *learned* reward invites hacking, the KL penalty and what justifies it, PPO
+  at an intuitive level, the Stiennon summarization result where RLHF'd models beat human
+  reference summaries at every size, and the over-optimization curve where predicted reward
+  rises while actual preference collapses.
+- [Direct preference optimization](wiki/direct-preference-optimization.md) — RLHF's effect from
+  a binary classification loss. The closed-form solution to the KL-constrained objective, the
+  inversion that expresses the reward via the policy, why the intractable partition function
+  cancels in a Bradley–Terry *difference*, the final loss, and what the cancellation costs.
+  **Start here for anything about DPO.**
+- [Evaluating LLMs](wiki/evaluating-llms.md) — what the field measures and with what. The
+  stage-by-stage requirements table, close- vs open-ended tasks, SuperGLUE, MMLU and BIG-Bench,
+  human evaluation's documented failure modes, and the three current regimes: perplexity
+  (ρ = −0.940 with downstream score), "everything" (HELM, Open LLM Leaderboard, HumanEval,
+  agents) and arena-like. Plus efficiency, bias and multilingual coverage as dimensions.
+- [LLM-as-a-judge](wiki/llm-as-a-judge.md) — using GPT-4 in place of an annotator. Chatbot
+  Arena and why cost rules it out during development; the AlpacaFarm result that a model agrees
+  with human majority *better than individual humans do*, explained by bias vs variance;
+  AlpacaEval's 0.98 correlation at <$10; and the biases — length (win rate 22.9 → 64.3 from
+  prompting alone), position, and self-bias.
+- [Benchmark contamination and overfitting](wiki/benchmark-contamination.md) — the three ways a
+  correctly computed number can be meaningless. Consistency (MMLU had three incompatible
+  implementations scoring llama-65b at 0.637 and 0.488), contamination (GPT-4 solving 10/10
+  pre-2021 Codeforces problems and 0/10 recent ones) with min-k% and exchangeability detectors,
+  overfitting and the GSM1k/DynaBench mitigations, and the BLEU status-quo trap.
 
 ## Raw materials
 
@@ -301,17 +364,21 @@ systems.
   ([56 slides](raw/slides/06-sequence-to-sequence-models.md)), lecture 7
   ([73 slides](raw/slides/07-attention-final-projects-and-llm-intro.md)), lecture 8
   ([62 slides](raw/slides/08-self-attention-and-transformers.md)), lecture 9
-  ([54 slides](raw/slides/09-pretraining.md)) and lecture 10
-  ([76 printed slides](raw/slides/10-natural-language-generation.md)). Each file opens
+  ([54 slides](raw/slides/09-pretraining.md)), lecture 10
+  ([76 printed slides](raw/slides/10-natural-language-generation.md)), lecture 11
+  ([99 printed slides](raw/slides/11-post-training.md)) and lecture 12
+  ([65 slides](raw/slides/12-benchmarking.md)). Each file opens
   with a section-to-slide-range table, then transcribes every slide in order —
   including the equations, the tables of numbers, the margin annotations, and prose
-  descriptions of the diagrams and plots. For lectures 1–3, 5–8 and 9 **the printed slide
-  number equals the PDF page number**, so "slide 28" is page 28. **Two decks are exceptions.**
+  descriptions of the diagrams and plots. For lectures 1–3, 5–9 and 12 **the printed slide
+  number equals the PDF page number**, so "slide 28" is page 28. **Three decks are exceptions.**
   Lecture 4's printed numbers run 1–49 but the PDF has only 45 pages, because printed
   slides 4, 5, 8 and 13 were hidden in the source deck and never exported. Lecture 10 is
   worse: its printed numbers run 1–76 against 71 PDF pages, with printed 35, 41, 47, 54 and
-  66 absent, so the offset **accumulates** rather than being constant — that file carries a
-  full page-to-slide mapping table, and everything in this KB cites its printed numbers. One
+  66 absent, so the offset **accumulates** rather than being constant. Lecture 11 is the same
+  shape: printed 1–99 against 94 PDF pages, with five numbers among 58–60, 64 and 84 absent.
+  Both of those files carry a full page-to-slide mapping table, and everything in this KB
+  cites their printed numbers. One
   further caveat: **lecture 6's slides 4–18 repeat lecture 5's slides 49–63** as a recap, and
   are transcribed in brief with pointers rather than in full — the exception is slide 15,
   which adds the "~7 tokens back" rule of thumb that slide 25 then contrasts LSTMs against.
@@ -320,7 +387,7 @@ systems.
   Note that three slides in lecture 10's ethics section (70, 73, 74) reproduce hate speech,
   sexual violence and profanity in full on the deck; the slide file states what each figure
   shows and cites the source paper but does not reproduce the passages.
-- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 10,
+- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 12,
   grouped into paragraphs each prefixed with an `[MM:SS]` timestamp. Use these to
   point a learner at the exact moment something is explained ("Manning covers this
   around 42:00"), or to quote him directly — they read as sentences, so they quote
@@ -339,9 +406,15 @@ systems.
   model", *RoBERTa* as "Brita", *Iroh* as "Ira" and "IRL", *NLG itself* as "an LG", "analogy"
   and "energy", *autoregressive* as "other aggressive", *n-gram* as "unground" and "engram",
   *nucleus sampling* as "nuclear sampling", *MAUVE* as "mouth score" and "small score",
-  *BLEURT* as "Port", *RLHF* as "rlhs", and *ChatGPT* as "chaiji 50"). No content was added,
+  *BLEURT* as "Port", *RLHF* as "rlhs", and *ChatGPT* as "chaiji 50"; in lectures 11 and 12,
+  *ChatGPT* again as "CH GPD" and "chargy GPD", *InstructGPT* as "instruct gbt", *DPO* and
+  *PPO* as "DP", "BP" and "po", *Bradley–Terry* as "Brad lary", *Kullback–Leibler* as "cbak LI
+  Li", *MMLU* as "mlu", *PaLM* as "power models", *SuperGLUE* as "super clue", *BLEU* as
+  "blur", *BERTScore* as "bir", *AlpacaEval* as "Paka eval" and "back a EV", *Chatbot Arena* as
+  "chadbad Arena", *MLPerf* as "ml puff", *DiscrimEval* as "dis remal" and *Anthropic* as
+  "entropic"). No content was added,
   removed or reordered, and every timestamp is preserved. Mathematical notation in
-  lectures 7–10's transcripts stays spelled out (bold for vectors/matrices, Unicode
+  lectures 7–11's transcripts stays spelled out (bold for vectors/matrices, Unicode
   subscripts), matching lecture 3's convention — LaTeX is wiki-only. Student questions
   are marked in italics. Where a garble could not be resolved from the slides, the text
   carries an inline `[Ed: …]` note saying so instead of guessing — treat those as known
@@ -351,7 +424,9 @@ systems.
   these only to check exactly what the speech recognizer produced.
 - [`sources.md`](sources.md) — the full inventory of course documents, with a
   canonical URL for each: lecture slides for Spring 2024's lectures 1–18, the two
-  **Winter 2023** decks that go with catalog lectures 9 and 10, supplementary readings
+  **Winter 2023** decks that go with catalog lectures 9 and 10 (catalog lectures 11 and 12 use
+  the Spring 2024 `lecture10-prompting-rlhf` and `lecture11-evaluation-yann` decks),
+  supplementary readings
   (the 2019 course notes, the gradient and differential-calculus reviews, the
   self-attention and transformers notes, the Python review), the assignment 2–4
   handouts, the final-project handouts, and 43 further papers the syllabus links

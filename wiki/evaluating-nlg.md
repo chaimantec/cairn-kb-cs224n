@@ -208,4 +208,11 @@ better ways of automatically evaluating performance of NLG systems."
   intrinsic versus extrinsic evaluation.
 - [BERT and masked language modeling](bert.md) — the embeddings BERTScore and BLEURT are built
   on.
+- [Evaluating LLMs](evaluating-llms.md) — how this taxonomy is used in practice, from
+  [lecture 12](12-benchmarking.md), including the finding that reference-based metrics are only as
+  good as their references.
+- [LLM-as-a-judge](llm-as-a-judge.md) — the reference-free family that replaced these metrics for
+  chatbot evaluation.
+- [Benchmark contamination and overfitting](benchmark-contamination.md) — why a correctly computed
+  number can still be meaningless.
 - [Final project guidance](final-project-guidance.md).

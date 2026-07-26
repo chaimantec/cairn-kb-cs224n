@@ -172,3 +172,8 @@ during pretraining, and "quantifying that extent is an open research problem" (�
 - [Decoding algorithms](decoding-algorithms.md) — how you get text out of one of these once you
   have it.
 - [Lecture 10 — Natural Language Generation](10-natural-language-generation.md).
+- [Lecture 11 — Post-training](11-post-training.md) — what happens to these models next.
+- [Prompting and in-context learning](prompting.md) — the zero-shot and few-shot story continued,
+  with the emergence evidence and prompt engineering.
+- [Chain-of-thought prompting](chain-of-thought.md) — the prompting technique that pushed a fixed
+  model past supervised state of the art.

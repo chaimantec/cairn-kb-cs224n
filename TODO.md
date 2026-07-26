@@ -77,12 +77,25 @@ match the Spring 2024 decks crawled in run 1:
 - [x] raw/slides/12-benchmarking.md — all 65 pages transcribed (printed numbers 1:1)
 
 ## Wiki
-- [ ] wiki/11-post-training.md
-- [ ] wiki/12-benchmarking.md
-- [ ] Topic pages: prompting, chain-of-thought, instruction-finetuning, rlhf,
-      direct-preference-optimization, reward-modeling, evaluating-llms, llm-as-a-judge,
-      benchmark-contamination
-- [ ] Update INDEX.md table of contents
+- [x] wiki/11-post-training.md
+- [x] wiki/12-benchmarking.md
+- [x] Topic pages (9 new): prompting, chain-of-thought, instruction-finetuning,
+      reward-modeling, rlhf, direct-preference-optimization, evaluating-llms,
+      llm-as-a-judge, benchmark-contamination
+- [x] Cross-links added to the pages these supersede or extend:
+      gpt-and-in-context-learning → prompting + chain-of-thought;
+      pretraining-and-finetuning → instruction-finetuning;
+      evaluating-nlg → evaluating-llms + llm-as-a-judge + benchmark-contamination
+- [x] Update INDEX.md table of contents — coverage note now says lectures 1–12, the
+      numbering caveat covers 11/12, and the raw-materials sections list both new decks
+      and both new transcripts
+- [x] README.md brought up to date — it had gone stale at run 5 and still claimed
+      "Lectures 1–6, in full" and "Lectures 7–23 are not built yet". Now lists all 12
+      lectures with slide and paragraph counts, and 44 topic pages.
+- [x] AGENTS.md updated — lecture 11 added to the list of decks whose printed-number
+      offset grows, and the provenance and multiple-numbering notes extended to 11–12.
+- [x] Verified every relative link in the repo resolves (only two known non-links remain,
+      the illustrative `[gradient descent](gradient-descent.md)` examples inside AGENTS.md)
 
 ## Publish
 - [ ] Commit and push (kbUrl already set — no link_kb.sh needed)

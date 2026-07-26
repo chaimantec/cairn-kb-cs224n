@@ -167,3 +167,5 @@ this practice: notions of generality are "very, very difficult, ill-defined even
 - [Subword modeling](subword-modeling.md) — how the inputs are tokenized.
 - [Regularization and dropout](regularization-and-dropout.md) — the overfitting picture
   lightweight fine-tuning improves on.
+- [Instruction finetuning](instruction-finetuning.md) — the same recipe scaled to thousands of
+  tasks at once, from [lecture 11](11-post-training.md).

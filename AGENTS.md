@@ -35,21 +35,23 @@ slides at their source URL, not at a local path.
   written on a slide (equations, tables, definitions) and an **`[MM:SS]` timestamp** for
   what is said aloud (asides, worked reasoning, answers to students).
 - **Printed slide numbers do not always equal PDF page numbers.** They do for lectures 1–3,
-  5–9. They do *not* for lecture 4, whose printed numbers run 1–49 over a 45-page PDF
+  5–9 and 12. They do *not* for lecture 4, whose printed numbers run 1–49 over a 45-page PDF
   because four slides were hidden in the source deck and never exported, nor for lecture 10,
-  whose printed numbers run 1–76 over a 71-page PDF with five hidden slides — so its offset
-  **grows** through the deck rather than being constant. Always cite the **printed** number,
+  whose printed numbers run 1–76 over a 71-page PDF with five hidden slides, nor for lecture
+  11, whose printed numbers run 1–99 over a 94-page PDF, also with five hidden — so in those
+  two the offset **grows** through the deck rather than being constant. Always cite the **printed** number,
   and check the header of the relevant `raw/slides/` file, which states the mapping for that
   deck. When transcribing a new deck, verify the printed numbers against the page count
   rather than assuming, and do not assume a constant offset once you find one.
 - **Not every lecture in the playlist is from the course the site describes.** Lectures 1–8
-  are Spring 2024; lectures 9 and 10 are Winter 2023 recordings by John Hewitt and Xiang Lisa
-  Li, whose decks come from the `cs224n.1234` archive. Before transcribing a deck for a new
+  and 11–12 are Spring 2024; lectures 9 and 10 are Winter 2023 recordings by John Hewitt and
+  Xiang Lisa Li, whose decks come from the `cs224n.1234` archive. Before transcribing a deck for a new
   lecture, check that it matches the video — announcements ("Assignment 5 is out on
   Thursday"), the lecturer's name, and the day-of-week references on the title and reminder
   slides are the reliable tells. `sources.md` records which site each deck came from.
 - **A lecture may carry several conflicting numbers.** Catalog position, video title, deck
-  title slide and deck filename can all disagree; lecture 10 has four different numbers. This
+  title slide and deck filename can all disagree; lecture 10 has four different numbers, and
+  lectures 11 and 12 are titled "Lecture 10" and "Lecture 11" by both the video and the deck. This
   repo names files by the **Cairn catalog position**, and the slide file records the others
   in a table so any of them can be resolved.
 - **Slides beat transcripts on conflict.** The transcripts are corrected auto-captions;

@@ -34,7 +34,7 @@ reading from it too.
 
 ## What's covered
 
-**Lectures 1–6**, in full — wiki pages, edited transcripts and slide-by-slide text for
+**Lectures 1–12**, in full — wiki pages, edited transcripts and slide-by-slide text for
 each:
 
 | # | Lecture | Slides | Transcript |
@@ -45,15 +45,27 @@ each:
 | 4 | [Dependency Parsing](wiki/04-dependency-parsing.md) | [49](raw/slides/04-dependency-parsing.md) | [102 ¶](raw/transcripts/04-dependency-parsing.md) |
 | 5 | [Recurrent Neural Networks](wiki/05-recurrent-neural-networks.md) | [72](raw/slides/05-recurrent-neural-networks.md) | [102 ¶](raw/transcripts/05-recurrent-neural-networks.md) |
 | 6 | [Sequence to Sequence Models](wiki/06-sequence-to-sequence-models.md) | [56](raw/slides/06-sequence-to-sequence-models.md) | [100 ¶](raw/transcripts/06-sequence-to-sequence-models.md) |
+| 7 | [Attention, Final Projects and LLM Intro](wiki/07-attention-final-projects-and-llm-intro.md) | [73](raw/slides/07-attention-final-projects-and-llm-intro.md) | [100 ¶](raw/transcripts/07-attention-final-projects-and-llm-intro.md) |
+| 8 | [Self-Attention and Transformers](wiki/08-self-attention-and-transformers.md) | [62](raw/slides/08-self-attention-and-transformers.md) | [100 ¶](raw/transcripts/08-self-attention-and-transformers.md) |
+| 9 | [Pretraining](wiki/09-pretraining.md) | [54](raw/slides/09-pretraining.md) | [102 ¶](raw/transcripts/09-pretraining.md) |
+| 10 | [Natural Language Generation](wiki/10-natural-language-generation.md) | [76](raw/slides/10-natural-language-generation.md) | [102 ¶](raw/transcripts/10-natural-language-generation.md) |
+| 11 | [Post-training](wiki/11-post-training.md) | [99](raw/slides/11-post-training.md) | [104 ¶](raw/transcripts/11-post-training.md) |
+| 12 | [Benchmarking and Evaluation](wiki/12-benchmarking.md) | [65](raw/slides/12-benchmarking.md) | [110 ¶](raw/transcripts/12-benchmarking.md) |
 
-Plus **22 topic pages** covering concepts that span lectures — word2vec, distributional
+Lectures 9 and 10 are **Winter 2023** recordings by John Hewitt and Xiang Lisa Li; the rest
+are Spring 2024. Lectures 11 and 12 are guest lectures by Archit Sharma and Yann Dubois, and
+their video titles run one behind this table — see [INDEX.md](INDEX.md) for the mapping.
+
+Plus **44 topic pages** covering concepts that span lectures — word2vec, distributional
 semantics, GloVe, gradient descent, backpropagation, matrix calculus, activation
 functions, dependency grammar, transition-based parsing, language modeling, *n*-gram
 models, recurrent neural networks, LSTMs, perplexity, vanishing and exploding gradients,
-machine translation, sequence-to-sequence models, and more. These are what make it a wiki
-rather than a pile of lecture summaries.
+machine translation, sequence-to-sequence models, attention, self-attention, Transformers,
+pretraining and fine-tuning, BERT, decoding algorithms, prompting, chain-of-thought,
+instruction finetuning, reward modeling, RLHF, DPO, and how any of it gets evaluated. These
+are what make it a wiki rather than a pile of lecture summaries.
 
-**Lectures 7–23 are not built yet.** This is deliberate — the KB is built incrementally, a
+**Lectures 13–23 are not built yet.** This is deliberate — the KB is built incrementally, a
 couple of lectures per run, and [TODO.md](TODO.md) is the authoritative record of what is
 done and what remains. Slide *URLs* for lectures 1–18 are already inventoried in
 [sources.md](sources.md), so questions about later lectures can at least be pointed at the
