@@ -111,7 +111,9 @@ the run-1 crawl. The lecturer opens with "welcome to lecture 12", matching the d
       since inline math split by a newline does not reliably render.
 
 ## Publish
-- [ ] Commit and push (`kbUrl` already set — no `link_kb.sh` needed)
+- [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (3 commits: slides,
+      transcripts, wiki). `kbUrl` was already set on catalog course
+      b102c48c-0c1b-4fc5-be6d-4c6d1e7211d1, so no `link_kb.sh` was needed.
 
 ## Notes for the next run
 
