@@ -1,6 +1,6 @@
 # Machine translation
 
-Translating a sentence *x* from a **source language** into a sentence *y* in a **target
+Translating a sentence $x$ from a **source language** into a sentence $y$ in a **target
 language** (lecture 6, slide 42). The slide's example is Rousseau: *L'homme est né libre, et
 partout il est dans les fers* → *Man is born free, but everywhere he is in chains*.
 
@@ -41,24 +41,24 @@ military-funded but soon appeared intractable. Slide 44 shows the Paramount News
 
 The field revived once people started building **empirical models over lots of data**
 (≈58:20). The core idea (slide 45): learn a **probabilistic model** from data. We want the
-best target sentence *y* given source sentence *x*:
+best target sentence $y$ given source sentence $x$:
 
-    argmax_y P(y|x)
+$$\arg\max_y P(y \mid x)$$
 
 and **Bayes rule** breaks this into two components that can be learned separately:
 
-    = argmax_y P(x|y) · P(y)
+$$= \arg\max_y P(x \mid y) \cdot P(y)$$
 
-- **P(x|y) — the translation model.** How words and phrases should be translated
+- **$P(x \mid y)$ — the translation model.** How words and phrases should be translated
   (*fidelity*). Learned from **parallel data**.
-- **P(y) — the language model.** How to write good English (*fluency*). Learned from
+- **$P(y)$ — the language model.** How to write good English (*fluency*). Learned from
   **monolingual data**.
 
 **Why this factorization helped** is the part worth understanding, since on its face it just
-swaps *x* and *y* (≈1:00:41). It let the translation model stay *very simple*: essentially a
+swaps $x$ and $y$ (≈1:00:41). It let the translation model stay *very simple*: essentially a
 table of how words tend to get translated — see *homme*, emit "man" or "person" with some
 probabilities — with **no knowledge of word order, grammar or structure in the target
-language**. All of that moved into P(y), a pure language model of exactly the kind lecture 5
+language**. All of that moved into $P(y)$, a pure language model of exactly the kind lecture 5
 builds. This is the clearest illustration of slide 65's "old answer" for why language
 modeling matters: it is a **subcomponent** of other tasks.
 
@@ -150,7 +150,7 @@ SMT, and Transformers then displaced RNN-based NMT.
 - [Sequence-to-sequence and encoder-decoder models](seq2seq-and-encoder-decoder.md) — the
   architecture that made NMT work.
 - [LSTM](lstm.md) — what the encoder and decoder actually are in practice.
-- [Language modeling](language-modeling.md) — P(y) in the SMT decomposition, and the decoder
+- [Language modeling](language-modeling.md) — $P(y)$ in the SMT decomposition, and the decoder
   in the neural one.
 - [Recurrent neural networks](recurrent-neural-networks.md) — including why the encoder can be
   bidirectional but the decoder cannot.

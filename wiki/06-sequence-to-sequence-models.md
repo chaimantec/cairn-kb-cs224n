@@ -31,8 +31,12 @@ The evaluation logic first (≈2:26): a language model scores a piece of text an
 likely it is; our standard for text in a language is text produced by human beings; so show
 the model **fresh** text it was not trained on and ask how well it predicts each successive
 word. Perplexity takes the model's probability at each position, inverts it (0.002 becomes
-500), takes the product across positions, and takes the geometric average — which is exactly
-the exponential of the per-word cross-entropy loss.
+500), takes the product across positions, and takes the geometric average — which for a text
+of $T$ words is (slide 49 of lecture 5)
+
+$$\text{perplexity} = \prod_{t=1}^{T} \left( \frac{1}{P_{\text{LM}}\left(x^{(t+1)} \mid x^{(t)}, \dots, x^{(1)}\right)} \right)^{1/T} = \exp(J(\theta))$$
+
+exactly the exponential of the per-word cross-entropy loss $J(\theta)$.
 
 The historical story (≈4:48). In the era of symbolic AI — John McCarthy, Ed Feigenbaum —
 people at IBM including **Fred Jelinek** started applying probabilistic methods to speech
@@ -72,7 +76,7 @@ equivalent of 8-grams. So we haven't made that much progress, it feels like" (�
 He also makes the diagnosis architectural (≈20:20). In a vanilla RNN the hidden state is
 **completely rewritten** at every step: you take the previous hidden vector, multiply it by
 a matrix that changes it entirely, and add in the input. If you want to say "there is useful
-stuff in h⁽ᵗ⁻¹⁾, please keep it around for a while", learning weights that mostly preserve
+stuff in $h^{(t-1)}$, please keep it around for a while", learning weights that mostly preserve
 what was there is not an obvious thing for gradient descent to find.
 
 ## LSTMs
@@ -95,23 +99,32 @@ Simple RNNs had a short-term memory of about seven tokens. The goal was to make 
 memory long.
 
 **The architecture** (slide 22). There are now two vectors per step: a **hidden state**
-h⁽ᵗ⁾ and a **cell state** c⁽ᵗ⁾, both length *n*. The cell stores long-term information and
-behaves conceptually like RAM — it can be read, erased and written. Three **gates**, also
-length *n*, control which. Gates are computed, not fixed: each is a sigmoid of the same
-shape of expression as a vanilla RNN step, so its elements lie between 0 and 1 and can be
-open, closed or in between, and their values depend on the current context.
+$h^{(t)}$ and a **cell state** $c^{(t)}$, both length $n$. The cell stores long-term
+information and behaves conceptually like RAM — it can be read, erased and written. Three
+**gates**, also length $n$, control which. Gates are computed, not fixed: each is a sigmoid
+of the same shape of expression as a vanilla RNN step, so its elements lie between 0 and 1
+and can be open, closed or in between, and their values depend on the current context.
 
-    f⁽ᵗ⁾ = σ( W_f h⁽ᵗ⁻¹⁾ + U_f x⁽ᵗ⁾ + b_f )      forget gate
-    i⁽ᵗ⁾ = σ( W_i h⁽ᵗ⁻¹⁾ + U_i x⁽ᵗ⁾ + b_i )      input gate
-    o⁽ᵗ⁾ = σ( W_o h⁽ᵗ⁻¹⁾ + U_o x⁽ᵗ⁾ + b_o )      output gate
+$$
+\begin{aligned}
+f^{(t)} &= \sigma\left(W_f h^{(t-1)} + U_f x^{(t)} + b_f\right) && \text{forget gate} \\
+i^{(t)} &= \sigma\left(W_i h^{(t-1)} + U_i x^{(t)} + b_i\right) && \text{input gate} \\
+o^{(t)} &= \sigma\left(W_o h^{(t-1)} + U_o x^{(t)} + b_o\right) && \text{output gate}
+\end{aligned}
+$$
 
-    c̃⁽ᵗ⁾ = tanh( W_c h⁽ᵗ⁻¹⁾ + U_c x⁽ᵗ⁾ + b_c )   new cell content
-    c⁽ᵗ⁾ = f⁽ᵗ⁾ ⊙ c⁽ᵗ⁻¹⁾ + i⁽ᵗ⁾ ⊙ c̃⁽ᵗ⁾           erase, then write
-    h⁽ᵗ⁾ = o⁽ᵗ⁾ ⊙ tanh c⁽ᵗ⁾                      read
+$$
+\begin{aligned}
+\tilde{c}^{(t)} &= \tanh\left(W_c h^{(t-1)} + U_c x^{(t)} + b_c\right) && \text{new cell content} \\
+c^{(t)} &= f^{(t)} \odot c^{(t-1)} + i^{(t)} \odot \tilde{c}^{(t)} && \text{erase, then write} \\
+h^{(t)} &= o^{(t)} \odot \tanh c^{(t)} && \text{read}
+\end{aligned}
+$$
 
-⊙ is the element-wise (Hadamard) product. Manning's aside on naming: the **forget gate is
-wrongly named** — it computes how much you *remember*, so "remember gate" would make more
-sense (≈29:32).
+with $W_\bullet$ and $U_\bullet$ the recurrent and input weight matrices for each gate and
+$b_\bullet$ their biases. $\odot$ is the element-wise (Hadamard) product. Manning's aside on
+naming: the **forget gate is wrongly named** — it computes how much you *remember*, so
+"remember gate" would make more sense (≈29:32).
 
 **Why the hidden state and the cell state are separate** is worth understanding, because it
 is the part students push back on. The hidden state does double duty: it feeds the output
@@ -122,10 +135,11 @@ or *a* comes next — but if the sentence earlier said *the King of Prussia*, yo
 that around for future predictions without it interfering now. So the cell is the memory,
 and the output gate controls how much of it is exposed for generating the current word. When
 a student asks whether the output gate is redundant given the forget and input gates, that
-is the answer: you want to keep information in c⁽ᵗ⁾ for the future while masking it from the
-current output (≈35:02–35:49).
+is the answer: you want to keep information in $c^{(t)}$ for the future while masking it from
+the current output (≈35:02–35:49).
 
-An implementation note (≈34:16): all four of f, i, o and c̃ have exactly the same shape, so
+An implementation note (≈34:16): all four of $f$, $i$, $o$ and $\tilde{c}$ have exactly the
+same shape, so
 you can stack the four weight matrices into one big matrix and compute them in a single
 multiply.
 
@@ -153,8 +167,9 @@ does not work — which is part of why deep networks were stuck in the early 200
 
 The fix is the same idea in a vertical direction: **add more direct connections**.
 
-- **Residual connections / ResNet** (He et al. 2015) — carry the input around a block with
-  an identity function and add it back. The identity connection preserves information by
+- **Residual connections / ResNet** (He et al. 2015) — carry the input $x$ around a block
+  $\mathcal{F}$ with an identity function and add it back, giving $\mathcal{F}(x) + x$. The
+  identity connection preserves information by
   default, and this is what made deep computer vision models learnable (≈46:44).
 - **Dense connections / DenseNet** (Huang et al. 2017) — connect each layer directly to all
   later layers.
@@ -173,14 +188,19 @@ matrix (Bengio et al. 1994). See
 problem: in *the movie was terribly exciting !*, the hidden state above *terribly* encodes
 "the movie was terribly" and knows nothing about what follows — but *exciting* is exactly
 what flips *terribly* from negative to positive. So run a second RNN backwards and
-concatenate:
+concatenate (slide 35):
 
-    h→⁽ᵗ⁾ = RNN_FW( h→⁽ᵗ⁻¹⁾, x⁽ᵗ⁾ )
-    h←⁽ᵗ⁾ = RNN_BW( h←⁽ᵗ⁺¹⁾, x⁽ᵗ⁾ )
-    h⁽ᵗ⁾  = [ h→⁽ᵗ⁾ ; h←⁽ᵗ⁾ ]
+$$
+\begin{aligned}
+\overrightarrow{h}^{(t)} &= \mathrm{RNN}_{\mathrm{FW}}\left(\overrightarrow{h}^{(t-1)}, x^{(t)}\right) \\
+\overleftarrow{h}^{(t)} &= \mathrm{RNN}_{\mathrm{BW}}\left(\overleftarrow{h}^{(t+1)}, x^{(t)}\right) \\
+h^{(t)} &= \left[\overrightarrow{h}^{(t)} ; \overleftarrow{h}^{(t)}\right]
+\end{aligned}
+$$
 
-The two directions generally have separate weights, and RNN_FW is generic notation — it
-could be a simple RNN or an LSTM step. The concatenation is what gets passed onward.
+The two directions generally have separate weights, and $\mathrm{RNN}_{\mathrm{FW}}$ is
+generic notation — it could be a simple RNN or an LSTM step. The concatenation is what gets
+passed onward.
 
 The constraint on slide 37 is the important one: bidirectional RNNs need the **entire input
 sequence**, so they are **not applicable to language modeling**, where you only have left
@@ -221,17 +241,18 @@ brick for your laptop has more computing power inside it than the big mainframe 
 they used to be using". So the systems were simple lexicons and rule-based substitution.
 
 **Statistical machine translation** (1990s–2010s, slides 45–47). The core move is to learn a
-probabilistic model from data, and to break argmax_y P(y|x) with **Bayes rule** into
+probabilistic model from data, and to break the search for the best target sentence $y$
+given the source sentence $x$, $\arg\max_y P(y \mid x)$, with **Bayes rule** into
 
-    argmax_y P(x|y) · P(y)
+$$\arg\max_y P(x \mid y) \cdot P(y)$$
 
-- P(x|y) is the **translation model** — how words and phrases get translated (*fidelity*) —
-  learned from parallel data.
-- P(y) is the **language model** — how to write good English (*fluency*) — learned from
+- $P(x \mid y)$ is the **translation model** — how words and phrases get translated
+  (*fidelity*) — learned from parallel data.
+- $P(y)$ is the **language model** — how to write good English (*fluency*) — learned from
   monolingual data.
 
 Manning explains why this factorization made progress possible even though it looks like it
-just swapped *x* and *y* (≈1:00:41): the translation model can then be very simple — see
+just swapped $x$ and $y$ (≈1:00:41): the translation model can then be very simple — see
 *homme*, emit "man" or "person" with some probabilities — and needs to know nothing about
 word order or grammar in the target language, because **all the cleverness moves into the
 language model**. This is a direct payoff of the language-modeling machinery from lecture 5.
@@ -281,9 +302,9 @@ updating everything (slide 53). That is what "trained end-to-end" means here (�
 
 Formally (slide 52) seq2seq is a **conditional language model**: a language model because the
 decoder predicts the next target word, conditional because it is also conditioned on the
-source. It calculates P(y|x) directly:
+source. For target words $y_1, \dots, y_T$ it calculates $P(y \mid x)$ directly:
 
-    P(y|x) = P(y₁|x) · P(y₂|y₁,x) · P(y₃|y₁,y₂,x) ⋯ P(y_T|y₁,…,y_{T−1},x)
+$$P(y \mid x) = P(y_1 \mid x) \cdot P(y_2 \mid y_1, x) \cdot P(y_3 \mid y_1, y_2, x) \cdots P(y_T \mid y_1, \dots, y_{T-1}, x)$$
 
 Slide 51's point is that the **encoder-decoder** idea generalizes well beyond MT:
 summarization (long text → short text), dialogue (previous utterances → next utterance),

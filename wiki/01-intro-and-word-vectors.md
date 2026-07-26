@@ -169,15 +169,28 @@ predict that *into* precedes it, so the goal is only to do as well as possible �
 *crisis* should be likely after *banking crisis*, *skillet* should not (≈51:15).
 
 Turning that into math (≈52:03) gives a likelihood that is a product over every
-position and every word in the window. Three conventional adjustments follow: a
+position and every word in the window. Writing $T$ for the number of positions, $m$ for the
+window half-width, $w_t$ for the center word at position $t$ and $\theta$ for all the
+parameters (slide 28):
+
+$$L(\theta) = \prod_{t=1}^{T} \prod_{\substack{-m \le j \le m \\ j \ne 0}} P(w_{t+j} \mid w_t ; \theta)$$
+
+Three conventional adjustments follow: a
 minus sign, because everyone minimizes rather than maximizes; a logarithm, which
 turns the unwieldy product into a sum; and division by the number of words, so
 the objective does not scale with corpus size. The result is the **average
 negative log likelihood**, and minimizing it maximizes the probability of words
-in context (≈53:37–54:23).
+in context (≈53:37–54:23):
+
+$$J(\theta) = -\frac{1}{T} \log L(\theta) = -\frac{1}{T} \sum_{t=1}^{T} \sum_{\substack{-m \le j \le m \\ j \ne 0}} \log P(w_{t+j} \mid w_t ; \theta)$$
 
 The probability itself is defined by the **softmax** of the dot product between
-the outside and center vectors (≈55:57). Manning notes the dot-product notion of
+the outside and center vectors (≈55:57; slide 29). For a center word $c$ with center vector
+$v_c$ and an outside word $o$ with outside vector $u_o$, over a vocabulary $V$:
+
+$$P(o \mid c) = \frac{\exp(u_o^{\top} v_c)}{\sum_{w \in V} \exp(u_w^{\top} v_c)}$$
+
+Manning notes the dot-product notion of
 similarity is a strange one: it has to make *hotel* and *motel* similar, but also
 has to let *the* precede *student*, so *the* ends up "similar" to essentially
 every noun (≈56:44). See
@@ -189,7 +202,7 @@ Crucially, the word vectors are the *only* parameters of the model (≈55:11).
 There is no other machinery. And each word actually gets **two** vectors, one for
 when it is the center word and one for when it is an outside word, purely because
 it makes the math simpler (≈1:02:11). With a 400,000-word vocabulary and
-100-dimensional vectors, that is 400,000 × 2 × 100 = 80 million parameters.
+100-dimensional vectors, that is $400{,}000 \times 2 \times 100 = 80$ million parameters.
 
 Where do the vectors come from? You start with small random vectors and turn it
 into an optimization problem: compute the gradient of the objective with respect
@@ -209,19 +222,19 @@ PDF](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/cs224n-
 to read.
 
 The derivation takes the partial derivative of the log probability with respect
-to the center vector `v_c`. Splitting the log of the quotient gives a numerator
+to the center vector $v_c$. Splitting the log of the quotient gives a numerator
 term and a denominator term (**slide 34**). The numerator is easy: log and exp
-cancel, leaving the derivative of `uᵀv_c` with respect to `v_c`, which is just `u`.
-Manning justifies that componentwise — the dot product expands to `u₁v₁ + u₂v₂ + …`,
-so the derivative with respect to `v₁` is `u₁` and every other term vanishes
-(≈1:10:49–1:11:34; slide 34's margin note reads "Each term is zero except when
-i = j"). The denominator requires the chain rule twice: once for the log, once for
+cancel, leaving the derivative of $u^{\top} v_c$ with respect to $v_c$, which is just $u$.
+Manning justifies that componentwise — the dot product expands to
+$u_1 v_1 + u_2 v_2 + \cdots$, so the derivative with respect to $v_1$ is $u_1$ and every
+other term vanishes (≈1:10:49–1:11:34; slide 34's margin note reads "Each term is zero
+except when $i = j$"). The denominator requires the chain rule twice: once for the log, once for
 the exp inside the sum (≈1:12:20–1:15:33; **slide 35**, which flags "Important to
 change index" — the inner sum has to be re-indexed before differentiating).
 
 Recombining the two pieces reproduces the softmax, and the answer (**slide 36**) is
 
-> `u_o − Σ_x P(x | c) · u_x`
+$$\frac{\partial}{\partial v_c} \log P(o \mid c) = u_o - \sum_{x \in V} P(x \mid c)\, u_x$$
 
 which Manning reads as **observed minus expected** (≈1:17:56–1:18:42): the actual
 outside vector minus the average outside vector the model currently predicts,

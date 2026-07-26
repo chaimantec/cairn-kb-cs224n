@@ -11,11 +11,11 @@ Primary source: [lecture 4](04-dependency-parsing.md), slides 30–49
 
 Slide 30 lists four families:
 
-1. **Dynamic programming** — Eisner (1996) gives an O(n³) algorithm by producing parse items
-   with heads at the ends rather than the middle.
+1. **Dynamic programming** — Eisner (1996) gives an $O(n^3)$ algorithm, for a sentence of
+   $n$ words, by producing parse items with heads at the ends rather than the middle.
 2. **Graph algorithms** — build a minimum spanning tree over scored dependencies.
-   McDonald et al.'s (2005) MSTParser is O(n²) and scores dependencies independently with an
-   ML classifier.
+   McDonald et al.'s (2005) MSTParser is $O(n^2)$ and scores dependencies independently with
+   an ML classifier.
 3. **Constraint satisfaction** — eliminate edges failing hard constraints (Karlsson 1990).
 4. **Transition-based parsing**, also called deterministic dependency parsing — greedy
    choice of attachments guided by a machine learning classifier. MaltParser (Nivre et al.
@@ -32,20 +32,25 @@ dependencies with the head on the left or the right (≈54:16).
 
 The parser state, a **configuration**, has three parts:
 
-- a **stack** σ, written with its top to the **right**, starting as `[ROOT]`;
-- a **buffer** β, written with its top to the **left**, starting as the input sentence;
-- a set **A** of dependency arcs, starting empty.
+- a **stack** $\sigma$, written with its top to the **right**, starting as `[ROOT]`;
+- a **buffer** $\beta$, written with its top to the **left**, starting as the input sentence;
+- a set $A$ of dependency arcs, starting empty.
 
 The trick to remember is that the two data structures are written with their tops facing
-each other (≈55:01). The transitions:
+each other (≈55:01). The transitions, for input words $w_1, \dots, w_n$ and a relation
+label $r$ (slide 32):
 
-    Start:  σ = [ROOT], β = w₁ … wₙ, A = ∅
+$$\text{Start:} \quad \sigma = [\text{ROOT}], \quad \beta = w_1, \dots, w_n, \quad A = \emptyset$$
 
-    Shift        σ, wᵢ|β, A          →  σ|wᵢ, β, A
-    Left-Arc_r   σ|wᵢ|wⱼ, β, A       →  σ|wⱼ, β, A ∪ {r(wⱼ, wᵢ)}
-    Right-Arc_r  σ|wᵢ|wⱼ, β, A       →  σ|wᵢ, β, A ∪ {r(wᵢ, wⱼ)}
+$$
+\begin{aligned}
+\textbf{1. Shift} \quad && \sigma,\ w_i \mid \beta,\ A \quad &\Rightarrow \quad \sigma \mid w_i,\ \beta,\ A \\
+\textbf{2. Left-Arc}_r \quad && \sigma \mid w_i \mid w_j,\ \beta,\ A \quad &\Rightarrow \quad \sigma \mid w_j,\ \beta,\ A \cup \{r(w_j, w_i)\} \\
+\textbf{3. Right-Arc}_r \quad && \sigma \mid w_i \mid w_j,\ \beta,\ A \quad &\Rightarrow \quad \sigma \mid w_i,\ \beta,\ A \cup \{r(w_i, w_j)\}
+\end{aligned}
+$$
 
-    Finish: σ = [w], β = ∅
+$$\text{Finish:} \quad \sigma = [w], \quad \beta = \emptyset$$
 
 **Shift** moves the first buffer word onto the stack. **Left-Arc** makes the top of the
 stack the head of the item below it; **Right-Arc** makes the item below the head of the
@@ -66,7 +71,7 @@ Slides 33–34, ≈55:49–58:56:
 | Right-Arc | `[root] ate` | | `obj(ate → fish)` |
 | Right-Arc | `[root]` | | `root([root] → ate)` |
 
-Final: A = { nsubj(ate → I), obj(ate → fish), root([root] → ate) }.
+Final: $A = \{\text{nsubj}(\text{ate} \to \text{I}),\ \text{obj}(\text{ate} \to \text{fish}),\ \text{root}([\text{root}] \to \text{ate})\}$.
 
 The deck's "Nota bene" is the point of the whole exercise: at every step Manning made the
 **correct** next transition, but a real parser has to work out which one that is, by
@@ -80,9 +85,9 @@ Note also that arc-standard only ever builds **projective** trees (slide 38); se
 ## Choosing the next action
 
 Slide 35: each action is predicted by a discriminative classifier over the legal moves — at
-most 3 untyped choices, or |R| × 2 + 1 when the arcs are typed. In the simplest form there
-is **no search whatsoever**: predict, commit, move on. A beam search keeping *k* good parse
-prefixes at each step is slower but better.
+most 3 untyped choices, or $|R| \times 2 + 1$ when the arcs are typed, for a set $R$ of
+relation labels. In the simplest form there is **no search whatsoever**: predict, commit,
+move on. A beam search keeping $k$ good parse prefixes at each step is slower but better.
 
 The payoff is complexity. Each word is handled a constant number of times, so this is a
 **linear time** parsing algorithm — against the cubic time you pay to fully consider the
@@ -103,7 +108,7 @@ Slide 37, on *She saw the video lecture*. Write each word's head as an index (0 
 | 4 | video | 5 | nn | 5 | nsubj |
 | 5 | lecture | 2 | obj | 2 | ccomp |
 
-    Acc = # correct deps / # of deps
+$$\text{Acc} = \frac{\#\ \text{correct deps}}{\#\ \text{of deps}}$$
 
 - **UAS** — *unlabeled attachment score*: fraction of words assigned the correct head. Here
   4 of 5, so **80%**.
@@ -114,13 +119,19 @@ Slide 37, on *She saw the video lecture*. Write each word's head as an index (0 
 
 Nivre's 2005 parser used an older-style symbolic classifier — logistic regression or an SVM
 — over **indicator features**: conjunctions of one to three elements of the configuration
-(slide 36). For the configuration with *good* on top of the stack and *has* below it:
+(slide 36). Writing $s_1$ and $s_2$ for the top two stack items, $\mathrm{lc}(\cdot)$ for a
+leftmost child, and `.w`, `.t`, `.l` for a token's word, POS tag and dependency label, the
+configuration with *good* on top of the stack and *has* below it fires features like
 
-    s1.w = good ∧ s1.t = JJ
-    s2.w = has ∧ s2.t = VBZ ∧ s1.w = good
-    lc(s₂).t = PRP ∧ s₂.t = VBZ ∧ s₁.t = JJ
+$$
+\begin{aligned}
+& s_1.w = \text{good} \ \wedge\  s_1.t = \text{JJ} \\
+& s_2.w = \text{has} \ \wedge\  s_2.t = \text{VBZ} \ \wedge\  s_1.w = \text{good} \\
+& \mathrm{lc}(s_2).t = \text{PRP} \ \wedge\  s_2.t = \text{VBZ} \ \wedge\  s_1.t = \text{JJ}
+\end{aligned}
+$$
 
-These produce a binary vector of dimension 10⁶–10⁷. Slide 39 names the three problems:
+These produce a binary vector of dimension $10^6$–$10^7$. Slide 39 names the three problems:
 
 1. **Sparse** — conjoining particular words gives millions of features, each seen almost
    never. A feature might fire ten times in a million sentences (≈1:03:37).
@@ -135,7 +146,7 @@ The fix is a dense representation, and it delivers two distinct wins.
 
 ### First win: distributed representations
 
-Slide 41. Each word becomes a *d*-dimensional dense vector, so a configuration never seen in
+Slide 41. Each word becomes a $d$-dimensional dense vector, so a configuration never seen in
 training still resembles configurations that were. The step further is to embed the
 **part-of-speech tags and dependency labels** as well: real POS tag sets are much
 finer-grained than noun/verb/adjective, and NNS (plural noun) should end up near NN
@@ -144,10 +155,11 @@ discrete sets exhibit their own similarities. See
 [distributional semantics](distributional-semantics.md).
 
 The configuration becomes a vector by extracting a fixed set of tokens from the stack and
-buffer (slide 42) — the top two stack items s₁, s₂, the first buffer item b₁, and their
-leftmost and rightmost already-built children lc(s₁), rc(s₁), lc(s₂), rc(s₂) — then looking
+buffer (slide 42) — the top two stack items $s_1$, $s_2$, the first buffer item $b_1$, and
+their leftmost and rightmost already-built children $\mathrm{lc}(s_1)$, $\mathrm{rc}(s_1)$,
+$\mathrm{lc}(s_2)$, $\mathrm{rc}(s_2)$ — then looking
 up the word, POS and dependency-label embedding of each and **concatenating** them. Missing
-slots are ∅. This is the same concatenation move as the five-word window classifier of
+slots are $\emptyset$. This is the same concatenation move as the five-word window classifier of
 lecture 2 (≈1:11:24).
 
 ### Second win: a non-linear classifier
@@ -156,11 +168,16 @@ Slide 43. Traditional ML classifiers — Naïve Bayes, SVMs, logistic regression
 only give **linear decision boundaries**. A neural network with a hidden layer learns
 non-linear ones. See [activation functions](activation-functions.md).
 
-The architecture (slide 44) is a plain feed-forward multi-class classifier:
+The architecture (slide 44) is a plain feed-forward multi-class classifier, with $W$ and
+$b_1$ the hidden layer's weights and bias and $U$ and $b_2$ the output layer's:
 
-    x = lookup + concat of the extracted tokens
-    h = ReLU(Wx + b₁)
-    y = softmax(Uh + b₂)          over { Shift, Left-Arc_r, Right-Arc_r }
+$$
+\begin{aligned}
+x &= \text{lookup + concat of the extracted tokens} \\
+h &= \operatorname{ReLU}(W x + b_1) \\
+y &= \operatorname{softmax}(U h + b_2) \quad \text{over } \{\text{Shift}, \text{Left-Arc}_r, \text{Right-Arc}_r\}
+\end{aligned}
+$$
 
 The hidden layer re-represents the input — moving it around in an intermediate vector space
 — so that a linear softmax can separate it. The log loss (cross-entropy error) is
@@ -200,7 +217,7 @@ billed as "the world's most accurate parser":
 | Andor et al. 2016 | 94.61 | 92.79 |
 
 **Graph-based parsers (slides 47–48).** The other approach: compute a score for every
-possible head of every word — *n*² candidate dependencies in a sentence of length *n* — then
+possible head of every word — $n^2$ candidate dependencies in a sentence of length $n$ — then
 find the best tree with a minimum spanning tree algorithm, which also rules out cycles and
 disconnected fragments. For *The big cat sat*, picking the head of *big* means scoring arcs
 from ROOT (0.5), *The* (0.3), *cat* (2.0) and *sat* (0.8), and taking *cat*. Doing this well
@@ -210,7 +227,7 @@ later lectures.
 **Dozat and Manning (2017)** (slide 49) revived graph-based parsing in a neural setting with
 a biaffine scoring model, reaching **95.74 UAS / 94.08 LAS** — a bit over a percent better
 than Parsey McParseFace. It is slower than the transition-based parsers, because of those
-*n*² dependencies, and it is the parser in **Stanza**, Stanford's open-source NLP software
+$n^2$ dependencies, and it is the parser in **Stanza**, Stanford's open-source NLP software
 (≈1:18:22).
 
 ## Related pages

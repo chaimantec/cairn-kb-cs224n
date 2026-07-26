@@ -96,8 +96,8 @@ and a one-word window, every cell is 0 or 1 except where *I like* occurs twice.
 Each row of that matrix is already a word vector.
 
 People did exactly this, and the vectors are ungainly (lecture 2, ≈35:01). With
-400,000 words in the vocabulary the matrix is 400,000 × 400,000, which is vastly
-worse than the 400,000 × 100 of learned vectors. **Slide 17** adds the consequences
+400,000 words in the vocabulary the matrix is $400{,}000 \times 400{,}000$, which is vastly
+worse than the $400{,}000 \times 100$ of learned vectors. **Slide 17** adds the consequences
 beyond raw size: the vectors grow with the vocabulary, they need a lot of storage even
 though they are sparse, and — the subtler cost — **models trained on them have sparsity
 issues and are less robust**. The target it names is 25–1000 dimensions, "similar to
@@ -111,13 +111,13 @@ analysis — "document space".
 
 So the standard move is to reduce the dimensionality, which points at PCA and — since
 it works for a matrix of any shape — the **singular value decomposition** (≈36:35,
-**slide 18**, which notes this is HW1's method: X̂ is the best rank-*k* approximation to
-X in the least-squares sense, a classic linear algebra result, but expensive to compute
-for large matrices).
+**slide 18**, which notes this is HW1's method: for a co-occurrence matrix $X$, the
+truncation $\hat{X}$ is the best rank-$k$ approximation to $X$ in the least-squares sense, a
+classic linear algebra result, but expensive to compute for large matrices).
 
-SVD factors the matrix into three: two orthonormal matrices *U* and *V*, and a
-diagonal matrix of **singular values** ordered by size, which act as weights on
-the different dimensions. Keeping only the largest singular values and zeroing the
+SVD factors the matrix into three, $X = U \Sigma V^{\top}$: two orthonormal matrices $U$ and
+$V$, and a diagonal matrix $\Sigma$ of **singular values** ordered by size, which act as
+weights on the different dimensions. Keeping only the largest singular values and zeroing the
 rest gives a low-dimensional representation of each word (≈38:08).
 
 A student notes the example matrix should be square if it is
@@ -140,7 +140,7 @@ The core problem it names is that **function words** (*the, he, has*) are so fre
 that syntax swamps the signal. The fixes, several of which reappear in word2vec:
 
 - **Log the frequencies** rather than using raw counts.
-- **Cap them**: `min(X, t)` with t ≈ 100.
+- **Cap them**: $\min(X, t)$ with $t \approx 100$.
 - **Ignore the function words** entirely.
 - **Ramp the window**, so that nearer context words count for more than distant ones.
 - Use **Pearson correlations** instead of counts, then **set negative values to 0**.

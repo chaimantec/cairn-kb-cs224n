@@ -84,21 +84,22 @@ real *Wall Street Journal* sentence:
 four prepositional phrases follow the object, and each must attach to something earlier.
 The attachments Manning works through (≈19:27): *by Royal Trustco Ltd.* modifies *the
 acquisition*; *of Toronto* modifies *Royal Trustco Ltd.* — so a PP can modify an earlier PP,
-or the noun phrase inside it; *for $27 a share* goes back to modifying *the acquisition*;
+or the noun phrase inside it; *for \$27 a share* goes back to modifying *the acquisition*;
 and *at its monthly meeting* goes all the way back up to the approval.
 
 You do not get a free factorial choice of attachment points, because there is a restriction
 that **the dependencies must not cross**: once you have gone back further, you must stay
-equally far back or go further still (≈20:58). The resulting count is a **Catalan number**,
+equally far back or go further still (≈20:58). For $n$ attachments the resulting count is a
+**Catalan number**,
 
-    C_n = (2n)! / [(n+1)! n!]
+$$C_n = \frac{(2n)!}{(n+1)!\, n!}$$
 
 an exponentially growing series that shows up wherever a tree-like non-crossing constraint
-does — the number of triangulations of a polygon with *n*+2 sides, and the triangulation of
+does — the number of triangulations of a polygon with $n+2$ sides, and the triangulation of
 probabilistic graphical models in CS228.
 
 *(The transcript's spoken counts of readings for four and five prepositional phrases do not
-match this formula, which gives C₄ = 14 and C₅ = 42, and the deck prints no table of values;
+match this formula, which gives $C_4 = 14$ and $C_5 = 42$, and the deck prints no table of values;
 the [transcript](../raw/transcripts/04-dependency-parsing.md) marks the discrepancy at
 ≈21:43 rather than resolving it.)*
 

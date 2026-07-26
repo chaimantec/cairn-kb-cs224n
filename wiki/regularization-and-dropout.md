@@ -8,11 +8,13 @@ practitioners believe.**
 
 ## The classic view
 
-A full loss function includes a regularization term over all parameters θ. The most common
-is **L2 regularization** (slide 7):
+A full loss function includes a regularization term over all parameters $\theta$. The most
+common is **L2 regularization** (slide 7):
 
-    J(θ) = (1/N) Σᵢ −log( e^{f_{y_i}} / Σ_c e^{f_c} )  +  λ Σ_k θ_k²
+$$J(\theta) = \frac{1}{N} \sum_{i=1}^{N} -\log \left( \frac{e^{f_{y_i}}}{\sum_c e^{f_c}} \right) + \lambda \sum_k \theta_k^2$$
 
+where $N$ is the number of training examples, $f_c$ the score the model gives class $c$,
+$y_i$ the correct class for example $i$, and $\lambda$ the regularization strength.
 The term says: among models that explain the data, prefer the one with **small parameter
 weights**. Classically its job is to prevent **overfitting** — the model does very well on
 the training data but generalizes badly to data it has not seen. The textbook picture on the
@@ -62,15 +64,20 @@ which "everyone's favorite is dropout".
 **Srivastava, Hinton, Krizhevsky, Sutskever and Salakhutdinov, 2012/JMLR 2014** (slides 8–9).
 
 **At training time**, for each data point each time, randomly set inputs to 0 with
-probability *p* — the **dropout ratio**. Slide 8 gives *p* = 0.5 typically, and less (around
+probability $p$ — the **dropout ratio**. Slide 8 gives $p = 0.5$ typically, and less (around
 0.15) for the input layer. Technically you sample a random mask of zeros and ones each time
 and take its **Hadamard product** with the data, so different components disappear on
 different passes (≈14:01).
 
-**At test time** you drop nothing, and multiply all weights by 1 − *p* to compensate for the
+**At test time** you drop nothing, and multiply all weights by $1 - p$ to compensate for the
 fact that you used to be dropping things. Slide 8's arithmetic makes this concrete: where a
-training pass with x₂ and x₄ zeroed computes y = w₁x₁ + w₃x₃ + b, the test-time computation
-is y = (1 − p)(w₁x₁ + w₂x₂ + w₃x₃ + w₄x₄).
+training pass with $x_2$ and $x_4$ zeroed computes
+
+$$y = w_1 x_1 + w_3 x_3 + b$$
+
+the test-time computation is
+
+$$y = (1 - p)(w_1 x_1 + w_2 x_2 + w_3 x_3 + w_4 x_4)$$
 
 A practical caveat from lecture (≈13:14): the formulation on slide 8 is the **original**
 one; the version used in Assignment 2 is the way deep learning packages now do it, and a

@@ -43,14 +43,17 @@ nephew–niece, uncle–aunt, man–woman, sir–madam, heir–heiress, king–q
 emperor–empress, duke–duchess, earl–countess, all as near-parallel lines), but for
 other relations it works sometimes and not others.
 
-**Slide 25** gives the scoring rule, which is worth reading closely:
+**Slide 25** gives the scoring rule, which is worth reading closely. For an analogy
+$a : b :: c : d$ — *man* is to *king* as *woman* is to what — with $x_w$ the vector of word
+$w$, the answer is the index $i$ maximizing
 
-> `d = arg max_i [ (x_b − x_a + x_c)ᵀ x_i ] / ‖x_b − x_a + x_c‖`
+$$d = \arg\max_i \frac{(x_b - x_a + x_c)^{\top} x_i}{\lVert x_b - x_a + x_c \rVert}$$
 
 Two details on that slide are easy to miss and both matter. First, the metric is
 **cosine distance after addition**, not raw dot product — hence the normalization.
 Second, marked with three exclamation marks on the slide: the search **discards the
-input words**. Without that, `king − man + woman` would most often return *king*
+input words**. Without that,
+$\text{king} - \text{man} + \text{woman}$ would most often return *king*
 itself, since the result vector stays nearest its own starting point. The slide also
 raises the honest objection: *what if the information is there but not linear?* — in
 which case a linear analogy test will score the vectors badly even though they encode

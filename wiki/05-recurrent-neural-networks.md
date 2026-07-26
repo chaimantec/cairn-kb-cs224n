@@ -37,7 +37,8 @@ fifteen years and that nearly everyone had abandoned (≈7:00).
 
 The classic story (slide 7) is that regularization exists to prevent **overfitting**:
 training error falls monotonically, test error falls and then rises, and an L2 penalty
-λ Σ θ² keeps the parameters small enough that the rise is smaller.
+$\lambda \sum_k \theta_k^2$ — added to the loss, with $\lambda$ controlling its strength —
+keeps the parameters small enough that the rise is smaller.
 
 Manning says flatly that modern neural network people **do not believe this picture**
 (≈10:54). With billions of parameters, classical statistics says you cannot estimate them
@@ -56,8 +57,8 @@ why the field turned to **dropout**.
 
 At training time, for each example, randomly zero some of the inputs to each layer — you
 sample a mask of zeros and ones and take its **Hadamard product** with the data (≈14:01).
-Slide 8 gives *p* = 0.5 typically, less (around 0.15) for the input layer. At test time you
-drop nothing and rescale the weights by 1 − *p* instead.
+Slide 8 gives a dropout ratio of $p = 0.5$ typically, less (around 0.15) for the input
+layer. At test time you drop nothing and rescale the weights by $1 - p$ instead.
 
 Manning gives three ways to think about why it works (≈15:33–17:04):
 
@@ -90,7 +91,8 @@ Zeros leave the network symmetric — every element of the matrix undergoes the 
 operation, so a whole vector of features behaves like one feature copied many times, and
 there is no gradient signal that breaks the tie (≈19:26). The scale matters: small enough
 not to blow up under repeated multiplication, large enough not to vanish. **Xavier
-initialization** sets Var(W) = 2/(n_in + n_out). Manning notes this used to be treated as
+initialization** sets $\mathrm{Var}(W_i) = \frac{2}{n_{\text{in}} + n_{\text{out}}}$, where
+$n_{\text{in}}$ is the fan-in and $n_{\text{out}}$ the fan-out. Manning notes this used to be treated as
 important and largely goes away later, once **layer normalization** removes the need to be
 careful — though you must still initialize to *something*.
 
@@ -109,13 +111,15 @@ particular words only turn up occasionally (≈23:59). Start around learning rat
 Two equivalent definitions (slides 13–14):
 
 1. A system that puts a **probability distribution over the next word**, given the preceding
-   words: P(x⁽ᵗ⁺¹⁾ | x⁽ᵗ⁾, …, x⁽¹⁾), where x⁽ᵗ⁺¹⁾ ranges over the vocabulary and the
-   probabilities sum to one.
+   words, $P(x^{(t+1)} \mid x^{(t)}, \dots, x^{(1)})$, where $x^{(t+1)}$ ranges over the
+   vocabulary and the probabilities sum to one.
 2. A system that **assigns a probability to a piece of text**.
 
-The second follows from the first by the chain rule:
-P(x⁽¹⁾, …, x⁽ᵀ⁾) = ∏ₜ P(x⁽ᵗ⁾ | x⁽ᵗ⁻¹⁾, …, x⁽¹⁾) — each factor of the decomposition is exactly
-what definition 1 provides (≈26:23).
+The second follows from the first by the chain rule of probability, for a text of $T$ words:
+
+$$P\left(x^{(1)}, \dots, x^{(T)}\right) = \prod_{t=1}^{T} P\left(x^{(t)} \mid x^{(t-1)}, \dots, x^{(1)}\right)$$
+
+Each factor of the decomposition is exactly what definition 1 provides (≈26:23).
 
 This is not a 2022 invention. Language models have been central to NLP since at least the
 80s and the idea goes back to the 50s (≈27:10). Your phone keyboard's next-word suggestions
@@ -125,27 +129,28 @@ and Google's query autocomplete are language models (slides 15–16). See
 ## n-gram language models
 
 The pre-2012 answer (slides 17–22). Make a **Markov assumption** — the next word depends
-only on the preceding *n* − 1 words — and estimate by counting in a corpus:
+only on the preceding $n - 1$ words — and estimate by counting in a corpus:
 
-    P(w | students opened their) = count(students opened their w) / count(students opened their)
+$$P(w \mid \text{students opened their}) = \frac{\operatorname{count}(\text{students opened their } w)}{\operatorname{count}(\text{students opened their})}$$
 
 Slide 19's worked example: if "students opened their" occurred 1000 times, "students opened
-their books" 400 and "students opened their exams" 100, then P(books | …) = 0.4 and
-P(exams | …) = 0.1. The slide's own annotation is the objection — *should we have discarded
+their books" 400 and "students opened their exams" 100, then
+$P(\text{books} \mid \cdot) = 0.4$ and
+$P(\text{exams} \mid \cdot) = 0.1$. The slide's own annotation is the objection — *should we have discarded
 the "proctor" context?* Having thrown away "as the proctor started the clock", the model
 prefers *books*, when the discarded context made *exams* far more likely (≈33:23).
 
 Two problems that get worse as *n* grows (slides 20–21):
 
 - **Sparsity.** Unseen numerator → probability zero, which is fatal because any computation
-  involving it collapses to zero; patched by **smoothing** (add a small δ, e.g. 0.25, to
-  every count). Unseen denominator → the whole distribution is undefined; patched by
+  involving it collapses to zero; patched by **smoothing** (add a small $\delta$, e.g. 0.25,
+  to every count). Unseen denominator → the whole distribution is undefined; patched by
   **backoff**, conditioning on a shorter context instead.
 - **Storage.** You must store counts for every *n*-gram seen; the number grows
   exponentially in context size.
 
-These conflicting pressures are why *n* maxed out around 5. Google's *n*-gram release, built
-on a trillion-word web corpus, stopped at *n* = 5 (≈38:00).
+These conflicting pressures are why $n$ maxed out around 5. Google's *n*-gram release, built
+on a trillion-word web corpus, stopped at $n = 5$ (≈38:00).
 
 The generation demo (slides 23–26) is the memorable part. From "today the", sample
 repeatedly from the stored distributions and you get: *today the price of gold per ton,
@@ -161,11 +166,15 @@ for a better *n*-gram model (≈43:25). See
 
 The obvious neural fix (slides 27–30) reuses the window classifier from lecture 2: take a
 fixed window of words, look up embeddings, concatenate, hidden layer, softmax — except the
-softmax is now over the whole vocabulary rather than a binary label.
+softmax is now over the whole vocabulary rather than a binary label. Writing $e^{(i)}$ for
+the embedding of the $i$-th window word, $W$ and $b_1$ for the hidden layer, $U$ and $b_2$
+for the output layer, and $|V|$ for the vocabulary size:
 
-    e = [e⁽¹⁾; e⁽²⁾; e⁽³⁾; e⁽⁴⁾]
-    h = f(We + b₁)
-    ŷ = softmax(Uh + b₂) ∈ ℝ^|V|
+$$e = \left[e^{(1)}; e^{(2)}; e^{(3)}; e^{(4)}\right]$$
+
+$$h = f(W e + b_1)$$
+
+$$\hat{y} = \operatorname{softmax}(U h + b_2) \in \mathbb{R}^{|V|}$$
 
 This is roughly Bengio et al. (2000/2003). It removes the sparsity problem and the storage
 cost. It did not take off at the time, because with a fixed window it was not that different
@@ -174,7 +183,7 @@ out of counting *n*-grams over hundreds of billions of words (≈47:16).
 
 Two problems remain (slide 30). The window is still fixed and no fixed window is ever big
 enough. And — the more interesting objection — **there is no symmetry in how inputs are
-processed**: x⁽¹⁾ and x⁽²⁾ are multiplied by completely different sub-parts of *W*, so what
+processed**: $x^{(1)}$ and $x^{(2)}$ are multiplied by completely different sub-parts of $W$, so what
 the model learns about "student" in position 1 is learned separately from what it learns
 about "student" in position 2, even though the evidence they provide is the same (≈48:48).
 
@@ -183,12 +192,16 @@ about "student" in position 2, even though the evidence they provide is the same
 The core idea (slide 31): **apply the same weights repeatedly**. A simple RNN language
 model (slide 32) is
 
-    e⁽ᵗ⁾ = E x⁽ᵗ⁾
-    h⁽ᵗ⁾ = σ( W_h h⁽ᵗ⁻¹⁾ + W_e e⁽ᵗ⁾ + b₁ )
-    ŷ⁽ᵗ⁾ = softmax( U h⁽ᵗ⁾ + b₂ ) ∈ ℝ^|V|
+$$e^{(t)} = E x^{(t)}$$
 
-with h⁽⁰⁾ the initial hidden state, which can simply be zeros. The nonlinearity σ has most
-commonly been **tanh** for RNNs, since it is balanced across positive and negative (≈54:14).
+$$h^{(t)} = \sigma\left(W_h h^{(t-1)} + W_e e^{(t)} + b_1\right)$$
+
+$$\hat{y}^{(t)} = \operatorname{softmax}\left(U h^{(t)} + b_2\right) \in \mathbb{R}^{|V|}$$
+
+where $E$ is the embedding matrix, $W_h$ the recurrent weight matrix, $W_e$ the input weight
+matrix, and $h^{(0)}$ the initial hidden state, which can simply be zeros. The nonlinearity
+$\sigma$ has most commonly been **tanh** for RNNs, since it is balanced across positive and
+negative (≈54:14).
 See [activation functions](activation-functions.md).
 
 The hidden state accumulates a memory of everything seen so far, and crucially the *same*
@@ -209,12 +222,12 @@ See [recurrent neural networks](recurrent-neural-networks.md).
 
 ## Training an RNN language model
 
-The loss at step *t* is the cross-entropy between the predicted distribution and the true
+The loss at step $t$ is the cross-entropy between the predicted distribution and the true
 next word, which for a one-hot target reduces to the negative log probability of that word;
-the overall loss is the average over positions (slide 34). See
+the overall loss is the average over the $T$ positions (slide 34). See
 [softmax and cross-entropy](softmax-and-cross-entropy.md).
 
-    J⁽ᵗ⁾(θ) = − log ŷ⁽ᵗ⁾_{x_{t+1}}       J(θ) = (1/T) Σₜ J⁽ᵗ⁾(θ)
+$$J^{(t)}(\theta) = -\log \hat{y}^{(t)}_{x_{t+1}} \qquad\qquad J(\theta) = \frac{1}{T} \sum_{t=1}^{T} J^{(t)}(\theta)$$
 
 Slides 35–39 walk this over *the students opened their exams*. The key procedural point,
 named on slide 39, is **teacher forcing**: at each step the model predicts a distribution,
@@ -230,18 +243,22 @@ a batch of equal-length segments packs into a matrix (≈1:04:15). A student the
 sharp observation that this reintroduces a limit on context — and Manning agrees: **cutting
 into segments is making a Markov assumption again** (≈1:13:35).
 
-**Backpropagation through time** (slides 41–43). W_h appears at every timestep, so the
+**Backpropagation through time** (slides 41–43). $W_h$ appears at every timestep, so the
 question is the derivative with respect to a repeated weight. The answer is that the
-gradient w.r.t. a repeated weight is the **sum** of the gradients w.r.t. each place it
-appears — which is the "gradients sum at outward branches" rule from lecture 3, applied to
-identity copies of W_h whose partials with respect to each other are 1 (≈1:06:36). In
+gradient with respect to a repeated weight is the **sum** of the gradients with respect to
+each place it appears,
+
+$$\frac{\partial J^{(t)}}{\partial W_h} = \sum_{i=1}^{t} \left. \frac{\partial J^{(t)}}{\partial W_h} \right|_{(i)}$$
+
+which is the "gradients sum at outward branches" rule from lecture 3, applied to
+identity copies of $W_h$ whose partials with respect to each other are 1 (≈1:06:36). In
 practice this is often **truncated** after ~20 timesteps: the forward pass still uses the
 full context, only the backward pass is cut short (≈1:08:09). See
 [backpropagation](backpropagation.md).
 
 ## Generating with an RNN-LM
 
-Sampling (slide 44) works like the *n*-gram case: sample from ŷ⁽ᵗ⁾ and feed the sampled word
+Sampling (slide 44) works like the *n*-gram case: sample from $\hat{y}^{(t)}$ and feed the sampled word
 back in as the next input — a **roll-out**. Manning notes he cheated in the earlier diagram
 by starting from "the"; properly you start from a `<s>` pseudo-word with its own embedding,
 and stop when you generate `</s>` (≈1:08:57). This, he points out, is exactly what ChatGPT
@@ -258,7 +275,7 @@ Stoner Blue, Burble Simp, Stanky Bean and Turdly (≈1:17:27).
 ## Evaluation: perplexity
 
 Slide 49 defines **perplexity** as the inverse probability of the corpus, normalized by
-number of words — equivalently exp(J(θ)), the exponential of the cross-entropy loss. Lower
+number of words — equivalently $\exp(J(\theta))$, the exponential of the cross-entropy loss. Lower
 is better. Slide 50's table shows the progression that matters: interpolated Kneser-Ney
 5-gram at 67.6, RNN-based hybrids around 51, and LSTMs at 43.7 and 30. Manning treats this
 table in more depth at the start of [lecture 6](06-sequence-to-sequence-models.md). See
@@ -266,16 +283,22 @@ table in more depth at the start of [lecture 6](06-sequence-to-sequence-models.m
 
 ## Vanishing and exploding gradients
 
-Slides 51–56 build the intuition one chain-rule factor at a time: ∂J⁽⁴⁾/∂h⁽¹⁾ is a product
-of Jacobians ∂h⁽ᵗ⁾/∂h⁽ᵗ⁻¹⁾, and if those are small the gradient signal shrinks the further
-back it propagates.
+Slides 51–56 build the intuition one chain-rule factor at a time:
+$\partial J^{(4)} / \partial h^{(1)}$ is a product of Jacobians
+$\partial h^{(t)} / \partial h^{(t-1)}$, and if those are small the gradient signal shrinks
+the further back it propagates.
 
-The proof sketch (slides 57–58) makes it precise in the linear case. If σ is the identity,
-∂h⁽ᵗ⁾/∂h⁽ᵗ⁻¹⁾ = W_h exactly, so the gradient from step *i* back to step *j* carries a factor
-of **W_h^ℓ** where ℓ = *i* − *j*. Written in the eigenvector basis of W_h that factor is
-Σ cᵢ λᵢ^ℓ qᵢ, which goes to zero for large ℓ whenever the eigenvalues are less than 1
-(sufficient but not necessary). For nonlinear σ the same argument holds with λᵢ < γ for some
-γ depending on dimensionality and σ. Source: Pascanu et al. (2013).
+The proof sketch (slides 57–58) makes it precise in the linear case. If $\sigma$ is the
+identity, $\partial h^{(t)} / \partial h^{(t-1)} = W_h$ exactly, so the gradient from step
+$i$ back to step $j$ carries a factor of $W_h^{\ell}$ where $\ell = i - j$:
+
+$$\frac{\partial J^{(i)}(\theta)}{\partial h^{(j)}} = \frac{\partial J^{(i)}(\theta)}{\partial h^{(i)}} W_h^{\ell}$$
+
+Written in the eigenvector basis of $W_h$, with eigenvalues $\lambda_i$ and eigenvectors
+$q_i$, that factor is $\sum_i c_i \lambda_i^{\ell} q_i$, which goes to zero for large $\ell$
+whenever the eigenvalues are less than 1 (sufficient but not necessary). For nonlinear
+$\sigma$ the same argument holds with $\lambda_i < \gamma$ for some $\gamma$ depending on
+dimensionality and $\sigma$. Source: Pascanu et al. (2013).
 
 **Why it matters** (slides 59–60): gradient signal from far away is much smaller than
 gradient signal from close by, so the model is updated only with respect to near effects. On

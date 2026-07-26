@@ -37,8 +37,13 @@ the gradient at different points can point in quite different directions, which
 is why the calculus is necessary (≈3:58).
 
 Plain **gradient descent** subtracts a small multiple of the gradient from the
-parameters, where the multiplier α is the step size or learning rate — typically
-something like 10⁻³ to 10⁻⁵ (≈4:46). The learning rate must be small because a
+parameters (slide 33),
+
+$$\theta^{\text{new}} = \theta^{\text{old}} - \alpha \nabla_{\theta} J(\theta)$$
+
+where $\theta$ is the parameter vector, $J(\theta)$ the cost function, and the multiplier
+$\alpha$ the step size or learning rate — typically
+something like $10^{-3}$ to $10^{-5}$ (≈4:46). The learning rate must be small because a
 large step can overshoot the minimum entirely and land somewhere worse than where
 you started.
 
@@ -76,8 +81,8 @@ knows is which words tend to appear in the neighbourhood of which other words.
 A question from lecture 1 gets answered properly at ≈25:49. If a word used the
 same vector as center and outside word, then while summing over every candidate
 outside word for the softmax normalization you would eventually hit the center
-word itself, producing a quadratic term — `exp` of the vector dotted with itself —
-where every other term is linear. It is not intractable, just messier, so the
+word itself, producing a quadratic term — $\exp(v_c^{\top} v_c)$, the vector dotted with
+itself — where every other term is linear. It is not intractable, just messier, so the
 authors kept the two sets disjoint. Manning notes it actually works slightly
 better to tie them, but in practice people estimate them separately and average
 the two at the end (≈21:57). The two end up very close anyway, because as you
@@ -102,8 +107,13 @@ therefore considers alternatives: hierarchical softmax, which Manning skips, and
 
 The idea of skip-gram with negative sampling is to replace the full normalization
 with a handful of simple logistic regressions: the true context word should score
-high, and a few randomly chosen words should score low. The softmax is replaced by
-the **logistic (sigmoid) function**, which maps any real number to a probability
+high, and a few randomly chosen words should score low. Slide 12 writes the objective
+for $K$ sampled negatives as
+
+$$J_{\text{neg-sample}}(u_o, v_c, U) = -\log \sigma(u_o^{\top} v_c) - \sum_{k \in \{K \text{ sampled indices}\}} \log \sigma(-u_k^{\top} v_c)$$
+
+The softmax is replaced by the **logistic (sigmoid) function**
+$\sigma(x) = 1/(1 + e^{-x})$, which maps any real number to a probability
 between 0 and 1. Manning notes "sigmoid" only means s-shaped and there are
 infinitely many such functions — the one actually used is the logistic function
 (≈29:37). The negative terms exploit the symmetry of the logistic function:
@@ -114,7 +124,9 @@ How to choose the negatives matters (≈31:10). Sampling uniformly from all 400,
 words is wrong, because word frequency varies enormously — you want the **unigram
 distribution**, roughly how common each word is, under which you would pick *the*
 about 10% of the time. But the standard word2vec recipe does something better:
-raise the unigram probability to the power of **3/4**. Manning puts the question
+raise the unigram probability to the power of **3/4**, sampling from
+$P(w) = U(w)^{3/4} / Z$ where $U$ is the unigram distribution and $Z$ normalizes it
+(slide 12). Manning puts the question
 to the room and confirms the answer (≈32:41): this somewhat raises the probability
 of less frequent words, moving partway from true relative frequency toward uniform
 without going all the way. Going all the way would correspond to an exponent of
@@ -170,13 +182,13 @@ each word occurs in the context of each other word (≈33:28). With the toy corp
 cell is 0 or 1 except where *I like* occurs twice. Each row is then a word vector.
 
 People have done exactly that, but the vectors are ungainly (≈35:01): with a
-400,000-word vocabulary the matrix is 400,000 × 400,000, far worse than
-400,000 × 100. So the standard move is to reduce the dimensionality, which points
+400,000-word vocabulary the matrix is $400{,}000 \times 400{,}000$, far worse than
+$400{,}000 \times 100$. So the standard move is to reduce the dimensionality, which points
 at PCA and, for a matrix of any shape, the **singular value decomposition**
-(≈36:35). SVD rewrites the matrix as a product of three matrices, two
-orthonormal and one diagonal of singular values ordered by size. Zeroing out the
-smallest singular values leaves a low-dimensional representation of each word
-(≈38:08).
+(≈36:35). SVD rewrites the co-occurrence matrix $X$ as a product of three matrices,
+$X = U \Sigma V^{\top}$, with $U$ and $V$ orthonormal and $\Sigma$ diagonal, holding the
+singular values ordered by size. Zeroing out the smallest singular values leaves a
+low-dimensional representation of each word (≈38:08).
 
 This was explored well before neural word vectors, under the name **latent
 semantic analysis**, and it half worked but never worked well (≈38:53). A student
@@ -283,14 +295,14 @@ form such as a Wikipedia page, which the lecture does not cover (≈1:04:22).
 The architecture is a **window classifier** (≈1:05:07): take the word plus a
 couple of words of context each side, look up their word vectors, and feed the
 result into a classifier that decides location or not-location. This is supervised
-learning — labelled examples `xᵢ` with classes `yᵢ`, where "I love Paris Hilton
+learning — labelled examples $x_i$ with classes $y_i$, where "I love Paris Hilton
 greatly" is negative and "I visit Paris every spring" is positive, and it is
 always the middle word being classified (≈1:06:39). He keeps it to two classes
 deliberately, since the same example is reused in the next lecture.
 
 The important contrast is with conventional classifiers (≈1:08:13). Logistic
 regression, softmax classifiers, SVMs, naive Bayes — these are almost all
-**linear** classifiers: you learn weights W, the inputs are fixed, and the
+**linear** classifiers: you learn weights $W$, the inputs are fixed, and the
 decision boundary is linear. A **neural** classifier learns the weights *and* the
 distributed representations of the words, so it can move the words around in the
 space. The consequence (≈1:09:45) is that the classifier is linear in terms of the
@@ -298,17 +310,19 @@ final re-represented vectors but nonlinear in terms of the original input space,
 which lets it express much more complex functions.
 
 Concretely (≈1:09:45), for "museums in Paris are amazing": look up the five word
-vectors and concatenate them, giving 500 dimensions if the vectors are
+vectors and concatenate them into $x$, giving 500 dimensions if the vectors are
 100-dimensional. Multiply by a matrix and add a bias, then apply a nonlinearity
-such as the logistic function — if W is 8 × 500 the result is a much smaller
-hidden vector. Multiply that by another vector to get a score, and push the score
+$f$ such as the logistic function — if $W$ is $8 \times 500$ the result
+$h = f(Wx + b)$ is a much smaller hidden vector. Multiply that by another vector $u$ to get
+a score $s = u^{\top} h$, and push the score
 through the logistic function to get the probability that the middle word is a
 location.
 
 One forward-looking note (≈1:11:19): everything so far has been framed as log
 likelihood and negative log likelihood, but in PyTorch you will use
 **cross-entropy loss**. Cross entropy comes from information theory and compares a
-true distribution p against your model's distribution q. In the special case where
+true distribution $p$ against your model's distribution $q$, as
+$H(p, q) = -\sum_c p(c) \log q(c)$. In the special case where
 the labels are one-hot — probability 1 for the right class, 0 elsewhere — every
 term in the sum vanishes except the log probability your model assigns to the
 correct class, which is exactly the log likelihood. See

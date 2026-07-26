@@ -72,9 +72,10 @@ Four kinds of ambiguity get a headline each:
   for Olympics beach volleyball* — the beach, or the body?
 
 PP attachment is the one that scales badly. In *The board approved its acquisition by Royal
-Trustco Ltd. of Toronto for $27 a share at its monthly meeting*, four prepositional phrases
-follow the object, and each must attach somewhere earlier (slide 12). The count of legal
-analyses is a **Catalan number**, C_n = (2n)!/[(n+1)!n!] — exponential growth, and the same
+Trustco Ltd. of Toronto for \$27 a share at its monthly meeting*, four prepositional phrases
+follow the object, and each must attach somewhere earlier (slide 12). For $n$ attachments the
+count of legal analyses is a **Catalan number**, $C_n = \frac{(2n)!}{(n+1)!\,n!}$ —
+exponential growth, and the same
 series that shows up in polygon triangulation, for the same reason: the arcs cannot cross
 (≈20:58). Manning's point is that a human reads a sentence like this over their corn flakes
 without their brain exploding over the alternatives (≈21:43). See
@@ -168,14 +169,14 @@ constraint. **The parser built in this course is projective-only** (≈53:29).
 
 ## Transition-based parsing
 
-Of the four families on slide 30 — dynamic programming (Eisner 1996, O(n³)), graph
+Of the four families on slide 30 — dynamic programming (Eisner 1996, $O(n^3)$), graph
 algorithms (MSTParser), constraint satisfaction, and transition-based parsing — the last is
 what the course uses, because it is fast and its machine learning is simple.
 
-The **arc-standard** system (Nivre 2003; slides 31–32) keeps three things: a **stack** σ
-written with its top to the right, starting with ROOT; a **buffer** β written with its top
-to the left, starting with the input sentence; and a set **A** of dependency arcs, starting
-empty. Three actions:
+The **arc-standard** system (Nivre 2003; slides 31–32) keeps three things: a **stack**
+$\sigma$ written with its top to the right, starting with ROOT; a **buffer** $\beta$ written
+with its top to the left, starting with the input sentence; and a set $A$ of dependency arcs,
+starting empty. Three actions:
 
 - **Shift** — move the first word of the buffer onto the stack.
 - **Left-Arc**_r — the top of the stack becomes the head of the item below it; add that arc
@@ -196,7 +197,7 @@ So the question is how to choose, and the answer is a classifier over legal move
 (slide 35). This gives **linear-time parsing**, since each word is dealt with a constant
 number of times — against the cubic time you pay to fully consider context-free parses
 (≈1:01:19). In its simplest form there is **no search at all**: you just predict the next
-transition each time and commit. A beam search keeping *k* prefixes helps, at a cost in
+transition each time and commit. A beam search keeping $k$ prefixes helps, at a cost in
 speed. Nivre's result was that machine learning is good enough that greedy prediction still
 yields an accurate parser. See [transition-based parsing](transition-based-parsing.md).
 
@@ -228,7 +229,7 @@ and its POS is JJ", "the top of the stack is *good* and the second item is the v
 The neural parser (Chen and Manning 2014) fixes all three with a dense representation.
 Two wins:
 
-**Distributed representations** (slide 41). Words become *d*-dimensional embeddings, so a
+**Distributed representations** (slide 41). Words become $d$-dimensional embeddings, so a
 configuration never seen before still resembles ones that were. The step beyond that is to
 give **part-of-speech tags and dependency labels** their own embeddings too: real POS tag
 sets are fine-grained, and NNS (plural noun) should end up close to NN (singular noun),
@@ -243,10 +244,12 @@ five-word window classifier of lecture 2 (≈1:11:24).
 
 **A non-linear classifier** (slide 43). Everyone else's parsers used linear classifiers —
 SVMs, logistic regression — which only give linear decision boundaries. The architecture
-(slide 44) is a plain feed-forward network:
+(slide 44) is a plain feed-forward network, with $x$ the concatenated embeddings, $W$ and
+$b_1$ the hidden layer's weights and bias, and $U$ and $b_2$ the output layer's:
 
-    h = ReLU(Wx + b₁)
-    y = softmax(Uh + b₂)
+$$h = \operatorname{ReLU}(W x + b_1)$$
+
+$$y = \operatorname{softmax}(U h + b_2)$$
 
 over the three transition types, with the log loss backpropagated all the way into the
 embeddings. The hidden layer re-represents the input so that a linear softmax can separate
@@ -277,7 +280,7 @@ comment is that it blew his mind that dependency parsing got a full tech-press P
 and that the silly name worked very well for media pickup (≈1:14:29).
 
 **Graph-based parsers** take the other approach (slides 47–48): score every possible head
-for every word — *n*² candidate dependencies — then find the best tree with a minimum
+for every word — $n^2$ candidate dependencies — then find the best tree with a minimum
 spanning tree algorithm, which also rules out cycles and disconnected pieces. Doing this
 well needs good *contextual* representations of each word token, which the course develops
 in later lectures. The neural version, **Dozat and Manning (2017)**, uses a biaffine

@@ -29,18 +29,18 @@ back in as the next step's input.
 Slide 52 gives the formal description, and both halves of the name earn their place:
 
 - **Language model**, because the decoder is predicting the next word of the target
-  sentence *y*.
-- **Conditional**, because its predictions are *also* conditioned on the source sentence *x*.
+  sentence $y$.
+- **Conditional**, because its predictions are *also* conditioned on the source sentence $x$.
 
-So NMT directly calculates P(y|x):
+So NMT directly calculates $P(y \mid x)$, where $y_1, \dots, y_T$ are the target words:
 
-    P(y|x) = P(y₁|x) · P(y₂|y₁,x) · P(y₃|y₁,y₂,x) ⋯ P(y_T | y₁,…,y_{T−1}, x)
+$$P(y \mid x) = P(y_1 \mid x) \cdot P(y_2 \mid y_1, x) \cdot P(y_3 \mid y_1, y_2, x) \cdots P(y_T \mid y_1, \dots, y_{T-1}, x)$$
 
 Each factor is "the probability of the next target word, given the target words so far and
-the source sentence *x*". Compare this with
-[statistical machine translation](machine-translation.md), which had to factor P(y|x) with
-Bayes rule into a translation model and a language model learned separately; the neural model
-learns the whole thing at once.
+the source sentence $x$". Compare this with
+[statistical machine translation](machine-translation.md), which had to factor
+$P(y \mid x)$ with Bayes rule into a translation model and a language model learned
+separately; the neural model learns the whole thing at once.
 
 ## Training end-to-end
 
@@ -53,8 +53,9 @@ The procedure (≈1:08:29):
 1. Take a sentence and its translation from parallel text.
 2. Run the encoder over the source, then the decoder over the target.
 3. At each decoder position, ask what probability was assigned to the actual next word; that
-   negative log probability is the loss J_t.
-4. Average the losses: J = (1/T) Σ J_t.
+   negative log probability is the loss $J_t$.
+4. Average the losses over the $T$ decoder positions:
+   $J = \frac{1}{T} \sum_{t=1}^{T} J_t$.
 5. Backpropagate through the **entire** network — decoder *and* encoder — and update all the
    parameters.
 
@@ -68,7 +69,7 @@ components could not do.
 
 Slide 54 (Sutskever et al. 2014; Luong et al. 2015) shows a three-layer stacked
 encoder-decoder translating *Die Proteste waren am Wochenende eskaliert* into *The protests
-escalated over the weekend*. The hidden states of RNN layer *i* are the inputs to layer *i*+1,
+escalated over the weekend*. The hidden states of RNN layer $i$ are the inputs to layer $i+1$,
 and each generated word is fed back in as the next input. Machine translation is the clearest
 case where [stacked RNNs](recurrent-neural-networks.md) earned their keep (≈1:13:08).
 

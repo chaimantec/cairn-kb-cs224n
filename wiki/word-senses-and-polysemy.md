@@ -126,10 +126,10 @@ provided the senses are relatively common.
 Applications to Polysemy* (Arora, …, Ma, …, TACL 2018) and writes the superposition
 out precisely:
 
-> `v_pike = α₁ v_pike₁ + α₂ v_pike₂ + α₃ v_pike₃`, where `α₁ = f₁ / (f₁ + f₂ + f₃)`
-> and so on, for sense frequency `f`
+$$v_{\text{pike}} = \alpha_1 v_{\text{pike}_1} + \alpha_2 v_{\text{pike}_2} + \alpha_3 v_{\text{pike}_3}, \qquad \alpha_1 = \frac{f_1}{f_1 + f_2 + f_3}$$
 
-— which is exactly the frequency-weighted average described above, made explicit.
+and so on, where $f_i$ is the frequency of sense $i$ — which is exactly the
+frequency-weighted average described above, made explicit.
 
 The recovered senses of **tie** (≈1:02:03, slide 33) come out as five cleanly separated
 columns of nearest words:
