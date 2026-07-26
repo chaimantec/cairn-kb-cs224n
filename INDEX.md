@@ -20,6 +20,12 @@ systems.
 > (equations, tables, definitions) and a **timestamp** for anything Manning says aloud
 > (asides, worked reasoning, answers to student questions). The slide files in
 > `raw/slides/` carry the numbers; the transcripts carry the timestamps.
+>
+> **Mathematics.** Every equation on a wiki page is written in **LaTeX** — `$...$`
+> inline, `$$...$$` displayed — in the course's own notation, and can be quoted to a
+> learner as-is. The transcripts are the exception: they are a verbatim record of speech
+> and spell notation out in words ("theta sub j minus alpha times…"), so quote the wiki
+> page, not the transcript, when a learner wants the formula.
 
 ## Lecture pages
 
@@ -235,6 +241,7 @@ systems.
 ## How this KB is organized
 
 See [AGENTS.md](AGENTS.md) for the conventions — relative links only, every claim
-traceable to a transcript timestamp or a slide, and never inventing course content.
+traceable to a transcript timestamp or a slide, LaTeX for all mathematics, and never
+inventing course content.
 Where a transcript is genuinely unclear, the pages say so rather than filling the
 gap.

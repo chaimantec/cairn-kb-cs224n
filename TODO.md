@@ -5,7 +5,76 @@ The course has 23 lectures, built incrementally.
 - **Run 1** (complete): lectures 1–2, plus the site crawl and `sources.md`.
 - **Run 2** (complete): lectures 3–4.
 - **Run 3** (complete): lectures 5–6.
+- **Run 4** (complete): no new lectures — converted all mathematics in the wiki to LaTeX.
 - Lectures 7–23 remain deferred; video ids are listed at the bottom.
+
+---
+
+# Run 4 — LaTeX mathematics pass (no new lectures)
+
+The skill gained a "Write mathematics in LaTeX" rule. This run applied it to everything
+already built; no transcripts, slides or lectures were added.
+
+## Wiki
+- [x] All 28 wiki pages converted — `$...$` inline, `$$...$$` displayed. Equations that
+      had been spelled out in prose, written in Unicode (`h⁽ᵗ⁾ = σ(W_h h⁽ᵗ⁻¹⁾ + …)`), or
+      parked in indented code blocks are now real math, in the course's own notation, with
+      every symbol defined on first use.
+- [x] Math pulled out of code blocks. Three fenced blocks (the gradient-clipping
+      pseudo-code in gradient-descent and vanishing-and-exploding-gradients) and roughly
+      twenty 4-space indented blocks were rendering as source — the reader saw the markup,
+      not the formula. The clipping algorithm became an `aligned` block; the LSTM gate
+      equations, the arc-standard transition system and the perplexity derivation likewise.
+      `backpropagation.md`'s Python fence stayed a fence: it is code.
+- [x] Some equations added where the page previously only described one in words and the
+      slide had it written out — word2vec's likelihood and objective (slides 28–29), the
+      sigmoid definition (lecture 2, slide 12), the SVD factorization (slide 18), the
+      negative-sampling objective on lecture 2's page. Each is cited to its slide; nothing
+      was supplied that the sources do not contain.
+- [x] Notation matched to the decks rather than tidied: `u_o^\top v_c` not `u_o \cdot v_c`,
+      `h^{(t)}` not `h_t`, `W_h`/`W_e`/`U_f`, `\theta`, `\ell = i - j`. Where a slide reuses
+      an index (slide 58 sums over `i` while `J^{(i)}` also uses `i`), the page keeps the
+      slide's notation and says so, rather than silently improving it.
+
+## Dollar signs
+- [x] Escaped the literal currency dollars that would otherwise pair with a math delimiter
+      and swallow the text between them — `for \$27 a share` in wiki/04-dependency-parsing,
+      wiki/syntactic-ambiguity, and (twice) raw/transcripts/04-dependency-parsing. The
+      ASCII bracket diagram in syntactic-ambiguity became a fenced block for the same
+      reason. `raw/transcripts/original/` was left untouched, as always.
+
+## Conventions
+- [x] AGENTS.md — new convention stating the LaTeX rule, the no-equations-in-code-fences
+      rule, match-the-course-notation, define-symbols-on-first-use, the `\$` escape, and
+      that `raw/transcripts/` (verbatim) and `raw/slides/` (transcribed as printed) are
+      exempt.
+- [x] INDEX.md — a "Mathematics" note in the header block telling the chat that wiki
+      equations are quotable LaTeX while the transcripts spell notation out in words, so
+      quote the wiki page when a learner wants a formula.
+
+## Verification
+- [x] Every math span extracted and run through **KaTeX** — 837 spans, 0 failures, and the
+      unusual ones (`\mathbb{1}`, `\overrightarrow{h}^{(t)}`, `\lVert\cdot\rVert`,
+      `\mathbf{8.9}`) also pass in KaTeX's strict mode, which is what GitHub uses.
+- [x] Delimiter sweep: no unbalanced `$` or `$$`, no `$$` mid-line, no LaTeX left inside a
+      code fence or indented block.
+- [x] Link sweep re-run: every relative link still resolves.
+
+## Notes for run 5
+
+- **`raw/slides/` was deliberately left in Unicode.** Those files transcribe what is
+  printed on the deck, including its layout; the skill's rule is scoped to the wiki and
+  explicitly exempts the verbatim transcripts. Converting the slide files would mean
+  re-typesetting a source record, with a real chance of introducing errors into the thing
+  the wiki cites as authoritative. If a later run does want them in LaTeX, do it deck by
+  deck against the PDF, not by find-and-replace.
+- **Display math inside a blockquote does not render on GitHub.** One `$$` block had to be
+  moved out from under a `>` quote in vanishing-and-exploding-gradients. Keep equations at
+  the top level.
+- **Multi-line `$$ … \begin{aligned} … \end{aligned} … $$` works** in both KaTeX and on
+  github.com, and is the right shape for the LSTM equations and any algorithm box.
+- Markdown tables take inline `$...$` fine, but avoid `\begin{cases}` in a table cell —
+  write the piecewise definition on one line instead (see activation-functions).
 
 ---
 

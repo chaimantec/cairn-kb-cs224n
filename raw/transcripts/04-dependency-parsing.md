@@ -241,14 +241,14 @@ decide what's going on. And so to take a bigger but real
 
 **[19:27]** example, this is the kind of boring sentence that you can read in the *Wall Street
 Journal* most mornings: *The board approved its acquisition by Royal Trustco Ltd. of Toronto
-for $27 a share at its monthly meeting.* So what you can see in this sentence is, we've got a
+for \$27 a share at its monthly meeting.* So what you can see in this sentence is, we've got a
 verb, and then we've got a noun phrase, and then after that we have four prepositional phrases
 in a row. Okay, so what do these prepositional phrases modify? So what does *by Royal Trustco
 Ltd.* modify? The acquisition, right, so it's the acquisition by Royal Trustco. Then *of*
 
 **[20:13]** *Toronto* modifies — so it's Royal Trustco Ltd. of Toronto. So yeah, later on
 prepositional phrases can also modify earlier prepositional phrases, or at least the noun
-phrase inside them, Royal Trustco Ltd. Okay, *for $27 a share* is back to modifying the
+phrase inside them, Royal Trustco Ltd. Okay, *for \$27 a share* is back to modifying the
 acquisition. Okay, *at its monthly meeting* is — yeah, it's the approval, so it's gone way
 back up to there. So if you start having sentences with a whole bunch of prepositional phrases
 

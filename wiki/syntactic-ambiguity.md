@@ -76,10 +76,12 @@ different things: is it the beach that will be used for beach volleyball, or the
 The scaling argument, and the reason parsing cannot proceed by enumeration (slide 12). In a
 real *Wall Street Journal* sentence:
 
-    The board approved [its acquisition] [by Royal Trustco Ltd.]
-                                                    [of Toronto]
-                                              [for $27 a share]
-                                          [at its monthly meeting].
+```text
+The board approved [its acquisition] [by Royal Trustco Ltd.]
+                                               [of Toronto]
+                                         [for $27 a share]
+                                     [at its monthly meeting].
+```
 
 four prepositional phrases follow the object, and each must attach to something earlier.
 The attachments Manning works through (≈19:27): *by Royal Trustco Ltd.* modifies *the

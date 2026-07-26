@@ -43,6 +43,15 @@ slides at their source URL, not at a local path.
 - **Slides beat transcripts on conflict.** The transcripts are corrected auto-captions;
   the slides are what the instructor wrote. Where the captions are garbled or the
   dictated notation is unreliable, cite the slide.
+- **Mathematics in the wiki is LaTeX**, `$...$` inline and `$$...$$` displayed on its own
+  lines. Both render in Cairn's chat and on github.com. Never put an equation in a code
+  fence or an indented block — those render as source, so the reader sees `\frac{...}`
+  instead of a fraction. Match the course's own notation ($u_o^{\top} v_c$, $h^{(t)}$,
+  $W_h$, $\theta$), define every symbol on first use because pages are read out of order,
+  and keep prose around the equation saying what it does. A literal dollar sign in prose
+  must be escaped as `\$`, or it will pair with a delimiter and swallow the text between.
+  `raw/transcripts/` is exempt: it is a verbatim record and stays spelled out.
+  `raw/slides/` reproduces the deck's own layout in Unicode and is left as transcribed.
 - **Never invent course content.** If a source is unclear at some point, say so on the
   page. Do not fill the gap from outside knowledge — the chat presents these pages as
   authoritative material from this course. Recovering a mangled term from unambiguous
