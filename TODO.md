@@ -6,7 +6,7 @@ The course has 23 lectures, built incrementally.
 - **Run 2** (complete): lectures 3–4.
 - **Run 3** (complete): lectures 5–6.
 - **Run 4** (complete): no new lectures — converted all mathematics in the wiki to LaTeX.
-- **Run 5** (in progress): lectures 7–8.
+- **Run 5** (complete): lectures 7–8.
 - Lectures 9–23 remain deferred; video ids are listed at the bottom.
 
 ---
@@ -55,7 +55,8 @@ The course has 23 lectures, built incrementally.
       attention.md, self-attention.md and transformer.md.
 
 ## Publish
-- [ ] Commit and push (kbUrl already set on the catalog entry, no re-link needed).
+- [x] Commit and push (kbUrl already set on the catalog entry, no re-link needed) —
+      https://github.com/chaimantec/cairn-kb-cs224n/commit/2c4d3c6
 
 ## Notes for run 6
 
