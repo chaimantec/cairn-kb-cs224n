@@ -116,11 +116,13 @@ match the Spring 2024 decks crawled in run 1:
   not in the main session.** The path has never executed — lectures 11-12 were done by hand.
   Treat run 8 as its trial: run `slide_number_map.py <pdf> --verify <slides.md>` on every
   returned file (it catches skipped pages, merged slides and wrong numbering), and then open
-  two or three figure-heavy pages against the PDF yourself. Run the subagents at **Sonnet**:
-  Haiku was tested on 13 hard pages and got 100% of table cells right, but dropped ~40% of
-  chart read-off values and on one chart invented a data series out of two marginal labels.
-  Fabricated series and thin figure prose pass every automated check, and are the failure
-  mode delegation is most prone to.
+  two or three figure-heavy pages against the PDF yourself. **Pass `model: sonnet`
+  explicitly** — with no model argument a subagent inherits Opus. Tested on 13 hard pages:
+  both Haiku and Sonnet got 100% of table cells, but on charts Haiku recovered 79% of values
+  and invented a data series out of two marginal labels, while Sonnet recovered 91% and got
+  the structure right. Fabricated series and thin figure prose pass every automated check,
+  and are the failure mode delegation is most prone to. Also: `Read` silently drops disjoint
+  `pages` lists (`"2,4"` returns one page) — request contiguous ranges and check the count.
 - Two lecture-11 and lecture-12 residuals worth revisiting if better captions appear:
   the benchmark a student names at L11 27:00 (almost certainly ImageNet) and the
   phrase the captions render as "selfie station" at L12 1:16:58.
