@@ -10,11 +10,20 @@ goals are that students learn the methods, gain some real understanding of human
 language and why it is hard for computers, and come out able to build working
 systems.
 
-> **Coverage note.** This knowledge base covers **lectures 1 to 8**: wiki pages,
+> **Coverage note.** This knowledge base covers **lectures 1 to 10**: wiki pages,
 > timestamped transcripts, and full slide-by-slide text for each. Slide *URLs* for
 > lectures 1–18 are listed in [sources.md](sources.md), so questions about later
 > lectures can be answered by pointing at the right PDF, but there are no transcripts,
 > wiki pages, or slide text for them yet. See [TODO.md](TODO.md) for what remains.
+>
+> **Lectures 9 and 10 are Winter 2023 recordings**, unlike lectures 1–8. Spring 2024 had no
+> Natural Language Generation lecture at all, and its Pretraining lecture is not the one in
+> the playlist — so both decks come from the Winter 2023 course archive
+> (`cs224n.1234`), not the Spring 2024 site. Lecture 9 is taught by **John Hewitt** and
+> lecture 10 by **Xiang Lisa Li**, not by Manning. Lecture 10 also carries four different
+> numbers (catalog position 10, video title "Lecture 11", deck title "Lecture 12", filename
+> `lecture10-nlg`); this KB uses the catalog position throughout, and the slide file records
+> all four.
 >
 > **Citing sources.** Prefer citing a **slide number** for anything on a slide
 > (equations, tables, definitions) and a **timestamp** for anything Manning says aloud
@@ -85,6 +94,21 @@ systems.
   connections and layer norm; the encoder, decoder, and encoder-decoder Transformer
   shapes; and the still-open drawbacks — quadratic compute, position representations,
   and how little most proposed modifications actually help.
+- [Lecture 9 — Pretraining](wiki/09-pretraining.md) (John Hewitt) — where the course stops
+  building task-specific networks and starts adapting general ones. The fixed-vocabulary
+  problem and byte-pair encoding; Firth's *earlier* quote and why word2vec cannot satisfy it;
+  the seven cloze examples and what each one teaches (trivia, syntax, coreference, lexical
+  semantics, sentiment, reasoning — and *not* Fibonacci); the pretrain/finetune paradigm and
+  the hedged explanation of why it works; pretraining for encoders, encoder-decoders and
+  decoders in turn; parameter-efficient fine-tuning; and GPT-3, in-context learning,
+  chain-of-thought and the Chinchilla scaling correction.
+- [Lecture 10 — Natural Language Generation](wiki/10-natural-language-generation.md)
+  (Xiang Lisa Li) — how you actually get good text out of a trained model. The open-endedness
+  spectrum from machine translation to story generation; why maximum-probability decoding
+  degenerates into repetition and fails to match human uncertainty; sampling, top-*k*, top-*p*
+  (nucleus), typical and epsilon sampling, temperature and re-ranking; exposure bias and the
+  four responses to it, ending at RLHF; the three families of evaluation metric and why all of
+  them fall short; and the ethics of deploying generation systems.
 
 ## Topic pages
 
@@ -221,6 +245,50 @@ systems.
   custom CS224N final project, the five common project shapes, where to find a research
   topic and where to find data, the train/tune/dev/test discipline that keeps results
   trustworthy, and a checklist for getting a neural network to actually train.
+- [Subword modeling](wiki/subword-modeling.md) — how modern NLP represents words it has never
+  seen. Why a fixed vocabulary and a single `UNK` token throw away too much (with the Swahili
+  conjugation table that makes the point), the byte-pair encoding algorithm, the `##`
+  continuation convention, and the practical consequences — everything is a subword token,
+  including punctuation.
+- [Pretraining and fine-tuning](wiki/pretraining-and-finetuning.md) — the two-step recipe
+  that defines modern NLP. What changed from pretrained word embeddings to pretrained whole
+  models, the hedged account of why starting at $\hat{\theta}$ matters, which pretraining
+  objective each of the three Transformer shapes can use (masked LM, span corruption/T5,
+  language modeling), and parameter-efficient fine-tuning — prefix tuning and LoRA. **Start
+  here for anything about how modern models are trained.**
+- [BERT and masked language modeling](wiki/bert.md) — the pretrained encoder. Why
+  bidirectional context rules out language modeling, the masked-LM objective, BERT's
+  80/10/10 masking recipe and the reason for it, next sentence prediction and why it was
+  dropped, the GLUE results table that changed the field, how fine-tuning actually attaches a
+  classifier, the generation limitation, and RoBERTa and SpanBERT.
+- [GPT and in-context learning](wiki/gpt-and-in-context-learning.md) — the pretrained
+  decoder. Using one as a classifier versus as a generator, the GPT/GPT-2/GPT-3 line with
+  their sizes, the `[START]`/`[DELIM]`/`[EXTRACT]` input format, in-context learning and how
+  surprising it should be, chain-of-thought prompting as a scratch pad, and the Chinchilla
+  table showing GPT-3 was "comically oversized."
+- [Natural language generation](wiki/natural-language-generation.md) — the half of NLP whose
+  output is language. The NLU/NLG split, the example tasks, and the **open-endedness
+  spectrum** from machine translation to story generation that decides which decoding
+  algorithm and which evaluation metric apply — plus which architecture goes with which end,
+  and why that is a compute-budget argument rather than a hard constraint.
+- [Decoding algorithms](wiki/decoding-algorithms.md) — turning a distribution into tokens.
+  Why greedy and beam search degenerate into repetition (the self-amplification effect) and
+  fail to match human uncertainty; *n*-gram blocking, unlikelihood training, coverage loss and
+  contrastive decoding; sampling and the heavy tail; top-*k*, its two opposite failure modes,
+  top-*p* (nucleus) as an adaptive *k*, typical and epsilon sampling; temperature; and
+  re-ranking, including why low perplexity is the wrong thing to maximize. **Start here for
+  anything about how text is generated.**
+- [Exposure bias and teacher forcing](wiki/exposure-bias-and-teacher-forcing.md) — the
+  train/test mismatch built into maximum-likelihood training of generation models, and the
+  four responses: scheduled sampling, DAgger, retrieval augmentation, and reinforcement
+  learning. Reward estimation and the danger of optimizing a metric, then RLHF and the
+  pretrain → instruction-tune → RLHF pipeline behind ChatGPT.
+- [Evaluating NLG](wiki/evaluating-nlg.md) — why measuring generated text is unsolved.
+  Content overlap metrics and the "Heck yes!" failure case where a correct paraphrase scores
+  0 and the opposite meaning scores 0.67; model-based metrics (Word Mover's Distance,
+  BERTScore, BLEURT); MAUVE for open-ended settings and why it discretizes the embedding
+  space; and human evaluation — the gold standard, and slow, expensive, inconsistent and
+  precision-only.
 
 ## Raw materials
 
@@ -231,21 +299,28 @@ systems.
   ([49 slides](raw/slides/04-dependency-parsing.md)), lecture 5
   ([72 slides](raw/slides/05-recurrent-neural-networks.md)), lecture 6
   ([56 slides](raw/slides/06-sequence-to-sequence-models.md)), lecture 7
-  ([73 slides](raw/slides/07-attention-final-projects-and-llm-intro.md)) and lecture 8
-  ([62 slides](raw/slides/08-self-attention-and-transformers.md)). Each file opens
+  ([73 slides](raw/slides/07-attention-final-projects-and-llm-intro.md)), lecture 8
+  ([62 slides](raw/slides/08-self-attention-and-transformers.md)), lecture 9
+  ([54 slides](raw/slides/09-pretraining.md)) and lecture 10
+  ([76 printed slides](raw/slides/10-natural-language-generation.md)). Each file opens
   with a section-to-slide-range table, then transcribes every slide in order —
   including the equations, the tables of numbers, the margin annotations, and prose
-  descriptions of the diagrams and plots. For lectures 1–3 and 5–8 **the printed slide
-  number equals the PDF page number**, so "slide 28" is page 28. **Lecture 4 is the
-  exception:** its printed numbers run 1–49 but the PDF has only 45 pages, because printed
-  slides 4, 5, 8 and 13 were hidden in the source deck and never exported — cite the printed
-  number and expect it to sit a few pages later in the PDF. One further caveat: **lecture
-  6's slides 4–18 repeat lecture 5's slides 49–63** as a recap, and are transcribed in brief
-  with pointers rather than in full — the exception is slide 15, which adds the "~7 tokens
-  back" rule of thumb that slide 25 then contrasts LSTMs against. Use these files when a
-  learner asks where something is in the slides, wants an equation exactly as written,
-  or when the transcript is unclear — the slides are the authority.
-- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 8,
+  descriptions of the diagrams and plots. For lectures 1–3, 5–8 and 9 **the printed slide
+  number equals the PDF page number**, so "slide 28" is page 28. **Two decks are exceptions.**
+  Lecture 4's printed numbers run 1–49 but the PDF has only 45 pages, because printed
+  slides 4, 5, 8 and 13 were hidden in the source deck and never exported. Lecture 10 is
+  worse: its printed numbers run 1–76 against 71 PDF pages, with printed 35, 41, 47, 54 and
+  66 absent, so the offset **accumulates** rather than being constant — that file carries a
+  full page-to-slide mapping table, and everything in this KB cites its printed numbers. One
+  further caveat: **lecture 6's slides 4–18 repeat lecture 5's slides 49–63** as a recap, and
+  are transcribed in brief with pointers rather than in full — the exception is slide 15,
+  which adds the "~7 tokens back" rule of thumb that slide 25 then contrasts LSTMs against.
+  Use these files when a learner asks where something is in the slides, wants an equation
+  exactly as written, or when the transcript is unclear — the slides are the authority.
+  Note that three slides in lecture 10's ethics section (70, 73, 74) reproduce hate speech,
+  sexual violence and profanity in full on the deck; the slide file states what each figure
+  shows and cites the source paper but does not reproduce the passages.
+- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 10,
   grouped into paragraphs each prefixed with an `[MM:SS]` timestamp. Use these to
   point a learner at the exact moment something is explained ("Manning covers this
   around 42:00"), or to quote him directly — they read as sentences, so they quote
@@ -259,9 +334,14 @@ systems.
   *Olah* all beyond recognition; in lectures 7 and 8, *BLEU* arrived as "blue", *bake-off*
   as "boff", *Bahdanau, Cho, and Bengio* as "B hour Al"/"dimma bad now K huno and Yoshua
   Benjo", *Luong* as "tanglong", the French toy sentence *il a m'entarté* as "the a is a
-  sort of perfect past um exiler", and *minBERT* as "bir"). No content was added,
+  sort of perfect past um exiler", and *minBERT* as "bir"; in lectures 9 and 10, *word2vec*
+  again as "word to VEC" and "where to back", *UNK* as "ankh", *BERT* as "Birch" and "burp
+  model", *RoBERTa* as "Brita", *Iroh* as "Ira" and "IRL", *NLG itself* as "an LG", "analogy"
+  and "energy", *autoregressive* as "other aggressive", *n-gram* as "unground" and "engram",
+  *nucleus sampling* as "nuclear sampling", *MAUVE* as "mouth score" and "small score",
+  *BLEURT* as "Port", *RLHF* as "rlhs", and *ChatGPT* as "chaiji 50"). No content was added,
   removed or reordered, and every timestamp is preserved. Mathematical notation in
-  lectures 7 and 8's transcripts stays spelled out (bold for vectors/matrices, Unicode
+  lectures 7–10's transcripts stays spelled out (bold for vectors/matrices, Unicode
   subscripts), matching lecture 3's convention — LaTeX is wiki-only. Student questions
   are marked in italics. Where a garble could not be resolved from the slides, the text
   carries an inline `[Ed: …]` note saying so instead of guessing — treat those as known
@@ -270,7 +350,8 @@ systems.
   captions, kept only for reference. **Prefer the edited transcripts above**; reach for
   these only to check exactly what the speech recognizer produced.
 - [`sources.md`](sources.md) — the full inventory of course documents, with a
-  canonical URL for each: lecture slides for lectures 1–18, supplementary readings
+  canonical URL for each: lecture slides for Spring 2024's lectures 1–18, the two
+  **Winter 2023** decks that go with catalog lectures 9 and 10, supplementary readings
   (the 2019 course notes, the gradient and differential-calculus reviews, the
   self-attention and transformers notes, the Python review), the assignment 2–4
   handouts, the final-project handouts, and 43 further papers the syllabus links

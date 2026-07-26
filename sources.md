@@ -2,6 +2,17 @@
 
 Every slide deck, handout and reading the course website (<https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/>) links to, with its canonical URL. The PDF binaries are deliberately **not** committed to this repo: this knowledge base is read by an agent that navigates markdown, so the URL is what is useful, and committing the decks would add well over 100MB to every clone. Cite these URLs directly.
 
+## Winter 2023 decks (2)
+
+Two of the lectures in this course's video playlist are **Winter 2023** recordings, not Spring 2024 ones, and their decks are not on the Spring 2024 site at all — Spring 2024 has no Natural Language Generation lecture, and its Pretraining lecture is a different, later deck whose slide numbers do not match the video. These two are fetched from the Winter 2023 archive (<https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1234/>) and are the decks the wiki cites for catalog lectures 9 and 10.
+
+| Document | URL | Seen |
+| -------- | --- | ---- |
+| `slides-cs224n-2023-lecture9-pretraining.pdf` (catalog lecture 9, John Hewitt, 54 pages) | <https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1234/slides/cs224n-2023-lecture9-pretraining.pdf> | 2026-07-26 |
+| `slides-cs224n-2023-lecture10-nlg.pdf` (catalog lecture 10, Xiang Lisa Li, 71 pages / 76 printed slides) | <https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1234/slides/cs224n-2023-lecture10-nlg.pdf> | 2026-07-26 |
+
+Note that `slides-cs224n-spr2024-lecture09-pretraining-updated.pdf`, listed under the Spring 2024 slides below, is a **different** 64-page deck covering the same topic. It is what a Spring 2024 student would download, but its numbering does not line up with the lecture video this KB transcribes.
+
 ## Course materials (33)
 
 Hosted on the course website itself.

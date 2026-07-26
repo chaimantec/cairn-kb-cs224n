@@ -122,6 +122,25 @@ go on to do other things like use Transformers rather than LSTMs, we're still co
 to use these kinds of encoder-decoder models." See [Transformer](transformer.md) for the
 encoder-decoder shape that architecture takes.
 
+## When to reach for one, and when not to
+
+Lecture 10 revisits the choice now that decoder-only models are available, and states it as a
+convention rather than a constraint (slide 16). Non-open-ended tasks such as machine
+translation typically use an encoder-decoder; open-ended tasks such as story generation
+typically use the autoregressive decoder alone. But a decoder alone *can* do MT, and an
+encoder-decoder *can* generate stories — the convention holds for a budget reason rather than
+a type-checking one: decoder-only hurts performance on MT, while an encoder-decoder gives
+roughly no benefit on open-ended generation, so with a fixed compute budget "you might just be
+better off by only training a larger decoder model" (lecture 10, ≈10:03). See
+[natural language generation](natural-language-generation.md).
+
+Lecture 9 adds the pretraining side. An encoder-decoder can be pretrained as a prefix language
+model — encode the first half of a text with bidirectional context, generate the second half —
+but **span corruption** works better: replace variable-length spans of the input with sentinel
+tokens and have the decoder emit the removed spans. That is T5, and it is what CS224N's
+Assignment 5 implements. See
+[pretraining and fine-tuning](pretraining-and-finetuning.md#the-three-architecture-classes).
+
 ## Related pages
 
 - [Machine translation](machine-translation.md) — the task, and the statistical era this
@@ -134,4 +153,11 @@ encoder-decoder shape that architecture takes.
 - [Recurrent neural networks](recurrent-neural-networks.md) — teacher forcing,
   bidirectionality and stacking, all of which appear here.
 - [Language modeling](language-modeling.md) — conditional language models generally.
+- [Pretraining and fine-tuning](pretraining-and-finetuning.md) — span corruption, the T5
+  objective for pretraining this architecture.
+- [Natural language generation](natural-language-generation.md) — when an encoder-decoder is
+  the right shape and when a bare decoder is.
+- [Decoding algorithms](decoding-algorithms.md) — beam search generalized, and the sampling
+  methods that replace it for open-ended tasks.
 - [Lecture 6 — Sequence to Sequence Models](06-sequence-to-sequence-models.md)
+- [Lecture 10 — Natural Language Generation](10-natural-language-generation.md)

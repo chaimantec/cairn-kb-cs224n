@@ -157,9 +157,35 @@ draws the same $\hat{y} = \operatorname{softmax}(U h + b_2)$ on top of the LSTM 
 [seq2seq decoder](seq2seq-and-encoder-decoder.md) uses it too, with the losses at each
 position averaged and backpropagated through both decoder and encoder (lecture 6, slide 53).
 
+## Temperature
+
+Lecture 10 adds one hyperparameter to the softmax, used at generation time rather than during
+training. Divide the scores by a **temperature** $\tau$ before exponentiating (lecture 10,
+slide 34):
+
+$$P_t(y_t = w) = \frac{\exp(S_w / \tau)}{\sum_{w' \in V} \exp(S_{w'} / \tau)}$$
+
+Because $\exp$ is monotonic and $\tau > 0$, this never changes the *ranking* of the classes —
+if $a$ scored above $b$ it still does — only the size of the gaps between them:
+
+- **$\tau > 1$** flattens the distribution toward uniform: more diverse samples.
+- **$\tau < 1$** sharpens it: probability concentrates on the top few words, less diverse
+  samples.
+- **$\tau \to 0$** collapses it to a one-hot vector, so sampling becomes $\arg\max$ — i.e.
+  greedy decoding.
+
+This is a decoding hyperparameter, not a training one, and it is orthogonal to the truncation
+methods; it can be tuned for both beam search and sampling. See
+[decoding algorithms](decoding-algorithms.md).
+
 ## Related pages
 
 - [word2vec](word2vec.md) — where the softmax and negative sampling live
+- [decoding algorithms](decoding-algorithms.md) — temperature, and everything else that
+  happens to this distribution at generation time
+- [natural language generation](natural-language-generation.md) — the generation setting the
+  temperature parameter belongs to
+- [lecture 10 — Natural Language Generation](10-natural-language-generation.md)
 - [gradient descent](gradient-descent.md) — differentiating through these
   functions, including the chain rule through log and exp
 - [activation functions](activation-functions.md) — the hidden-layer non-linearities, as

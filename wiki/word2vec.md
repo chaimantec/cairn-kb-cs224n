@@ -231,10 +231,38 @@ that essentially nobody uses these vectors directly anymore (≈17:58), but the
 recipe — define a simple prediction objective over lots of text, optimize it, and
 get useful structure out — is the one the rest of the course builds on.
 
+## The limitation that motivates pretraining
+
+Lecture 9 returns to word2vec to say exactly what it does not do. The course opened with
+Firth's 1957 adage, "You shall know a word by the company it keeps," which word2vec
+implements. Slide 8 of that lecture produces an *earlier* Firth quote that it does not
+satisfy:
+
+> "… the complete meaning of a word is always contextual, and no study of meaning apart from
+> a complete context can be taken seriously." (Firth 1935)
+
+The example is *I **record** the **record***. word2vec learns one vector for the string
+`record`, so that vector has to carry a blend of the verb and the noun sense — "it doesn't get
+to specialize and say, oh, this part means *record* and this part means *record*" (lecture 9,
+≈16:15). Context is used at *training* time to shape the vector and then discarded; at use
+time the same vector comes out regardless of the sentence.
+
+The consequence for architecture is the whole of lecture 9. Under the circa-2017 setup, only
+the embeddings were pretrained and everything above them started from random noise, so the
+downstream task's labels had to teach all of contextual language by themselves. Pretraining
+the *entire* network instead gives contextual representations, in which the two *record*s
+differ. See [pretraining and fine-tuning](pretraining-and-finetuning.md) and
+[word senses and polysemy](word-senses-and-polysemy.md).
+
 ## Related pages
 
 - [distributional semantics](distributional-semantics.md) — the idea word2vec
   implements, and the count-based alternative
+- [pretraining and fine-tuning](pretraining-and-finetuning.md) — what replaced pretrained
+  word embeddings, and why
+- [subword modeling](subword-modeling.md) — the end of the fixed vocabulary word2vec assumes
+- [lecture 9 — Pretraining](09-pretraining.md) — where the Firth 1935 quote and the *record*
+  example are used
 - [GloVe](glove.md) — the Stanford model that combines counting with the linear
   structure word2vec exhibits
 - [gradient descent](gradient-descent.md) — how the optimization actually runs

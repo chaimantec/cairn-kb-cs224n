@@ -7,7 +7,7 @@ The course has 23 lectures, built incrementally.
 - **Run 3** (complete): lectures 5–6.
 - **Run 4** (complete): no new lectures — converted all mathematics in the wiki to LaTeX.
 - **Run 5** (complete): lectures 7–8.
-- **Run 6** (in progress): lectures 9–10.
+- **Run 6** (complete): lectures 9–10.
 - Lectures 11–23 remain deferred; video ids are listed at the bottom.
 
 ---
@@ -110,16 +110,83 @@ deck-vs-catalog title disagreements.
       since the stereotypes *are* the data.
 
 ## Wiki
-- [ ] wiki/09-pretraining.md
-- [ ] wiki/10-natural-language-generation.md
-- [ ] Topic pages (new)
-- [ ] Update existing topic pages that these lectures extend
-- [ ] Update INDEX.md
-- [ ] Update sources.md with the two Winter 2023 deck URLs
-- [ ] Link sweep + KaTeX validation
+- [x] wiki/09-pretraining.md
+- [x] wiki/10-natural-language-generation.md
+- [x] Topic pages — eight new. From lecture 9: subword-modeling,
+      pretraining-and-finetuning, bert, gpt-and-in-context-learning. From lecture 10:
+      natural-language-generation, decoding-algorithms, exposure-bias-and-teacher-forcing,
+      evaluating-nlg. The split for lecture 9 puts the *paradigm* (why pretraining works,
+      the three architecture classes, span corruption/T5, parameter-efficient fine-tuning)
+      on one page and the two model families that get asked about by name on their own,
+      rather than one enormous "pretraining" page.
+- [x] Updated existing topic pages these lectures extend — word2vec and
+      word-senses-and-polysemy (the Firth 1935 quote and the *record*/*record* example, i.e.
+      the limitation that motivates contextual models), distributional-semantics,
+      language-modeling (LM reused as a pretraining objective), perplexity (its two later
+      uses, and the trap that repetitive text scores well), softmax-and-cross-entropy
+      (temperature), transformer and seq2seq-and-encoder-decoder (which objective each shape
+      can be pretrained with; when a bare decoder beats an encoder-decoder),
+      evaluating-machine-translation (where BLEU stops working, and why it makes a bad RL
+      reward), final-project-guidance (read your own generations; adapt cheaply).
+- [x] Updated INDEX.md — coverage note now says lectures 1–10 and carries the Winter 2023
+      provenance caveat and lecture 10's four numbers; 2 lecture entries; 8 topic entries;
+      raw-materials section updated with both slide counts, lecture 10's accumulating
+      page/slide offset, the ethics-slide note, and the new garbled-term examples.
+- [x] Updated AGENTS.md — the slide-numbering convention now covers lecture 10's
+      *accumulating* offset (previous decks were either 1:1 or constant-offset), plus two new
+      conventions: verify a deck actually matches its video before transcribing, and name
+      files by catalog position when a lecture carries several conflicting numbers.
+- [x] Updated sources.md — new "Winter 2023 decks" section with both URLs, and a note that
+      the Spring 2024 `lecture09-pretraining-updated.pdf` is a *different* 64-page deck whose
+      numbering does not match this video.
+- [x] Link sweep (scripted): 80 markdown files, every relative link and in-page anchor
+      resolves, no wiki page points into gitignored `raw/pdfs/`, and all 45 wiki pages are
+      reachable from INDEX.md. Two apparent failures in AGENTS.md are illustrative examples
+      inside backticks, not links.
+- [x] KaTeX validation: 1,101 math spans, 0 render failures, 0 issues in strict mode (which
+      is what GitHub uses). Delimiter sweep clean — no `$$` mid-line, no display math inside
+      a blockquote, no LaTeX left in a code fence or indented block. The one unescaped `$` in
+      `raw/slides/04-dependency-parsing.md` ("for $27 a share") sits inside a 4-space indented
+      block, so it renders literally and is safe; it is pre-existing.
 
 ## Publish
-- [ ] Commit and push (kbUrl already set, no re-link needed)
+- [x] Commit and push (kbUrl already set on the catalog entry, no re-link needed)
+
+## Notes for run 7
+
+- **Check the deck against the video before transcribing anything.** Run 5 recorded that
+  deck-vs-catalog title matching "held for lectures 7–8"; it broke immediately at lecture 9,
+  and not in the way the earlier note anticipated. The problem was not a title mismatch but a
+  *different course offering* — lectures 9 and 10 are Winter 2023 recordings spliced into a
+  Spring 2024 playlist. The tells that settled it, in order of usefulness: the Spring 2024
+  schedule has no NLG lecture at all; lecture 9's lecturer refers to "Thursday's lecture on
+  natural language generation," which only exists in Winter 2023; both lecturers refer to
+  Assignment 5, which Spring 2024 did not have; and each deck's announcement slide matches the
+  spoken announcements item for item. Do this check *first* on every remaining lecture — the
+  guest lectures (catalog 11–16, 19–20) are the likeliest to diverge.
+- **Do not assume a page/slide offset is constant.** Run 2 found lecture 4 had four hidden
+  slides and a fixed offset. Lecture 10 has five hidden slides scattered through the deck, so
+  the offset grows from 0 to +5 as you go. Extract the printed footer number from every page
+  with `pdftotext -f N -l N` and build the mapping table before transcribing; do not
+  extrapolate from the first gap you find. Watch for pages that print no number at all (the
+  title page and full-bleed figures), which look like gaps but are not.
+- **A lecture can carry four different numbers.** Catalog position 10, video title "Lecture
+  11", deck title slide "Lecture 12", filename `lecture10-nlg`. Files follow the catalog
+  position; state every variant in the slide file so a learner quoting any of them can be
+  matched.
+- **Some slides should not be transcribed verbatim into a public repo.** Lecture 10's slides
+  70, 73 and 74 reproduce a profanity-laced jailbreak, racist and antisemitic hate speech, and
+  sexually violent generations, all in full, as evidence about model behaviour. The slide file
+  states precisely what each figure shows, what the finding is, and which paper it comes from,
+  without reproducing the passages — the pedagogical content is the finding, not the invective.
+  Slide 72's stereotype table *is* transcribed, because there the stereotypes are the data.
+- **Date can settle a caption ambiguity that the slides can't.** Lecture 9's captions read
+  "using GPT uh three four simple programming things"; GPT-4 shipped a month after this
+  lecture, so it is "GPT-3 **for**". Check release dates before writing a model name into a
+  transcript.
+- Lectures 11–23 remain deferred; see the video-id list at the bottom. Note that the deferred
+  list's own titles use catalog positions, which for several later entries also disagree with
+  the video titles.
 
 ---
 

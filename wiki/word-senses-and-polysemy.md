@@ -147,10 +147,32 @@ Manning points anyone who wants to understand the mechanism toward sparse coding
 theory taught in Stanford's statistics department (≈1:01:15), and does not attempt to
 teach it.
 
+## How the course resolves it
+
+Lecture 9 returns to this and supplies the answer the lecture-2 discussion points toward:
+stop trying to give a word one vector at all. Its example is the minimal pair *I **record**
+the **record***, where the verb and the noun are the same string. A
+[word2vec](word2vec.md) embedding blends the two senses and cannot specialize; a pretrained
+**contextual** model computes a different vector for each occurrence, from the sequence it
+appears in (lecture 9, ≈16:15, ≈18:35).
+
+The lecture grounds this in a Firth quote earlier than the famous one — "the complete meaning
+of a word is always contextual, and no study of meaning apart from a complete context can be
+taken seriously" (Firth 1935) — and makes it the motivation for pretraining whole models
+rather than just embeddings. Note that one static embedding per vocabulary item still exists:
+it is the model's *input*, and the contextual vectors are what the
+[Transformer](transformer.md) computes on top of it (lecture 9, ≈27:52). See
+[pretraining and fine-tuning](pretraining-and-finetuning.md) and [BERT](bert.md).
+
 ## Related pages
 
 - [word2vec](word2vec.md) — the one-vector-per-type model
 - [distributional semantics](distributional-semantics.md) — why high-dimensional
   spaces let one vector sit near several meanings
+- [pretraining and fine-tuning](pretraining-and-finetuning.md) — contextual representations,
+  which is how this is actually solved
+- [BERT and masked language modeling](bert.md) — a pretrained encoder producing one vector per
+  occurrence
 - [lecture 2](02-word-vectors-and-language-models.md) — the pike discussion and
   the jaguar clustering results
+- [lecture 9 — Pretraining](09-pretraining.md) — the *record* example and the Firth 1935 quote

@@ -194,4 +194,7 @@ exactly what the sparse symbolic features it replaced could not do. See
   compare
 - [transition-based parsing](transition-based-parsing.md) — distributed representations of
   POS tags and dependency labels, and why they beat indicator features
+- [pretraining and fine-tuning](pretraining-and-finetuning.md) — Firth's *earlier* claim, that
+  meaning is always contextual, and the contextual representations that satisfy it
 - [lecture 4](04-dependency-parsing.md) — the parser that uses them
+- [lecture 9 — Pretraining](09-pretraining.md) — where the 1935 Firth quote is introduced

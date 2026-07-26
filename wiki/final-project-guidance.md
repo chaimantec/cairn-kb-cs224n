@@ -165,9 +165,32 @@ one isn't, you're doing something to stop it" (slides 69–72):
   data; do error analysis on your model's predictions. Hyperparameter tuning, learning
   rate, and initialization often matter more than they seem like they should.
 
+## Two later lectures add project advice
+
+**Read your model's output.** Lecture 10 flags this explicitly as a hint for final projects
+(≈1:11:39): every automatic generation metric is a flawed proxy, so "the best judge of the
+output quality is actually you." Look at what your system generates rather than reporting a
+BLEU number and stopping. Slide 67 of that lecture adds a second habit worth adopting — publicly
+release large samples of your system's output. See [evaluating NLG](evaluating-nlg.md).
+
+**Adapt cheaply.** Lecture 9 covers parameter-efficient fine-tuning — prefix tuning and LoRA —
+as things "you should know for your final projects, and in the world ahead" (≈55:35). They let
+you adapt a large pretrained model while training a small fraction of its parameters, which
+matters when you are working within a course GPU budget. See
+[pretraining and fine-tuning](pretraining-and-finetuning.md#full-versus-parameter-efficient-fine-tuning).
+
+Lecture 10's ethics section applies here too: the smaller open models you are likely to use
+carry fewer safeguards than the commercial APIs, so toxic degeneration is more likely, not less
+(≈1:13:58).
+
 ## Related pages
 
 - [Attention](attention.md) — the technical content lecture 7 covers before this material.
 - [Regularization and dropout](regularization-and-dropout.md) — the "generous dropout"
   recommendation above, covered in full.
+- [Pretraining and fine-tuning](pretraining-and-finetuning.md) — the pretrained models this
+  advice assumes, and how to adapt them cheaply.
+- [Evaluating NLG](evaluating-nlg.md) — why you should look at your generations yourself.
 - [Lecture 7 — Attention, Final Projects and LLM Intro](07-attention-final-projects-and-llm-intro.md)
+- [Lecture 9 — Pretraining](09-pretraining.md)
+- [Lecture 10 — Natural Language Generation](10-natural-language-generation.md)

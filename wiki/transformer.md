@@ -134,6 +134,15 @@ A final linear layer projects each decoder output vector up to vocabulary-sized 
 a softmax turns those into a probability distribution over the next word — the same
 generation step every language model in the course uses (slides 53–55).
 
+**These three shapes determine what you can pretrain with**, which is the organizing idea of
+[lecture 9](09-pretraining.md). An encoder's bidirectional context makes language modeling
+trivially easy and therefore useless, so encoders are pretrained by masking — see
+[BERT](bert.md). Decoders are pretrained by ordinary
+[language modeling](language-modeling.md), and are the shape all the largest models take —
+see [GPT and in-context learning](gpt-and-in-context-learning.md). Encoder-decoders get span
+corruption, the T5 objective. The comparison is at
+[pretraining and fine-tuning](pretraining-and-finetuning.md#the-three-architecture-classes).
+
 ## Drawbacks and variants
 
 The lecture is explicit that the Transformer, as just described, is not the end of the
@@ -170,4 +179,9 @@ search for a better architecture (≈41:51, slides 57–61):
   attention that cross-attention specializes.
 - [Vanishing and exploding gradients](vanishing-and-exploding-gradients.md) — residual
   connections, covered there in general and applied here.
+- [Pretraining and fine-tuning](pretraining-and-finetuning.md) — which objective each of the
+  three shapes can be pretrained with.
+- [BERT and masked language modeling](bert.md) — the pretrained encoder.
+- [GPT and in-context learning](gpt-and-in-context-learning.md) — the pretrained decoder.
 - [Lecture 8 — Self-Attention and Transformers](08-self-attention-and-transformers.md)
+- [Lecture 9 — Pretraining](09-pretraining.md)

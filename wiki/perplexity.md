@@ -105,10 +105,37 @@ modern standards even 30 is very high: the best current models reach **perplexit
 single digits**, meaning they very often guess exactly the right word — though never always,
 since nobody can predict what a person will say next in many circumstances (≈8:40).
 
+## Two later uses, and one trap
+
+Lecture 9 puts perplexity to work as a **proxy for generality**. Pretrained models are meant to
+be good at everything, which makes them awkward to evaluate; the practical answer during
+training is to track perplexity, because "better perplexity correlates with all the stuff that's
+much harder to evaluate, like lots and lots of different tasks" (lecture 9, ≈28:38). It is cheap,
+it is available continuously, and it is not what you actually care about — which is why the field
+also maintains large multi-task benchmark suites.
+
+Lecture 10 puts it to work as a **re-ranking score** and immediately warns against it. Having
+sampled ten candidate generations, the simplest way to pick one is lowest perplexity — but slide
+36 of that lecture flags the problem in bold: *repetitive utterances generally get low
+perplexity*. The degenerate looping text that
+[decoding algorithms](decoding-algorithms.md) exists to avoid is exactly the text perplexity
+rewards. Perplexity "is not really robust to maximize" (lecture 10, ≈36:18), so re-rankers in
+practice score other properties — style, discourse coherence, factuality — instead of or
+alongside it.
+
+The trap generalizes: perplexity measures how well the model predicts *held-out human text*, not
+how good the text the model *generates* is. Those come apart precisely at the argmax, which is
+where a decoding algorithm looks.
+
 ## Related pages
 
 - [Language modeling](language-modeling.md) — what is being evaluated, and why scoring text
   follows from next-word prediction.
+- [Decoding algorithms](decoding-algorithms.md) — re-ranking, and why low perplexity is the
+  wrong thing to maximize.
+- [Evaluating NLG](evaluating-nlg.md) — the extrinsic metrics that supplement this one.
+- [Pretraining and fine-tuning](pretraining-and-finetuning.md) — perplexity as a training-time
+  proxy for a pretrained model's generality.
 - [*n*-gram language models](n-gram-language-models.md) — the 67.6 baseline.
 - [LSTM](lstm.md) — what moved the number to 30.
 - [Softmax, the logistic function, and cross-entropy](softmax-and-cross-entropy.md) — the loss

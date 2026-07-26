@@ -114,6 +114,25 @@ networks](recurrent-neural-networks.md), but the two named ideas belong here:
   what ChatGPT does, and that because it is probabilistic, running it twice gives different
   answers (≈1:10:31).
 
+## Language modeling as a pretraining objective
+
+Lecture 9 gives the objective a second job. Rather than training a language model in order to
+*have* a language model, you train one in order to keep its parameters: "instead of using my
+language model just to provide probabilities over the next word, I am going to train it on that
+task … and then I'm just going to keep all the weights" (lecture 9, slide 18, ≈24:45). Those
+weights then initialize a network for some other task entirely.
+
+What makes this attractive is the supervision-for-free argument. No annotation is required —
+"the existence of that sequence of words that someone has written provides you with all these
+pairs of input and output" (lecture 9, ≈27:05) — so the training set is as large as the text
+you can find. The same lecture notes the limit of that claim: there are roughly 7,000 languages
+on Earth, and most of them do not have the billions of words this needs.
+
+Not every architecture can be pretrained this way. A bidirectional encoder cannot do language
+modeling at all, because the next word is already visible in its input, which is why
+[BERT](bert.md) uses masked language modeling instead; encoder-decoders use span corruption.
+The full comparison is at [pretraining and fine-tuning](pretraining-and-finetuning.md).
+
 ## Related pages
 
 - [*n*-gram language models](n-gram-language-models.md) — the pre-neural approach and where
@@ -123,5 +142,12 @@ networks](recurrent-neural-networks.md), but the two named ideas belong here:
 - [Perplexity](perplexity.md) — how language models are evaluated.
 - [Softmax, the logistic function, and cross-entropy](softmax-and-cross-entropy.md) — the
   output layer and the loss.
+- [Pretraining and fine-tuning](pretraining-and-finetuning.md) — language modeling reused as a
+  pretraining objective.
+- [Natural language generation](natural-language-generation.md) — the tasks a trained language
+  model is used for.
+- [Decoding algorithms](decoding-algorithms.md) — how the next-word distribution becomes text.
 - [Lecture 5 — Recurrent Neural Networks](05-recurrent-neural-networks.md)
 - [Lecture 6 — Sequence to Sequence Models](06-sequence-to-sequence-models.md)
+- [Lecture 9 — Pretraining](09-pretraining.md)
+- [Lecture 10 — Natural Language Generation](10-natural-language-generation.md)

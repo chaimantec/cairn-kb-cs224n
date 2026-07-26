@@ -63,10 +63,41 @@ MT — starting out *below* both systems in 2015 — overtakes them by 2016 and 
 42 by 2019, a far steeper trajectory than either statistical approach ever achieved. See
 [machine translation](machine-translation.md) for the history behind that crossover.
 
+## Where BLEU stops working
+
+Lecture 10 revisits BLEU as one instance of a general family — **content overlap metrics** —
+and locates the boundary of its usefulness. The key claim (slide 52 of that lecture) is that
+these metrics degrade in step with how open-ended the task is: not ideal even for MT, worse for
+summarization, much worse for dialogue, and "much, much worse" for story generation. BLEU
+survives as the standard for MT precisely because MT sits at the constrained end of the
+[open-endedness spectrum](natural-language-generation.md#the-open-endedness-spectrum), where
+lexical overlap with a reference is a defensible proxy for quality.
+
+Two additional cautions from that lecture are worth attaching here:
+
+- **Length can flatter you.** A long generated story shares vocabulary with any reference story
+  simply by being long, so the $n$-gram score "can make it seem you're getting decent scores"
+  without accuracy or quality (lecture 10, ≈56:18).
+- **BLEU makes a bad training reward.** Optimizing it directly with reinforcement learning
+  moves the number without moving human judgment: "even though RL refinement can achieve better
+  BLEU scores, it barely improves the human impression of the translation quality" (Wu et al.,
+  2016, quoted on slide 45). See
+  [exposure bias and teacher forcing](exposure-bias-and-teacher-forcing.md#reward-estimation).
+
+The semantic blindness that this page's own discussion anticipates is demonstrated bluntly in
+lecture 10, slide 53, where a correct paraphrase scores zero and a response meaning the exact
+opposite scores highest. The successors — BERTScore, BLEURT, MAUVE — are at
+[evaluating NLG](evaluating-nlg.md).
+
 ## Related pages
 
 - [Machine translation](machine-translation.md) — the task BLEU measures, and the
   statistical-to-neural transition the BLEU chart illustrates.
 - [Attention](attention.md) — what lecture 7 covers immediately after this evaluation
   prelude.
+- [Evaluating NLG](evaluating-nlg.md) — where BLEU sits among the other metrics, and what
+  replaces it for open-ended tasks.
+- [Natural language generation](natural-language-generation.md) — the open-endedness spectrum
+  that predicts where BLEU fails.
 - [Lecture 7 — Attention, Final Projects and LLM Intro](07-attention-final-projects-and-llm-intro.md)
+- [Lecture 10 — Natural Language Generation](10-natural-language-generation.md)
