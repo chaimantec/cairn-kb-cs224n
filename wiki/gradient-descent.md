@@ -113,6 +113,13 @@ gradient has been in the past, and use it to scale that parameter's step — so 
 Start them at an initial learning rate of around **0.001**; most have other hyperparameters
 too.
 
+That per-parameter accumulation has a memory cost that only becomes visible when you try to
+train something large. Adam keeps a momentum term *and* a variance term for every parameter,
+both in FP32, so the optimizer state alone is **12 bytes per parameter** — three times the model
+itself under mixed precision. Lecture 13 gives the equations and the accounting: see
+[GPU memory for training](gpu-memory-for-training.md), and
+[ZeRO and FSDP](zero-and-fsdp.md) for how that state gets sharded across GPUs.
+
 The **W** variants are worth knowing about specifically for word vectors: word vectors are
 updated *sparsely*, because particular words only turn up occasionally, and some optimizers
 have properties tuned for that (≈23:59). Beyond this there is a whole family of further ideas

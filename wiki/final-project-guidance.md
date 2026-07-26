@@ -179,6 +179,17 @@ you adapt a large pretrained model while training a small fraction of its parame
 matters when you are working within a course GPU budget. See
 [pretraining and fine-tuning](pretraining-and-finetuning.md#full-versus-parameter-efficient-fine-tuning).
 
+**Make it fit on the GPUs you have.** [Lecture 13](13-efficient-training.md) is aimed squarely
+at final projects — the lecturer says so in his opening sentence — and reduces to one flowchart:
+always use [mixed precision](mixed-precision-training.md) training, and bfloat16 on
+Ampere-generation hardware; if batch size 1 fits, raise it and turn on
+[ZeRO stage 2](zero-and-fsdp.md), which costs nothing; if it does not fit, try ZeRO stage 3
+(FSDP) and gradient checkpointing; and if that still fails, use [LoRA](lora.md) on the query and
+value matrices with rank 8 and alpha 1. Two warnings from that lecture apply directly to project
+planning: all of the multi-GPU material assumes you *have* more than one GPU (≈53:39), and a
+novel architecture may train inefficiently under FSDP simply because no good sharding policy
+exists for it (≈1:00:38).
+
 Lecture 10's ethics section applies here too: the smaller open models you are likely to use
 carry fewer safeguards than the commercial APIs, so toxic degeneration is more likely, not less
 (≈1:13:58).

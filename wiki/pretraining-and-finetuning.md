@@ -146,6 +146,19 @@ stacked on top — gets a one-word endorsement: "absolutely, this works a bit be
 Beyond memory, the saving is in optimizer state: you avoid storing gradients and momentum for
 the frozen parameters, not just their updates (≈57:08).
 
+> **Lecture 13 develops all of this properly.** See
+> [parameter-efficient finetuning](parameter-efficient-finetuning.md) for the wider family and
+> the case for it, and [LoRA](lora.md) for the method in full — the rank and $\alpha$
+> hyperparameters, which matrices to adapt, the results tables, and the practical defaults.
+> [GPU memory for training](gpu-memory-for-training.md) quantifies the optimizer-state saving
+> noted above: a trainable parameter costs 16 bytes and a frozen one costs 2.
+>
+> **Note the change of notation between the two decks.** Lecture 9's slide 34 writes the
+> correction as $W + AB$ with $A \in \mathbb{R}^{d \times k}$ and $B \in \mathbb{R}^{k \times d}$;
+> lecture 13's slide 59 writes it as $W_0 + \alpha BA$ with $B \in \mathbb{R}^{d \times r}$ and
+> $A \in \mathbb{R}^{r \times k}$ — the letters are swapped and the rank is called $r$. The
+> method is the same; each page uses its own lecture's symbols.
+
 ## Evaluating a general-purpose model
 
 Pretrained models are meant to be general, which makes evaluation awkward. The lecture gives

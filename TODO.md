@@ -10,7 +10,131 @@ The course has 23 lectures, built incrementally.
 - **Run 6** (complete): lectures 9–10.
 - **Run 7** (complete): lectures 11–12 — Post-training (Archit Sharma) and
   Benchmarking (Yann Dubois).
-- Lectures 13–23 remain deferred; video ids are listed at the bottom.
+- **Run 8** (complete): lecture 13 — Efficient Training (Shikhar Murty).
+- Lectures 14–23 remain deferred; video ids are listed at the bottom.
+
+---
+
+# Run 8 — lecture 13
+
+Catalog position 13. The catalog's own title is "Lecture 12 - Efficient Training, Shikhar
+Murty". Repo files use the catalog **position** (`13-…`), per the convention set in run 3.
+
+## Provenance — Spring 2024
+
+Position 13 ↔ `slides-cs224n-spr2024-lecture12-training-shikhar.pdf`, already on disk from
+the run-1 crawl. The lecturer opens with "welcome to lecture 12", matching the deck.
+
+| Where | Efficient Training |
+|---|---|
+| Cairn catalog position | 13 |
+| Catalog / YouTube title | "Lecture 12" |
+| Deck's own title | "Lecture 12" |
+| Repo file prefix | `13-` |
+
+## Transcripts
+- [x] 13 Efficient Training — video UVX7SYGCKkA (81 paragraphs, 62 min)
+- [x] Copy-edited by hand; verbatim original kept in `raw/transcripts/original/`.
+      All 81 `[MM:SS]` timestamps verified identical and in order; number inventory compared
+      body-to-body, and only four tokens differ, each a caption artifact: "fp32 that's like
+      **32 bytes**" (the lecturer's own false start, self-corrected to 32 bits in the same
+      breath), "a **th000**" ×2 (spelled out as "a thousand"), "the **fp6** computed
+      Radiance" (garble of FP16), and "stage **one 1** two and three" (duplicated numeral).
+- [x] Restored against the slides: *Adam* ("adom"), *bfloat16* ("B float 16", "B FL 16",
+      "b flat 16"), *FSDP* ("Fs DP"), *shard/sharded/sharding* ("shot", "shoted", "shouted",
+      "Shing"), *LoRA* ("Laura", "Lura"), *batch size* ("bat size", "bath size", "bad size"),
+      *DistilBERT* ("dist bir"), *GradScaler* ("grad scalar"), *autocast* ("AutoCast"),
+      *reduce-scatter* ("reduce CER"), *layer-j* ("ler"), *gradients* ("Radiance"), *PyTorch*
+      ("pyos"), *GPT-3* ("gpt3", "GPD 3"), *BitFit* ("bit fit"), *SVD* ("SD"), *NaNs* ("n"),
+      *A100* ("a 100", "A1 100"), *Ampere* ("Amper"), *autodiff* ("Auto diff"), *efficient
+      adaptation* ("f adaptation"), *cache/caching* ("cash").
+- [x] One number corrected against the slides and flagged inline: 4:47 "1.1 gets converted to
+      one" → **1.0001** (slide 10 writes the example that way, and 1.1 *is* representable in
+      FP16, so the caption is wrong rather than the lecturer).
+- [x] Two spoken figures that the slides do not carry are marked inline rather than quietly
+      reconciled: 41:12's "1.1 million tons" of carbon for GPT-3 (slide 54 gives no tonnage —
+      only Cornell's 2021 "coal power plant for 10 straight hours", which he then states
+      correctly and which he himself hedges as "or some such number"), and 29:37's
+      FlatParameter example of "14 parameters plus padding" (slide 43 draws 15 elements plus
+      one padding slot across 16 ranks).
+- [x] Five residual ambiguities left marked `[Ed: …]` rather than guessed — all student
+      questions or interjections off-mic (11:49, 12:36, 21:06, 21:56, 54:25), plus the LoRA
+      weight matrix at 45:51 whose subscript the captions destroy ("W KN"); slide 59 records
+      it as $W_0 \in \mathbb{R}^{d \times k}$.
+- [x] Useful cross-check: the student at 54:25 asks about "slide 48", and printed slide 48 is
+      indeed the FSDP communication timeline with the full overhead recap — independent
+      confirmation of the deck's 1:1 numbering.
+
+## Slides
+- [x] raw/slides/13-efficient-training.md — 65 pages, printed numbers 1:1 with PDF pages
+      (pages 1, 53, 54, 55, 62 print no number but sit in an unambiguous run).
+      `slide_number_map.py --verify` passes: 65 headings, sequence matches the deck exactly.
+- [x] **First run of the delegated slide-reading path** (Step 1b subagent, model sonnet) —
+      it works. Hand-checked five pages against the PDF rather than trusting the script:
+      *22* (DistilBERT precision table — all 15 cells correct), *64* (both LoRA ablation
+      tables — all 41 cells correct), *53/54* (the two charts — both line series correct
+      with no invented third, all twelve bar values correct), *46–48* (the FSDP
+      communication timeline — CPU/comp/comm tracks correct block by block). The known
+      failure modes did not appear: no fabricated data series, no thin "a chart showing
+      results" prose. It also flagged three genuine uncertainties unprompted rather than
+      guessing, including the slide's own garbled "It's quite that simple…" line, which is
+      really on slide 54 and was left verbatim.
+      *Caveat:* the first attempt died on an infrastructure fault (background fork could not
+      be resumed) having written nothing. Re-run in the foreground. Worth telling the agent
+      to append each chunk to the file as it goes, so a crash leaves partial work.
+
+## Wiki
+- [x] wiki/13-efficient-training.md
+- [x] Topic pages (7 new): mixed-precision-training, gpu-memory-for-training,
+      collective-communication, distributed-data-parallel, zero-and-fsdp,
+      parameter-efficient-finetuning, lora. Topic pages now total 51.
+- [x] Cross-links added to the pages this lecture extends: pretraining-and-finetuning →
+      parameter-efficient-finetuning + lora (with a note that the two decks **swap the letters
+      $A$ and $B$** and name the rank differently — lecture 9 writes $W + AB$ with rank $k$,
+      lecture 13 writes $W_0 + \alpha BA$ with rank $r$); final-project-guidance → the whole
+      flowchart, since this lecture is explicitly aimed at final projects; gradient-descent →
+      gpu-memory-for-training, because Adam's per-parameter state is what costs 12 bytes.
+- [x] Update INDEX.md — coverage note now says lectures 1–13, the numbering caveat covers 13,
+      one lecture entry, seven topic entries, and the slides/transcripts sections list the new
+      deck and transcript.
+- [x] README.md — lecture table row, 44 → 51 topic pages, "lectures 14–23 not built yet",
+      guest-lecturer note extended to Shikhar Murty.
+- [x] AGENTS.md — lecture 13 added to the 1:1-numbering list and to the Spring 2024
+      provenance list; the multiple-numbering note now records that the off-by-one between
+      catalog position and video/deck title is **systematic from position 11 onward**.
+- [x] Link sweep: every relative link in the repo resolves; no wiki page points into
+      gitignored `raw/pdfs/`; the deck URL matches `sources.md` exactly. The only three
+      unresolvable strings are the illustrative examples inside backticks in AGENTS.md and
+      TODO.md's own quotation of them, as in previous runs.
+- [x] LaTeX check: no equation inside a code fence, no unbalanced `$` on any line. One inline
+      expression that had wrapped across a line break was promoted to a display equation,
+      since inline math split by a newline does not reliably render.
+
+## Publish
+- [ ] Commit and push (`kbUrl` already set — no `link_kb.sh` needed)
+
+## Notes for the next run
+
+- **The delegated slide-reading path (Step 1b) is now proven** — see the Slides section above
+  for what was hand-checked. Two operational lessons: pass `model: sonnet` explicitly, and run
+  the agent in the **foreground**. The first background attempt died on a checkpoint/resume
+  fault having written nothing, and a background agent that dies takes its whole context with
+  it. Also tell the agent to append each chunk of pages to the output file as it goes, so an
+  interruption leaves partial work rather than none.
+- **The numbering off-by-one is systematic from position 11 onward.** Positions 11, 12 and 13
+  are titled "Lecture 10", "Lecture 11" and "Lecture 12" by both the video and the deck. Expect
+  position 14 to be "Lecture 13" (Brain-Computer Interfaces, Chaofei Fan) and to match
+  `slides-cs224n-spr2024-lecture13-speech-bci.pdf`, but verify rather than assume.
+- Lectures 14–23 remain. Spring 2024 decks for 14–18 are already on disk in `raw/pdfs/` from the
+  run-1 crawl, so no re-crawl is needed. **Lectures 19–23 have no deck on the Spring 2024 site**
+  (multimodal, interpretability, and the three tutorials) and will need either a
+  Winter-2023-style hunt or a transcript-only build.
+- `slides-cs224n-spr2024-lecture13-speech-bci.pdf` — the deck for the *next* lecture — is
+  **62MB**, over GitHub's 50MB warning threshold. It is gitignored like the rest, so this only
+  matters if anyone ever reverses the no-PDF-commits decision.
+- Lecture 13's transcript was unusually clean: 81 paragraphs for a 62-minute lecture, and only
+  five residual `[Ed: …]` marks, all of them off-mic student questions. Its garbles are
+  systems vocabulary rather than proper nouns, which the slides resolve easily.
 
 ---
 

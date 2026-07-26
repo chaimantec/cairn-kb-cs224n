@@ -10,13 +10,13 @@ goals are that students learn the methods, gain some real understanding of human
 language and why it is hard for computers, and come out able to build working
 systems.
 
-> **Coverage note.** This knowledge base covers **lectures 1 to 12**: wiki pages,
+> **Coverage note.** This knowledge base covers **lectures 1 to 13**: wiki pages,
 > timestamped transcripts, and full slide-by-slide text for each. Slide *URLs* for
 > lectures 1–18 are listed in [sources.md](sources.md), so questions about later
 > lectures can be answered by pointing at the right PDF, but there are no transcripts,
 > wiki pages, or slide text for them yet. See [TODO.md](TODO.md) for what remains.
 >
-> **Lectures 9 and 10 are Winter 2023 recordings**, unlike lectures 1–8 and 11–12. Spring 2024 had no
+> **Lectures 9 and 10 are Winter 2023 recordings**, unlike lectures 1–8 and 11–13. Spring 2024 had no
 > Natural Language Generation lecture at all, and its Pretraining lecture is not the one in
 > the playlist — so both decks come from the Winter 2023 course archive
 > (`cs224n.1234`), not the Spring 2024 site. Lecture 9 is taught by **John Hewitt** and
@@ -26,8 +26,8 @@ systems.
 > all four. **Lectures 11 and 12 are back on the Spring 2024 track** and use the Spring 2024
 > decks, but their titles are off by one against this KB's numbering: catalog position 11 is
 > titled "Lecture 10 - Post-training" (Archit Sharma) and position 12 "Lecture 11 -
-> Benchmarking" (Yann Dubois). Repo files use the position; slide citations use each deck's
-> own printed numbers.
+> Benchmarking" (Yann Dubois), and position 13 "Lecture 12 - Efficient Training" (Shikhar
+> Murty). Repo files use the position; slide citations use each deck's own printed numbers.
 >
 > **Citing sources.** Prefer citing a **slide number** for anything on a slide
 > (equations, tables, definitions) and a **timestamp** for anything Manning says aloud
@@ -129,6 +129,14 @@ systems.
   Arena, LLM judges, AlpacaEval and length control; the three current regimes (perplexity,
   "everything", arena-like); and what is broken — MMLU's three incompatible implementations,
   contamination, benchmark saturation, English monoculture and judge bias.
+- [Lecture 13 — Efficient Training](wiki/13-efficient-training.md) (Shikhar Murty) — the systems
+  lecture, aimed explicitly at final projects: how to train a model that does not fit on the GPUs
+  you have. Floating-point layouts and why pure FP16 collapses DistilBERT to 50.08% accuracy;
+  mixed precision with master weights and loss scaling, then bfloat16, which removes the scaling;
+  the per-parameter memory budget where Adam's optimizer state costs three times the model;
+  DDP and its wasteful replication; the four MPI collectives and the identity that makes ZeRO
+  stages 1 and 2 **free**; ZeRO stage 3 / FSDP taking 120 GB per GPU down to 1.9 GB; and LoRA —
+  matching full finetuning of GPT-3's 175B parameters while training 4.7M.
 
 ## Topic pages
 
@@ -352,6 +360,40 @@ systems.
   implementations scoring llama-65b at 0.637 and 0.488), contamination (GPT-4 solving 10/10
   pre-2021 Codeforces problems and 0/10 recent ones) with min-k% and exchangeability detectors,
   overfitting and the GSM1k/DynaBench mitigations, and the BLEU status-quo trap.
+- [Mixed precision training](wiki/mixed-precision-training.md) — running the forward and backward
+  passes in half precision while keeping the weight update exact. The bit layouts of FP32, FP16
+  and bfloat16 and what range vs. precision buys; the two ways naive FP16 fails (more than half
+  of all activation gradients underflow to zero; 1.0001 rounds to 1); master weights and loss
+  scaling; the PyTorch `GradScaler`/`autocast` code and the bfloat16 version that drops it; and
+  the DistilBERT table where pure FP16 collapses to chance. **Start here — the lecture's advice
+  is to always use it.**
+- [GPU memory for training](wiki/gpu-memory-for-training.md) — the arithmetic behind every CUDA
+  out-of-memory error. The 16-bytes-per-parameter budget, why Adam's optimizer state costs 12 of
+  them, the $(2+2+K)\Psi$ formula giving 120 GB for a 7.5B model, and the term the first version
+  leaves out — activations, which scale with the batch size and which **no** ZeRO stage shards.
+- [Collective communication](wiki/collective-communication.md) — the four MPI operations that
+  multi-GPU training is built from: all-reduce, reduce-scatter, all-gather and reduce, each with
+  what it moves and which scheme uses it. Includes the identity **all-reduce = reduce-scatter +
+  all-gather**, which is the single fact that makes ZeRO stages 1 and 2 cost nothing.
+- [Distributed data parallel](wiki/distributed-data-parallel.md) — the baseline multi-GPU setup:
+  split the data, replicate the model, all-reduce the gradients. Why it parallelizes computation
+  well and scales badly, with the 120 GB figure that motivates everything after it.
+- [ZeRO and FSDP](wiki/zero-and-fsdp.md) — sharding what DDP replicates, in three stages:
+  optimizer state (120 → 31.4 GB), gradients (→ 16.6 GB), parameters (→ 1.9 GB). Why the first
+  two are **free**, how stage 2 avoids ever instantiating a full gradient, FSDP units and the
+  FlatParameter, the prefetching timeline that hides the communication, and the two wrinkles —
+  unit 0 is never freed, and the sharding policy is architecture-specific.
+- [Parameter-efficient finetuning](wiki/parameter-efficient-finetuning.md) — freezing almost
+  everything and training a small set of parameters instead. Why a frozen parameter costs 2 bytes
+  against a trainable one's 16; the general $\Delta\phi(\Theta)$ formulation; the family compared
+  on GPT-3 (BitFit, prefix methods, adapters, LoRA); and the efficiency-as-a-value case —
+  compute doubling every 3.4 months, the accuracy-vs-efficiency paper counts, and CS234's 880
+  kilowatt-hours.
+- [LoRA](wiki/lora.md) — low-rank adaptation in full. The intrinsic-rank observation, the
+  $W_0 + \alpha BA$ decomposition with every symbol defined, what $\alpha$ does, the code (and why
+  $B$ is initialized to zero), no-added-inference-latency task switching, and the ablations that
+  give the defaults: adapt the **query and value** matrices, **rank 8**, **alpha 1**. Rank 1 is
+  already competitive. **Start here for anything about LoRA.**
 
 ## Raw materials
 
@@ -366,11 +408,12 @@ systems.
   ([62 slides](raw/slides/08-self-attention-and-transformers.md)), lecture 9
   ([54 slides](raw/slides/09-pretraining.md)), lecture 10
   ([76 printed slides](raw/slides/10-natural-language-generation.md)), lecture 11
-  ([99 printed slides](raw/slides/11-post-training.md)) and lecture 12
-  ([65 slides](raw/slides/12-benchmarking.md)). Each file opens
+  ([99 printed slides](raw/slides/11-post-training.md)), lecture 12
+  ([65 slides](raw/slides/12-benchmarking.md)) and lecture 13
+  ([65 slides](raw/slides/13-efficient-training.md)). Each file opens
   with a section-to-slide-range table, then transcribes every slide in order —
   including the equations, the tables of numbers, the margin annotations, and prose
-  descriptions of the diagrams and plots. For lectures 1–3, 5–9 and 12 **the printed slide
+  descriptions of the diagrams and plots. For lectures 1–3, 5–9, 12 and 13 **the printed slide
   number equals the PDF page number**, so "slide 28" is page 28. **Three decks are exceptions.**
   Lecture 4's printed numbers run 1–49 but the PDF has only 45 pages, because printed
   slides 4, 5, 8 and 13 were hidden in the source deck and never exported. Lecture 10 is
@@ -387,7 +430,7 @@ systems.
   Note that three slides in lecture 10's ethics section (70, 73, 74) reproduce hate speech,
   sexual violence and profanity in full on the deck; the slide file states what each figure
   shows and cites the source paper but does not reproduce the passages.
-- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 12,
+- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 13,
   grouped into paragraphs each prefixed with an `[MM:SS]` timestamp. Use these to
   point a learner at the exact moment something is explained ("Manning covers this
   around 42:00"), or to quote him directly — they read as sentences, so they quote
@@ -412,9 +455,13 @@ systems.
   Li", *MMLU* as "mlu", *PaLM* as "power models", *SuperGLUE* as "super clue", *BLEU* as
   "blur", *BERTScore* as "bir", *AlpacaEval* as "Paka eval" and "back a EV", *Chatbot Arena* as
   "chadbad Arena", *MLPerf* as "ml puff", *DiscrimEval* as "dis remal" and *Anthropic* as
-  "entropic"). No content was added,
+  "entropic"; and in lecture 13 the systems vocabulary throughout — *Adam* as "adom", *bfloat16*
+  as "B float 16" and "b flat 16", *FSDP* as "Fs DP", *shard/sharded/sharding* as "shot",
+  "shoted" and "Shing", *LoRA* as "Laura" and "Lura", *batch size* as "bat size", *DistilBERT* as
+  "dist bir", *GradScaler* as "grad scalar", *reduce-scatter* as "reduce CER", *gradients* as
+  "Radiance", and *PyTorch* as "pyos"). No content was added,
   removed or reordered, and every timestamp is preserved. Mathematical notation in
-  lectures 7–11's transcripts stays spelled out (bold for vectors/matrices, Unicode
+  lectures 7–11's and 13's transcripts stays spelled out (bold for vectors/matrices, Unicode
   subscripts), matching lecture 3's convention — LaTeX is wiki-only. Student questions
   are marked in italics. Where a garble could not be resolved from the slides, the text
   carries an inline `[Ed: …]` note saying so instead of guessing — treat those as known
@@ -424,8 +471,9 @@ systems.
   these only to check exactly what the speech recognizer produced.
 - [`sources.md`](sources.md) — the full inventory of course documents, with a
   canonical URL for each: lecture slides for Spring 2024's lectures 1–18, the two
-  **Winter 2023** decks that go with catalog lectures 9 and 10 (catalog lectures 11 and 12 use
-  the Spring 2024 `lecture10-prompting-rlhf` and `lecture11-evaluation-yann` decks),
+  **Winter 2023** decks that go with catalog lectures 9 and 10 (catalog lectures 11, 12 and 13
+  use the Spring 2024 `lecture10-prompting-rlhf`, `lecture11-evaluation-yann` and
+  `lecture12-training-shikhar` decks),
   supplementary readings
   (the 2019 course notes, the gradient and differential-calculus reviews, the
   self-attention and transformers notes, the Python review), the assignment 2–4
