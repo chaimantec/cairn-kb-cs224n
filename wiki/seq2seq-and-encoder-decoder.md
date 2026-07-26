@@ -79,9 +79,9 @@ encoder to decoder:
 > **Conditioning = Bottleneck**
 
 That is the honest weakness of the design. The entire source sentence has to pass through one
-fixed-size vector. It is the problem **attention** solves in a later lecture, and slide 25's
-remark about "more direct and linear pass-through connections" points at the same fix. See
-[vanishing and exploding gradients](vanishing-and-exploding-gradients.md).
+fixed-size vector. It is the problem **[attention](attention.md)** solves in the next
+lecture, and slide 25's remark about "more direct and linear pass-through connections"
+points at the same fix. See [vanishing and exploding gradients](vanishing-and-exploding-gradients.md).
 
 ## Two design questions from the lecture
 
@@ -119,12 +119,17 @@ Many NLP tasks can be phrased this way:
 
 And the pattern survives the architectural change that comes later (≈1:09:15): "even when we
 go on to do other things like use Transformers rather than LSTMs, we're still commonly going
-to use these kinds of encoder-decoder models."
+to use these kinds of encoder-decoder models." See [Transformer](transformer.md) for the
+encoder-decoder shape that architecture takes.
 
 ## Related pages
 
 - [Machine translation](machine-translation.md) — the task, and the statistical era this
   replaced.
+- [Attention](attention.md) — the fix for this architecture's bottleneck, introduced in
+  [lecture 7](07-attention-final-projects-and-llm-intro.md).
+- [Transformer](transformer.md) — the encoder-decoder architecture that later replaces this
+  one.
 - [LSTM](lstm.md) — what the encoder and decoder are in practice.
 - [Recurrent neural networks](recurrent-neural-networks.md) — teacher forcing,
   bidirectionality and stacking, all of which appear here.

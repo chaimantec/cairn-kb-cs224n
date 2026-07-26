@@ -10,7 +10,7 @@ goals are that students learn the methods, gain some real understanding of human
 language and why it is hard for computers, and come out able to build working
 systems.
 
-> **Coverage note.** This knowledge base covers **lectures 1 to 6**: wiki pages,
+> **Coverage note.** This knowledge base covers **lectures 1 to 8**: wiki pages,
 > timestamped transcripts, and full slide-by-slide text for each. Slide *URLs* for
 > lectures 1–18 are listed in [sources.md](sources.md), so questions about later
 > lectures can be answered by pointing at the right PDF, but there are no transcripts,
@@ -70,6 +70,21 @@ systems.
   DenseNet and HighwayNet; bidirectional and stacked RNNs; machine translation from the
   1950s code-breaking analogy through statistical MT to the 2014 neural breakthrough; and
   the seq2seq encoder-decoder model, trained end-to-end.
+- [Lecture 7 — Attention, Final Projects and LLM Intro](wiki/07-attention-final-projects-and-llm-intro.md)
+  — BLEU and how machine translation is evaluated; attention as the fix for the seq2seq
+  bottleneck, worked through visually with *il a m'entarté* → "he hit me with a pie"; the
+  history from Bahdanau's additive attention (2014) through Luong and Manning's
+  multiplicative form (2015); the general definition of attention beyond MT; then a
+  practical brief on choosing and scoping the CS224N final project, finding data and
+  research topics, and getting a neural network to actually train.
+- [Lecture 8 — Self-Attention and Transformers](wiki/08-self-attention-and-transformers.md)
+  — is attention all you need? Why recurrence loses on linear interaction distance and
+  parallelizability; self-attention as query-key-value lookup, and the three fixes
+  (position representations, nonlinearities, future-masking) that make it a working
+  building block; multi-head attention, scaled dot-product attention, residual
+  connections and layer norm; the encoder, decoder, and encoder-decoder Transformer
+  shapes; and the still-open drawbacks — quadratic compute, position representations,
+  and how little most proposed modifications actually help.
 
 ## Topic pages
 
@@ -182,6 +197,30 @@ systems.
   why models are now trained to memorize the training set; dropout's mechanics at train and
   test time; and the three explanations of why it works, including the naïve-Bayes /
   logistic-regression middle ground.
+- [Evaluating machine translation: BLEU](wiki/evaluating-machine-translation.md) — why
+  translation can't be scored like classification, the *n*-gram-overlap-against-references
+  recipe and its too-short-translation penalty, what BLEU numbers mean in practice, and the
+  2013–2019 chart where neural MT overtakes statistical MT.
+- [Attention](wiki/attention.md) — the fix for the seq2seq bottleneck: the query/key/value
+  mechanism, worked through with *il a m'entarté* → "he hit me with a pie"; the three ways
+  to score attention (Bahdanau's additive form, Luong-Pham-Manning's multiplicative form,
+  and basic dot-product); and the general definition — a query attending to a set of
+  values — that self-attention specializes next lecture. **Start here for anything about
+  how attention works, before Transformers.**
+- [Self-attention](wiki/self-attention.md) — attention within a single sequence: why
+  recurrence loses on interaction distance and parallelizability, the query-key-value
+  recipe, and the three fixes (position representations, a feed-forward nonlinearity, and
+  future-masking) needed before it can replace an RNN.
+- [Transformer](wiki/transformer.md) — the architecture built on self-attention: why it
+  displaced recurrence, multi-head attention, scaled dot-product attention, residual
+  connections and layer normalization, the encoder/decoder/encoder-decoder shapes
+  (including cross-attention), and the still-open drawbacks (quadratic compute, position
+  representations, and how little most proposed modifications actually help). **Start
+  here for anything about how a Transformer is built.**
+- [Final project guidance](wiki/final-project-guidance.md) — choosing the default vs. a
+  custom CS224N final project, the five common project shapes, where to find a research
+  topic and where to find data, the train/tune/dev/test discipline that keeps results
+  trustworthy, and a checklist for getting a neural network to actually train.
 
 ## Raw materials
 
@@ -190,11 +229,13 @@ systems.
   ([47 slides](raw/slides/02-word-vectors-and-language-models.md)), lecture 3
   ([85 slides](raw/slides/03-backpropagation-and-neural-networks.md)), lecture 4
   ([49 slides](raw/slides/04-dependency-parsing.md)), lecture 5
-  ([72 slides](raw/slides/05-recurrent-neural-networks.md)) and lecture 6
-  ([56 slides](raw/slides/06-sequence-to-sequence-models.md)). Each file opens
+  ([72 slides](raw/slides/05-recurrent-neural-networks.md)), lecture 6
+  ([56 slides](raw/slides/06-sequence-to-sequence-models.md)), lecture 7
+  ([73 slides](raw/slides/07-attention-final-projects-and-llm-intro.md)) and lecture 8
+  ([62 slides](raw/slides/08-self-attention-and-transformers.md)). Each file opens
   with a section-to-slide-range table, then transcribes every slide in order —
   including the equations, the tables of numbers, the margin annotations, and prose
-  descriptions of the diagrams and plots. For lectures 1–3, 5 and 6 **the printed slide
+  descriptions of the diagrams and plots. For lectures 1–3 and 5–8 **the printed slide
   number equals the PDF page number**, so "slide 28" is page 28. **Lecture 4 is the
   exception:** its printed numbers run 1–49 but the PDF has only 45 pages, because printed
   slides 4, 5, 8 and 13 were hidden in the source deck and never exported — cite the printed
@@ -204,7 +245,7 @@ systems.
   back" rule of thumb that slide 25 then contrasts LSTMs against. Use these files when a
   learner asks where something is in the slides, wants an equation exactly as written,
   or when the transcript is unclear — the slides are the authority.
-- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 6,
+- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 8,
   grouped into paragraphs each prefixed with an `[MM:SS]` timestamp. Use these to
   point a learner at the exact moment something is explained ("Manning covers this
   around 42:00"), or to quote him directly — they read as sentences, so they quote
@@ -215,11 +256,16 @@ systems.
   lecture 4 *parsing* itself as "paing" and *parser* as "paa"; in lectures 5 and 6
   *n-gram* as "engram", *Xavier* as "harier", *Hadamard* as "hadam mod", *eigenvalue* as
   "ion value", and the names *Bengio*, *Jelinek*, *Feigenbaum*, *Hochreiter*, *Gers* and
-  *Olah* all beyond recognition). No content was added,
-  removed or reordered, and every timestamp is preserved. Student questions are marked
-  in italics. Where a garble could not be resolved from the slides, the text carries an
-  inline `[Ed: …]` note saying so instead of guessing — treat those as known gaps, and
-  prefer the slide. Each header notes what remains unreliable in that lecture.
+  *Olah* all beyond recognition; in lectures 7 and 8, *BLEU* arrived as "blue", *bake-off*
+  as "boff", *Bahdanau, Cho, and Bengio* as "B hour Al"/"dimma bad now K huno and Yoshua
+  Benjo", *Luong* as "tanglong", the French toy sentence *il a m'entarté* as "the a is a
+  sort of perfect past um exiler", and *minBERT* as "bir"). No content was added,
+  removed or reordered, and every timestamp is preserved. Mathematical notation in
+  lectures 7 and 8's transcripts stays spelled out (bold for vectors/matrices, Unicode
+  subscripts), matching lecture 3's convention — LaTeX is wiki-only. Student questions
+  are marked in italics. Where a garble could not be resolved from the slides, the text
+  carries an inline `[Ed: …]` note saying so instead of guessing — treat those as known
+  gaps, and prefer the slide. Each header notes what remains unreliable in that lecture.
 - [`raw/transcripts/original/`](raw/transcripts/original/) — the untouched verbatim
   captions, kept only for reference. **Prefer the edited transcripts above**; reach for
   these only to check exactly what the speech recognizer produced.

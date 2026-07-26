@@ -6,7 +6,84 @@ The course has 23 lectures, built incrementally.
 - **Run 2** (complete): lectures 3–4.
 - **Run 3** (complete): lectures 5–6.
 - **Run 4** (complete): no new lectures — converted all mathematics in the wiki to LaTeX.
-- Lectures 7–23 remain deferred; video ids are listed at the bottom.
+- **Run 5** (in progress): lectures 7–8.
+- Lectures 9–23 remain deferred; video ids are listed at the bottom.
+
+---
+
+# Run 5 — lectures 7–8
+
+## Transcripts
+- [x] 07 Attention, Final Projects and LLM Intro — video J7ruSOIzhrE (100 paragraphs)
+- [x] 08 Self-Attention and Transformers — video LWMzyfvuehA (100 paragraphs)
+- [x] Copy-edited both by hand, verbatim originals kept in `raw/transcripts/original/`.
+      All 100+100 `[MM:SS]` timestamps verified in order; number inventories compared,
+      differences all explained (garbled duplicates merged — "201 2015"→2015,
+      "assignments 34"→"3, 4"; numbers spelled as words; ASR-spaced "4 000"→"4,000").
+      Restored against slides: BLEU = Bilingual Evaluation Understudy; "boff
+      evaluations"→bake-off (slide 43's own phrase "Kaggle/bake-off/shared task");
+      "tanglong and me"→Luong (and Pham) and Manning 2015, bilinear/multiplicative
+      attention; "B hour Al paper"/"dimma bad now K huno and Yoshua Benjo"→Bahdanau,
+      Cho, and Bengio 2014, additive attention; French toy sentence "exiler"→"il
+      a m'entarté" (slide 7, "he pied me"); "bir"→BERT/minBERT; project names/authors
+      (Deep Poetry — Xie, Rastogi, Chang; Carol Hsin's differentiable-neural-computer
+      reimplementation; Word2Bits — Lam; CodeLlama-Fortran-PEFT — Govande, Kang, Shi;
+      AI-driven fashion cataloging — Ma, Gopinath), all confirmed against slides 41–50.
+      Math in the transcripts stays spelled out (bold/Unicode-subscript notation, not
+      LaTeX) per the repo's established convention — LaTeX is wiki-only. Two literal
+      dollar amounts escaped (`\$50`).
+
+## Slides
+- [x] raw/slides/07-attention-final-projects-and-llm-intro.md — all 73 slides.
+      Printed numbers match PDF pages 1:1, no gaps or offset.
+- [x] raw/slides/08-self-attention-and-transformers.md — all 62 slides. Printed
+      numbers match PDF pages 1:1, no gaps or offset.
+
+## Wiki
+- [x] wiki/07-attention-final-projects-and-llm-intro.md
+- [x] wiki/08-self-attention-and-transformers.md
+- [x] Topic pages — five new: attention, self-attention, transformer,
+      evaluating-machine-translation (BLEU), final-project-guidance.
+- [x] Updated existing topic pages — seq2seq-and-encoder-decoder.md's and
+      machine-translation.md's forward-pointers to "attention" turned into real links,
+      plus new Related-pages entries.
+- [x] Updated INDEX.md — coverage note, 2 lecture entries, 5 topic entries, raw
+      materials section (slide/transcript counts, garbled-term examples for run 5).
+- [x] Link sweep (scripted): all relative links resolve, all in-page anchors resolve,
+      no wiki page points into gitignored raw/pdfs/. Caught and fixed a sed/perl bug
+      that had merged several display-math lines with following prose in
+      attention.md, self-attention.md and transformer.md.
+
+## Publish
+- [ ] Commit and push (kbUrl already set on the catalog entry, no re-link needed).
+
+## Notes for run 6
+
+- **Deck-vs-catalog title matching held for lectures 7–8**, unlike the divergence past
+  lecture ~9 noted after run 3: `lecture07-final-project.pdf` and
+  `lecture08-transformers.pdf` matched catalog lectures 7 and 8 by number as well as
+  title. Re-verify by title once lectures resume past 9, per
+  [[cairn-kb-cs224n]]'s existing caveat.
+- **LaTeX is wiki-only — do not use it in `raw/transcripts/`.** This run initially wrote
+  the edited transcripts with `$...$` LaTeX math (following the run-4 "write math in
+  LaTeX" habit), then discovered lecture 3's transcript header explicitly documents the
+  actual convention: mathematical expressions dictated aloud go into the transcript as
+  Unicode symbols and **bold** variable names (`∂s/∂W`, **W**, **x**ᵢ), not LaTeX — LaTeX
+  is reserved for the wiki. Both lecture 7 and 8 transcripts were rewritten to match
+  before this run finished. Read `raw/transcripts/03-backpropagation-and-neural-networks.md`'s
+  header before hand-editing any future lecture's transcript.
+- **A `sed`/`perl` regex bug ate trailing newlines and merged lines.** While de-indenting
+  display-math lines pulled under numbered-list items in the new wiki pages, a
+  `perl -pe 's/^\s+(\$\$.*\$\$)\s*$/$1/'` one-liner used `\s*` at the end of the
+  pattern, which in Perl matches `\n` too — silently stripping the line's trailing
+  newline and merging it with the next line whenever the line matched. Caught by
+  grepping for `$$...$$` not followed immediately by end-of-line. If de-indenting or
+  otherwise reflowing text near LaTeX blocks with a regex one-liner again, verify with a
+  targeted grep afterward rather than trusting a clean diff — the corruption reads fine
+  in a `diff` summary line-count check but breaks the equation rendering.
+- Lectures 9–23 remain deferred; see the video-id list at the bottom. Several later
+  catalog entries (11 Post-training, 19–23 the guest lectures and tutorials) may have no
+  deck at all and would be transcript-only — see run 1's note.
 
 ---
 

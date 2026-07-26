@@ -149,6 +149,11 @@ SMT, and Transformers then displaced RNN-based NMT.
 
 - [Sequence-to-sequence and encoder-decoder models](seq2seq-and-encoder-decoder.md) — the
   architecture that made NMT work.
+- [Evaluating machine translation: BLEU](evaluating-machine-translation.md) — how MT quality
+  gets measured, covered at the start of
+  [lecture 7](07-attention-final-projects-and-llm-intro.md).
+- [Attention](attention.md) — the fix for NMT's bottleneck, and the idea
+  [Transformers](transformer.md) build on.
 - [LSTM](lstm.md) — what the encoder and decoder actually are in practice.
 - [Language modeling](language-modeling.md) — $P(y)$ in the SMT decomposition, and the decoder
   in the neural one.
