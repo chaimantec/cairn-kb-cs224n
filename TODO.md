@@ -157,7 +157,24 @@ the run-1 crawl. Guest lecture by Nathan Lambert (Allen Institute for AI).
       lecture-5-transcript one) plus the existing line in this file that quotes the former.
 
 ## Publish
-- [ ] Commit and push (`kbUrl` already set from run 1; no `link_kb.sh` needed)
+- [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (2 commits: lecture 15
+      wiki plus lecture 16 raw sources, then lecture 16 wiki plus the bookkeeping pass).
+      `kbUrl` already set from run 1; no `link_kb.sh` needed.
+
+## Notes for the next run
+
+- **`slide_number_map.py` only scans the bottom-left corner.** Lecture 16's deck numbers in the
+  bottom **right** and the script reported it as carrying no numbers at all. The 1:1 fallback
+  happened to be correct, but it was not verified by the script — the subagent caught it by
+  looking, and the parent confirmed it from the text layer. Until the script scans both corners,
+  treat a "no printed slide number found on ANY page" warning as *unconfirmed*, not as a finding.
+- **Add a per-paragraph word-count-ratio check to transcript adjudication.** The timestamp diff
+  and the number-inventory diff both pass cleanly when an editing agent moves a sentence across
+  an `[MM:SS]` boundary. Comparing each edited paragraph's word count against its original
+  (expect ≈0.72–1.10 after filler removal) caught two such drifts in lecture 15 that nothing else
+  would have.
+- **Tell slide-reading subagents to append each chunk to the file as they go.** Two agents this
+  run were killed mid-task by session limits; the one that had been appending lost nothing.
 
 ---
 
