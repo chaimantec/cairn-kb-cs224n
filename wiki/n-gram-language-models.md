@@ -133,4 +133,8 @@ LSTMs (lecture 6, slide 5).
 - [Language modeling](language-modeling.md) — the task these models perform.
 - [Recurrent neural networks](recurrent-neural-networks.md) — what replaced them.
 - [Perplexity](perplexity.md) — how the comparison is measured, including Kneser-Ney's number.
+- [Language models in decoding](language-models-in-decoding.md) — where an *n*-gram model is
+  still the right choice in 2024: scoring it is a memory lookup, so it is the only kind of LM
+  that fits inside the speech BCI's 20 ms real-time budget.
 - [Lecture 5 — Recurrent Neural Networks](05-recurrent-neural-networks.md)
+- [Lecture 14 — Brain-computer interfaces](14-brain-computer-interfaces.md)

@@ -189,4 +189,8 @@ something with a recurrent neural network, you probably want to use an LSTM.
 - [Sequence-to-sequence and encoder-decoder models](seq2seq-and-encoder-decoder.md) — where
   two LSTMs get wired together.
 - [Perplexity](perplexity.md) — the numbers LSTMs moved.
+- [Lecture 14 — Brain-computer interfaces](14-brain-computer-interfaces.md) — the **GRU**, the
+  simplified variant that merges cell and hidden state and drops a gate (slide 52), and a
+  worked argument for preferring a small recurrent net over a Transformer when data is scarce
+  and inference must fit in 20 ms.
 - [Lecture 6 — Sequence to Sequence Models](06-sequence-to-sequence-models.md)

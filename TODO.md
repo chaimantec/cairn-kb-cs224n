@@ -88,9 +88,23 @@ lecture number, no agenda slide of the usual form, and no announcements.
       62) — the one thing `--verify` cannot see.
 
 ## Wiki
-- [ ] wiki/14-brain-computer-interfaces.md
-- [ ] Topic pages
-- [ ] INDEX.md table of contents
+- [x] wiki/14-brain-computer-interfaces.md
+- [x] Topic pages (6 new): `brain-computer-interfaces`, `neural-recording-technologies`,
+      `neural-population-decoding`, `connectionist-temporal-classification`,
+      `language-models-in-decoding`, `neuroethics`.
+- [x] Back-links added from the existing pages this lecture reuses: `lstm` (the GRU, and the
+      small-net-over-Transformer argument), `seq2seq-and-encoder-decoder` (why arbitrary
+      alignment is a cost), `decoding-algorithms` (LM fusion, and CTC's merging-prefix
+      wrinkle), `n-gram-language-models` (why a counting model is still right inside 20 ms).
+- [x] INDEX.md table of contents — lecture entry, six topic entries, coverage note updated to
+      1–14, the no-printed-numbers caveat added to the `raw/slides/` description, and lecture
+      14's caption garbles added to the transcript description.
+- [x] AGENTS.md — recorded lecture 14 as a **fourth kind** of slide-numbering exception (a deck
+      that prints no numbers at all, distinct from the hidden-slide offsets in lectures 4, 10
+      and 11) and as a guest talk whose deck carries no lecture number.
+- [x] All 1,122 relative links in the repo re-checked programmatically; every one resolves.
+      (Three apparent hits are illustrative examples inside code spans in AGENTS.md/TODO.md,
+      the same known false positives as previous runs.)
 
 ## Publish
 - [ ] Commit and push

@@ -159,5 +159,9 @@ Assignment 5 implements. See
   the right shape and when a bare decoder is.
 - [Decoding algorithms](decoding-algorithms.md) — beam search generalized, and the sampling
   methods that replace it for open-ended tasks.
+- [Connectionist Temporal Classification](connectionist-temporal-classification.md) — what to
+  use instead when the alignment is **monotonic**, and why arbitrary alignment is a cost rather
+  than a free gift when training data is scarce.
 - [Lecture 6 — Sequence to Sequence Models](06-sequence-to-sequence-models.md)
 - [Lecture 10 — Natural Language Generation](10-natural-language-generation.md)
+- [Lecture 14 — Brain-computer interfaces](14-brain-computer-interfaces.md)

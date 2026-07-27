@@ -225,3 +225,7 @@ generated text.
   repetition problem, attacked from the training side.
 - [Evaluating NLG](evaluating-nlg.md) — MAUVE, which measures whether a decoding algorithm's
   output distribution matches the human one.
+- [Language models in decoding](language-models-in-decoding.md) — beam search with a language
+  model fused into the objective, and the word insertion bonus that fixes its length bias.
+- [Connectionist Temporal Classification](connectionist-temporal-classification.md) — beam
+  search over a collapsing alphabet, where different extensions can merge into one prefix.

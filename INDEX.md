@@ -10,7 +10,7 @@ goals are that students learn the methods, gain some real understanding of human
 language and why it is hard for computers, and come out able to build working
 systems.
 
-> **Coverage note.** This knowledge base covers **lectures 1 to 13**: wiki pages,
+> **Coverage note.** This knowledge base covers **lectures 1 to 14**: wiki pages,
 > timestamped transcripts, and full slide-by-slide text for each. Slide *URLs* for
 > lectures 1–18 are listed in [sources.md](sources.md), so questions about later
 > lectures can be answered by pointing at the right PDF, but there are no transcripts,
@@ -28,6 +28,10 @@ systems.
 > titled "Lecture 10 - Post-training" (Archit Sharma) and position 12 "Lecture 11 -
 > Benchmarking" (Yann Dubois), and position 13 "Lecture 12 - Efficient Training" (Shikhar
 > Murty). Repo files use the position; slide citations use each deck's own printed numbers.
+> **Lecture 14** (Brain-Computer Interfaces, Chaofei Fan) continues the off-by-one — the video
+> calls it "Lecture 13" — and is a guest research talk whose deck carries no lecture number at
+> all. That deck also prints **no slide numbers on any page**, so its slide citations are PDF
+> page positions; the slide file says so in its header.
 >
 > **Citing sources.** Prefer citing a **slide number** for anything on a slide
 > (equations, tables, definitions) and a **timestamp** for anything Manning says aloud
@@ -137,6 +141,17 @@ systems.
   DDP and its wasteful replication; the four MPI collectives and the identity that makes ZeRO
   stages 1 and 2 **free**; ZeRO stage 3 / FSDP taking 120 GB per GPU down to 1.9 GB; and LoRA —
   matching full finetuning of GPT-3's 175B parameters while training 4.7M.
+- [Lecture 14 — Brain-Computer Interfaces](wiki/14-brain-computer-interfaces.md) (Chaofei Fan) —
+  a guest research talk, and the only lecture where the model's input is neurons firing rather
+  than text. The history from Caton's 1875 galvanometer through Berger's EEG to intracortical
+  arrays; spike trains, cosine tuning curves and population decoding; the words-per-minute scale
+  that all assistive communication is measured against; why speech is decoded as **phonemes**
+  rather than articulator movements; participant T12's four arrays and the surprise that
+  Broca's-area recordings carried almost nothing; and then a full NLP pipeline — why an
+  encoder-decoder is *too powerful*, CTC, a GRU rather than a Transformer, beam search, an
+  n-gram LM inside a 20 ms budget with a Transformer rescoring on top — reaching ~25% word error
+  rate at 60–70 WPM, and under 1% in the 2024 follow-up. Closes on inner-speech decoding and the
+  neuroethics it forces.
 
 ## Topic pages
 
@@ -394,6 +409,35 @@ systems.
   $B$ is initialized to zero), no-added-inference-latency task switching, and the ablations that
   give the defaults: adapt the **query and value** matrices, **rank 8**, **alpha 1**. Rank 1 is
   already competitive. **Start here for anything about LoRA.**
+- [Brain-computer interfaces](wiki/brain-computer-interfaces.md) — what a BCI is and the four
+  parts every one of them has; the history from Caton (1875) through Berger's EEG (1924) and
+  Lucier's brain-wave music (1965) to intracortical arrays; a table of what has actually been
+  demonstrated, from 2D cursor typing to 0.99% word error rate; and the two problems that never
+  go away — neurons are noisy and the recording drifts. **Start here for anything about BCIs.**
+- [Neural recording technologies](wiki/neural-recording-technologies.md) — EEG on the scalp, ECoG
+  on the cortical surface, and penetrating microelectrode arrays, ordered by how far in they go.
+  The space-versus-time chart that organizes every method, why fMRI's ~1 s resolution destroys a
+  1 ms code, what a single electrode actually reports, and why decoders must be recalibrated
+  every session.
+- [Neural population decoding](wiki/neural-population-decoding.md) — turning spikes into intent.
+  Spike trains and firing rates, the cosine tuning curve, why one neuron cannot distinguish 120°
+  from 240°, why two neurons still cannot once noise is admitted, and how the problem becomes a
+  classification problem with decision boundaries over firing rates.
+- [Connectionist Temporal Classification](wiki/connectionist-temporal-classification.md) — the
+  loss for monotonic sequence problems with unknown alignment and a large length mismatch. The
+  blank symbol and the merge-then-delete collapsing rule, why the blank is what makes "hello"
+  spellable, the marginalization over all valid alignments, the CTC-specific wrinkle in beam
+  search, and when *not* to use it.
+- [Language models in decoding](wiki/language-models-in-decoding.md) — how an LM gets folded into
+  a decoder that is reading a noisy signal. The fused $P(\mathbf{Y}\mid\mathbf{X})^{\alpha}
+  P(\mathbf{Y}) L(\mathbf{Y})^{\gamma}$ objective, why a word insertion bonus is *necessary*
+  rather than a tweak, and the two-speed arrangement — an n-gram inside a 20 ms budget because
+  it is a memory lookup, a Transformer rescoring the n-best list afterwards.
+- [Neuroethics](wiki/neuroethics.md) — the questions inner-speech decoding makes practical rather
+  than hypothetical. Reading thoughts you chose not to say versus recovering memories lost to
+  Alzheimer's; enhancement beyond natural function, and the observation that steroids and
+  stimulants already pose the same question; and the partnership stance the lecture recommends
+  instead of an answer.
 
 ## Raw materials
 
@@ -409,8 +453,9 @@ systems.
   ([54 slides](raw/slides/09-pretraining.md)), lecture 10
   ([76 printed slides](raw/slides/10-natural-language-generation.md)), lecture 11
   ([99 printed slides](raw/slides/11-post-training.md)), lecture 12
-  ([65 slides](raw/slides/12-benchmarking.md)) and lecture 13
-  ([65 slides](raw/slides/13-efficient-training.md)). Each file opens
+  ([65 slides](raw/slides/12-benchmarking.md)), lecture 13
+  ([65 slides](raw/slides/13-efficient-training.md)) and lecture 14
+  ([75 slides](raw/slides/14-brain-computer-interfaces.md)). Each file opens
   with a section-to-slide-range table, then transcribes every slide in order —
   including the equations, the tables of numbers, the margin annotations, and prose
   descriptions of the diagrams and plots. For lectures 1–3, 5–9, 12 and 13 **the printed slide
@@ -421,7 +466,9 @@ systems.
   66 absent, so the offset **accumulates** rather than being constant. Lecture 11 is the same
   shape: printed 1–99 against 94 PDF pages, with five numbers among 58–60, 64 and 84 absent.
   Both of those files carry a full page-to-slide mapping table, and everything in this KB
-  cites their printed numbers. One
+  cites their printed numbers. **Lecture 14 is a fourth kind of exception**: its deck prints no
+  slide number on any page at all, so slide *N* there means PDF page *N* by construction, and
+  the file's header says so rather than implying the deck numbered them. One
   further caveat: **lecture 6's slides 4–18 repeat lecture 5's slides 49–63** as a recap, and
   are transcribed in brief with pointers rather than in full — the exception is slide 15,
   which adds the "~7 tokens back" rule of thumb that slide 25 then contrasts LSTMs against.
@@ -430,7 +477,7 @@ systems.
   Note that three slides in lecture 10's ethics section (70, 73, 74) reproduce hate speech,
   sexual violence and profanity in full on the deck; the slide file states what each figure
   shows and cites the source paper but does not reproduce the passages.
-- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 13,
+- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 14,
   grouped into paragraphs each prefixed with an `[MM:SS]` timestamp. Use these to
   point a learner at the exact moment something is explained ("Manning covers this
   around 42:00"), or to quote him directly — they read as sentences, so they quote
@@ -459,7 +506,13 @@ systems.
   as "B float 16" and "b flat 16", *FSDP* as "Fs DP", *shard/sharded/sharding* as "shot",
   "shoted" and "Shing", *LoRA* as "Laura" and "Lura", *batch size* as "bat size", *DistilBERT* as
   "dist bir", *GradScaler* as "grad scalar", *reduce-scatter* as "reduce CER", *gradients* as
-  "Radiance", and *PyTorch* as "pyos"). No content was added,
+  "Radiance", and *PyTorch* as "pyos"; and in lecture 14 the entire clinical and neuroscience
+  vocabulary — *brain-computer interface* as "bre computer interface" and "green computer
+  interface", *BCI* as "PCI", *ALS* as "AOS", *motor cortex* as "modor cortex" and "model
+  cortex", *orofacial* as "artificial", *phoneme* as "fum", "PHS" and "volume", *CTC* as "CDC",
+  *GRU* as "Gru Gator recurring unit", *n-gram* as "angram", *ECoG* as "EOG", *fMRI* as "Mi",
+  *Broca's area* as "broadcast area", *Hans Berger* as "hansburg", *Richard Caton* as "Richard
+  Kon", and *Frank Willett* as "Frank wet"). No content was added,
   removed or reordered, and every timestamp is preserved. Mathematical notation in
   lectures 7–11's and 13's transcripts stays spelled out (bold for vectors/matrices, Unicode
   subscripts), matching lecture 3's convention — LaTeX is wiki-only. Student questions
@@ -471,9 +524,9 @@ systems.
   these only to check exactly what the speech recognizer produced.
 - [`sources.md`](sources.md) — the full inventory of course documents, with a
   canonical URL for each: lecture slides for Spring 2024's lectures 1–18, the two
-  **Winter 2023** decks that go with catalog lectures 9 and 10 (catalog lectures 11, 12 and 13
-  use the Spring 2024 `lecture10-prompting-rlhf`, `lecture11-evaluation-yann` and
-  `lecture12-training-shikhar` decks),
+  **Winter 2023** decks that go with catalog lectures 9 and 10 (catalog lectures 11, 12, 13 and
+  14 use the Spring 2024 `lecture10-prompting-rlhf`, `lecture11-evaluation-yann`,
+  `lecture12-training-shikhar` and `lecture13-speech-bci` decks),
   supplementary readings
   (the 2019 course notes, the gradient and differential-calculus reviews, the
   self-attention and transformers notes, the Python review), the assignment 2–4
