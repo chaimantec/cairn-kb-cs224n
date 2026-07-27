@@ -12,12 +12,15 @@ The course has 23 lectures, built incrementally.
   Benchmarking (Yann Dubois).
 - **Run 8** (complete): lecture 13 — Efficient Training (Shikhar Murty).
 - **Run 9** (complete): lecture 14 — Brain-Computer Interfaces (Chaofei Fan).
-- **Run 10** (in progress): lecture 15 — Reasoning and Agents (Shikhar Murty).
-- Lectures 16–23 remain deferred; video ids are listed at the bottom.
+- **Run 10** (in progress): lectures 15 and 16 — Reasoning and Agents (Shikhar Murty) and
+  After DPO (Nathan Lambert). Run 10 was resumed after an interruption: the slide file for
+  lecture 15 was already committed and its verbatim transcript already fetched, so the run
+  picked up at the transcript edit and then carried straight on into lecture 16.
+- Lectures 17–23 remain deferred; video ids are listed at the bottom.
 
 ---
 
-# Run 10 — lecture 15
+# Run 10, part 1 — lecture 15
 
 Catalog position 15. The catalog's own title is "Lecture 14 - Reasoning and Agents by Shikhar
 Murty". Repo files use the catalog **position** (`15-…`), per the convention set in run 3. The
@@ -41,7 +44,20 @@ Same lecturer as position 13 (Efficient Training).
 Slide 38 credits "some slides borrowed from Frank Xu (CMU)" for the agents half.
 
 ## Transcripts
-- [ ] 15 Reasoning and Agents — video I0tj4Y7xaOQ (82 paragraphs, 64 min)
+- [x] 15 Reasoning and Agents — video I0tj4Y7xaOQ (82 paragraphs, 64 min). Verbatim captions at
+      `raw/transcripts/original/`; edited version at `raw/transcripts/15-reasoning-and-agents.md`.
+- [x] Edit delegated to a subagent (model sonnet). **Adjudicated in the parent**: timestamp diff
+      clean (all 82, in order); number-inventory diff showed only `3`,`4` removed ("last 3 4
+      years" → "three, four years", house style for vague spoken counts) and four `2`s added
+      (*Pix2Struct* ×4, restored from slide 70 — the ASR heard "pix to struct", so the numeral
+      was never phonetically present). Both deliberate.
+- [x] A second agent independently re-derived the edit and caught **two content-displacement
+      bugs** the timestamp check cannot see: material had drifted across the [1:38]/[2:25] and
+      [45:10]/[45:57]/[46:44] boundaries. Found by a per-paragraph word-count-ratio check
+      (outliers at 1.42 and 0.54 against a normal 0.72–1.10 band). **Add that ratio check to the
+      standard adjudication** — it is the only cheap way to catch a paragraph-boundary drift.
+- [x] Two `[Ed: …]` ambiguities left, both audience interjections off-mic: the base-9
+      counterfactual question (25:46–26:33) and a Decision-Transformer paraphrase (40:32–41:19).
 
 ## Slides
 - [x] raw/slides/15-reasoning-and-agents.md — 75 pages, printed numbers 1:1 with PDF pages,
@@ -64,8 +80,68 @@ Slide 38 credits "some slides borrowed from Frank Xu (CMU)" for the agents half.
       confirmed against the pages — the one thing `--verify` cannot see.
 
 ## Wiki
-- [ ] wiki/15-reasoning-and-agents.md
+- [x] wiki/15-reasoning-and-agents.md
+- [x] Topic pages — `language-model-agents.md`, `counterfactual-evaluation.md`,
+      `self-training-and-rationale-distillation.md`; `chain-of-thought.md` extended with
+      self-consistency, least-to-most and the rationale-faithfulness experiments.
+
+---
+
+# Run 10, part 2 — lecture 16
+
+Catalog position 16, titled "Lecture 15 - After DPO by Nathan Lambert" in the catalog and on
+YouTube. Same systematic off-by-one; repo file prefix is `16-`.
+
+## Provenance — Spring 2024
+
+Position 16 ↔ `slides-cs224n-spr2024-lecture15-life-after-dpo-lambert.pdf`, already on disk from
+the run-1 crawl. Guest lecture by Nathan Lambert (Allen Institute for AI).
+
+| Where | After DPO |
+|---|---|
+| Cairn catalog position | 16 |
+| Catalog / YouTube title | "Lecture 15 - After DPO by Nathan Lambert" |
+| Deck's own title | "Life after DPO" |
+| Deck filename | `…lecture15-life-after-dpo-lambert.pdf` |
+| Repo file prefix | `16-` |
+
+## Transcripts
+- [x] 16 After DPO — video dnF463_Ar9I (90 paragraphs, 69 min)
+- [x] Edit delegated (model sonnet); the agent was killed by a session limit during its
+      self-check, but had already written the complete file. **Adjudicated in the parent
+      instead**: timestamp diff clean (all 90, in order), zero word-count-ratio outliers across
+      all 90 paragraphs, and every one of the 15 number differences resolved — garble
+      restorations (`chat 2bt`→ChatGPT, `gbt 40`→GPT-4o, `2 through2`→Tulu 2,
+      `one-on-one`→101), a false start (`doing in 20 end of 2022`), and small spoken counts
+      spelled out (`6 months`→six months), matching lecture 15's house style.
+
+## Slides
+- [x] raw/slides/16-after-dpo.md — 86 pages, `--verify` passes (86 headings, sequence matches).
+- [x] **`slide_number_map.py` was wrong about this deck** and reported "no printed slide number
+      found on ANY page", falling back to a bare 1..N map. The deck *does* number every page
+      2–86 — in the bottom **right** corner ("Life after DPO | Lambert: N" on content slides, a
+      bare N on section dividers) — and the script's corner heuristic only scans the bottom
+      left. The subagent caught this by looking, and the parent confirmed it from the text layer
+      (zero mismatches; page 1 alone prints nothing). The 1:1 result was right by luck, not by
+      method. **Consider teaching the script to scan both corners.**
+- [x] Figure spot-check delegated (model sonnet), pages 8, 44, 45, 54, 57, 64, 73, 80 — no PDF
+      pages entered the main context. Five tables agreed cell-for-cell. **Two real errors fixed**
+      on slide 64: a fabricated blue "Average" bar for Llama 2 Base (disproved independently by
+      slide 73's Table 1, which records "–"), and a legend entry described as yellow/gold that
+      in fact prints no colour swatch at all. Slide 8's dense Constitutional-AI chart was
+      substantially re-described (green marker at the origin not (75,20); the orange curve
+      shares the base model's origin and falls steeply after its peak; a likely eighth series)
+      and given an explicit "coordinates are approximate" caveat, since two independent visual
+      reads disagreed on the exact values.
+
+## Wiki
+- [ ] wiki/16-after-dpo.md
 - [ ] Topic pages
+
+---
+
+# Run 10 — shared bookkeeping
+
 - [ ] INDEX.md, README.md, AGENTS.md
 - [ ] Link sweep
 

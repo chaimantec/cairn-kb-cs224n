@@ -1,7 +1,8 @@
 # Chain-of-thought prompting
 
 Getting a model to write out its reasoning before its answer, and thereby to reason better.
-Covered in [lecture 11](11-post-training.md), slides 25–31.
+Introduced in [lecture 11](11-post-training.md), slides 25–31, and taken further — then taken
+apart — in [lecture 15](15-reasoning-and-agents.md), slides 10–19 and 31–37.
 
 ## The problem it solves
 
@@ -109,12 +110,67 @@ the other way, a measurement problem: it is the same brittleness
 [lecture 12](12-benchmarking.md) documents when relabelling MMLU's options changes the model
 ranking. See [benchmark contamination and overfitting](benchmark-contamination.md).
 
+## Self-consistency: sample many rationales, vote
+
+[Lecture 15](15-reasoning-and-agents.md) (slides 12–14, ≈4:47) changes the *decoding* rather than
+the prompt. Instead of greedily decoding one rationale and then an answer conditioned on it,
+sample many rationales, collect the answer each leads to, and return the most common one. The
+intuition is that an answer reached by many independent routes is more likely to be right
+(≈5:33), and across a range of mathematical reasoning tasks this improves on standard
+chain-of-thought "pretty drastically."
+
+The obvious objection is that this is just ensembling — the CS229 trick of training several
+classifiers and taking a majority vote — and Murty says that was his own first reaction (≈6:19).
+The authors tested it: against one model with several *different prompts* and a majority vote,
+self-consistency still won. Sampling multiple reasoning paths from a fixed prompt does something
+beyond averaging away prompt variance.
+
+## Least-to-most: decompose before answering
+
+Multi-step reasoning means "breaking down a large problem into several subparts, answering each
+of the subparts, and then combining everything into a solution" (≈7:06), so **least-to-most
+prompting** (slides 15–19) makes each of those an explicit generation: break the question into
+sub-questions, answer each, then condition the final answer on those answers (≈7:53).
+
+Its notable result is **length generalisation** — prompted with a two-step math word problem, the
+model keeps working on test items needing more than five steps (≈8:39). But the same paper's
+ablation shows that "with enough prompt engineering, the row corresponding to best-prompted
+chain-of-thought is on par with least-to-most prompting" (≈9:26). Useful, not fundamental.
+
+## Are the rationales faithful?
+
+The uncomfortable question (slides 31–32, ≈20:21): does the answer actually *depend* on the
+rationale? The failure mode is a model that writes "Tom has three apples, Jerry has four, 3 + 4 is
+seven" and then answers 25 (≈21:07) — reasoning as decoration.
+
+Two experiments probe it:
+
+- **Early exit** (≈21:53). Force the model to stop after the first sentence of its rationale and
+  answer; then after the second; and so on, plotting accuracy against how much rationale it was
+  allowed. If one sentence yields the same answer as four, the rest was not doing work — and in
+  the limit you can cut the rationale entirely (≈22:39).
+- **Corruption** (≈23:27). Introduce a mistake after some fraction of the reasoning steps. The
+  expected curve is strictly increasing: an error in step one should wreck the answer, an error
+  in the last step should barely matter (≈24:14).
+
+Results are mixed across datasets, but on enough of them the answer is unmoved by truncation or
+early corruption, which "means that sometimes these rationales may be post-hoc explanations of
+the model's answer" (≈22:39).
+
+That is a distinct worry from whether the answer itself was memorised — see
+[counterfactual evaluation](counterfactual-evaluation.md), which attacks the other half of the
+question. A model can produce faithful reasoning toward a memorised answer, or unfaithful
+reasoning toward a correct one.
+
 ## Where it goes next
 
 Chain-of-thought reappears as *training* signal rather than prompt: FLAN's instruction mixture
 includes "answer the following question by reasoning step-by-step" examples
 ([instruction finetuning](instruction-finetuning.md), slide 40), and the Self-Taught Reasoner
-(STaR) loop finetunes a model on its own chains of thought (slide 98). The Llama 3 note on slide
+(STaR) loop finetunes a model on its own chains of thought (slide 98) — a pattern
+[lecture 15](15-reasoning-and-agents.md) generalises as
+[self-training and rationale distillation](self-training-and-rationale-distillation.md). The
+Llama 3 note on slide
 82 gives the sharpest statement of why preference training helps here: "the model knows how to
 produce the right answer, but it does not know how to select it. Training on preference rankings
 enables the model to learn how to select it."
