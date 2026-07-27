@@ -10,13 +10,13 @@ goals are that students learn the methods, gain some real understanding of human
 language and why it is hard for computers, and come out able to build working
 systems.
 
-> **Coverage note.** This knowledge base covers **lectures 1 to 14**: wiki pages,
+> **Coverage note.** This knowledge base covers **lectures 1 to 16**: wiki pages,
 > timestamped transcripts, and full slide-by-slide text for each. Slide *URLs* for
 > lectures 1–18 are listed in [sources.md](sources.md), so questions about later
 > lectures can be answered by pointing at the right PDF, but there are no transcripts,
 > wiki pages, or slide text for them yet. See [TODO.md](TODO.md) for what remains.
 >
-> **Lectures 9 and 10 are Winter 2023 recordings**, unlike lectures 1–8 and 11–13. Spring 2024 had no
+> **Lectures 9 and 10 are Winter 2023 recordings**, unlike lectures 1–8 and 11–16. Spring 2024 had no
 > Natural Language Generation lecture at all, and its Pretraining lecture is not the one in
 > the playlist — so both decks come from the Winter 2023 course archive
 > (`cs224n.1234`), not the Spring 2024 site. Lecture 9 is taught by **John Hewitt** and
@@ -31,7 +31,12 @@ systems.
 > **Lecture 14** (Brain-Computer Interfaces, Chaofei Fan) continues the off-by-one — the video
 > calls it "Lecture 13" — and is a guest research talk whose deck carries no lecture number at
 > all. That deck also prints **no slide numbers on any page**, so its slide citations are PDF
-> page positions; the slide file says so in its header.
+> page positions; the slide file says so in its header. **Lecture 15** (Reasoning and Agents,
+> Shikhar Murty) continues the same pattern — video and deck both title it "Lecture 14" — but
+> its deck numbers cleanly, 1:1 with the PDF pages. **Lecture 16** (After DPO, Nathan Lambert,
+> AI2) goes one step further — catalog and video call it "Lecture 15" while the deck's own title
+> is simply "Life after DPO" — and also maps 1:1, though its footer prints the number in the
+> **bottom-right** corner rather than the bottom-left this KB's other decks use.
 >
 > **Citing sources.** Prefer citing a **slide number** for anything on a slide
 > (equations, tables, definitions) and a **timestamp** for anything Manning says aloud
@@ -152,6 +157,34 @@ systems.
   n-gram LM inside a 20 ms budget with a Transformer rescoring on top — reaching ~25% word error
   rate at 60–70 WPM, and under 1% in the 2024 follow-up. Closes on inner-speech decoding and the
   neuroethics it forces.
+- [Lecture 15 — Reasoning and Agents](wiki/15-reasoning-and-agents.md) (Shikhar Murty) — two
+  halves sharing one question: can a model trained to continue text do something over multiple
+  steps? Reasoning first — the deductive/inductive/abductive taxonomy and the narrowing to
+  *informal deductive* reasoning; chain-of-thought and zero-shot CoT; self-consistency, and the
+  control showing it beats plain prompt-ensembling; least-to-most decomposition and its length
+  generalization; Orca distilling GPT-4 explanations into a 13B Llama; and ReST fine-tuning a
+  model on its own answer-filtered rationales until it beats human-written ones. Then the
+  demolition: early-exit and corruption experiments suggesting rationales are often post-hoc, and
+  counterfactual tasks — base-9 arithmetic, a world where corgis are reptiles, `ABCD → ABCDF` —
+  where models collapse and human subjects barely move. The second half is agents: the pre-LLM
+  history of semantic parsers, latent plans and RL; the factorization of a trajectory into
+  transition dynamics and agent policy that recasts decision-making as causal language modeling;
+  MiniWoB++, WebArena and WebLINX; BAGEL generating synthetic demonstrations by exploring and
+  relabeling; LLaVA and Pix2Struct for acting on pixels instead of HTML; and the "prompting gap,"
+  where GPT-4V types an email into a password field and cannot recover.
+- [Lecture 16 — After DPO](wiki/16-after-dpo.md) (Nathan Lambert, AI2) — a guest lecture on
+  post-training as it is actually practised, and the course's frankest account of research that
+  did not work. The resource gap first: Meta bought ~1.5M preference comparisons for Llama 2, more
+  than the ~800k ever collected on Chatbot Arena. Then RLHF's objective and its KL term; the
+  Bradley-Terry leap from a pairwise probability to a scalar reward; why DPO won on
+  *infrastructure* rather than accuracy, and the four months and one 5e-7 learning rate it took
+  before Zephyr β convinced anyone. RewardBench — built because reward models had no evaluation —
+  finds LLM-as-a-judge is not state of the art, that only its Chat Hard split resists saturation,
+  and that a DPO model cannot serve as a reward model once its reference checkpoint is
+  unavailable. Then an ablation where instruction tuning dwarfs everything after it, changing the
+  *data* beats changing the algorithm, a 70B reward model improves on best-of-n yet flatlines
+  downstream, and PPO beats DPO by 1.2% for an effort Lambert doubts is worth it. Closes on what
+  "online" data means, D2PO, what Llama 3's blog post implies, and a Q&A on reward hacking.
 
 ## Topic pages
 
@@ -438,6 +471,37 @@ systems.
   Alzheimer's; enhancement beyond natural function, and the observation that steroids and
   stimulants already pose the same question; and the partnership stance the lecture recommends
   instead of an answer.
+- [Language model agents](wiki/language-model-agents.md) — the agent setting on one page: agent,
+  environment, observation, action and the language instruction $g$; the three pre-LLM approaches
+  (semantic parsing to logical forms, latent plans, direct RL); the trajectory factorization that
+  makes a policy a next-token problem; ReACT as chain-of-thought in a loop; MiniWoB++, WebArena
+  and WebLINX compared; where training data comes from; operating over pixels; and the prompting
+  gap that still separates models from humans.
+- [Counterfactual evaluation](wiki/counterfactual-evaluation.md) — how to ask whether a model is
+  reasoning or remembering. Why benchmark accuracy cannot settle it, what "counterfactual" means
+  here (distributional, not causal — base-9 addition is rare in training data), the three
+  constructions used, why the human control group is what makes the argument stick, and the
+  four-step recipe for applying it yourself.
+- [Self-training and rationale distillation](wiki/self-training-and-rationale-distillation.md) —
+  one recipe wearing three hats: generate with a model, filter, fine-tune, iterate. Orca (teacher
+  rationales into a small model), ReST (a model on its own correct rationales), and BAGEL (an
+  agent inventing its own demonstrations). The axis that distinguishes them is where the filter's
+  signal comes from, and BAGEL's contribution is relabeling failures rather than discarding them.
+- [RewardBench](wiki/rewardbench.md) — the benchmark for reward models: why local evaluation
+  matters when Chatbot Arena takes a month, how it is built from manually written chosen/rejected
+  pairs, its five categories, the Chat Hard metaphor example that trips models on the stars/moon
+  association, the three safety patterns, and why a DPO model stops working as a reward model once
+  its reference checkpoint is gone.
+- [PPO vs DPO](wiki/ppo-vs-dpo.md) — the empirical comparison and what actually separates them.
+  DPO's advantage is infrastructural; PPO's is about 1.2% on average at 13B, bought with an
+  unbounded tuning surface and generation-during-training. Covers the full ablation, the two
+  senses of "online" data (fresh generations, fresh labels), the DPO variants chasing it, and why
+  online DPO is not free — prompt distribution matching.
+- [Preference data](wiki/preference-data.md) — the datasets post-training runs on, and the binding
+  constraint on open alignment research. ShareGPT's legal grey area, OpenAssistant and why nothing
+  replaced it, UltraFeedback as the workhorse, HH-RLHF's useful noise, ~70% annotator agreement as
+  possible signal rather than bug, and the routes beyond pairwise preferences (KTO's one-sided
+  labels, Starling's k-wise, fine-grained attributes).
 
 ## Raw materials
 
@@ -454,30 +518,38 @@ systems.
   ([76 printed slides](raw/slides/10-natural-language-generation.md)), lecture 11
   ([99 printed slides](raw/slides/11-post-training.md)), lecture 12
   ([65 slides](raw/slides/12-benchmarking.md)), lecture 13
-  ([65 slides](raw/slides/13-efficient-training.md)) and lecture 14
-  ([75 slides](raw/slides/14-brain-computer-interfaces.md)). Each file opens
-  with a section-to-slide-range table, then transcribes every slide in order —
-  including the equations, the tables of numbers, the margin annotations, and prose
-  descriptions of the diagrams and plots. For lectures 1–3, 5–9, 12 and 13 **the printed slide
-  number equals the PDF page number**, so "slide 28" is page 28. **Three decks are exceptions.**
-  Lecture 4's printed numbers run 1–49 but the PDF has only 45 pages, because printed
-  slides 4, 5, 8 and 13 were hidden in the source deck and never exported. Lecture 10 is
-  worse: its printed numbers run 1–76 against 71 PDF pages, with printed 35, 41, 47, 54 and
-  66 absent, so the offset **accumulates** rather than being constant. Lecture 11 is the same
-  shape: printed 1–99 against 94 PDF pages, with five numbers among 58–60, 64 and 84 absent.
-  Both of those files carry a full page-to-slide mapping table, and everything in this KB
-  cites their printed numbers. **Lecture 14 is a fourth kind of exception**: its deck prints no
-  slide number on any page at all, so slide *N* there means PDF page *N* by construction, and
-  the file's header says so rather than implying the deck numbered them. One
-  further caveat: **lecture 6's slides 4–18 repeat lecture 5's slides 49–63** as a recap, and
-  are transcribed in brief with pointers rather than in full — the exception is slide 15,
-  which adds the "~7 tokens back" rule of thumb that slide 25 then contrasts LSTMs against.
-  Use these files when a learner asks where something is in the slides, wants an equation
-  exactly as written, or when the transcript is unclear — the slides are the authority.
-  Note that three slides in lecture 10's ethics section (70, 73, 74) reproduce hate speech,
-  sexual violence and profanity in full on the deck; the slide file states what each figure
-  shows and cites the source paper but does not reproduce the passages.
-- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 14,
+  ([65 slides](raw/slides/13-efficient-training.md)), lecture 14
+  ([75 slides](raw/slides/14-brain-computer-interfaces.md)), lecture 15
+  ([75 slides](raw/slides/15-reasoning-and-agents.md)) and lecture 16
+  ([86 slides](raw/slides/16-after-dpo.md)). Each file opens
+  with a section-to-slide-range table, then transcribes every slide in order — including the
+  equations, the tables of numbers, the margin annotations, and prose descriptions of the diagrams
+  and plots. For lectures 1–3, 5–9, 12, 13 and 15 **the printed slide number equals the PDF page
+  number**, so "slide 28" is page 28. **Three decks are exceptions.** Lecture 4's printed numbers
+  run 1–49 but the PDF has only 45 pages, because printed slides 4, 5, 8 and 13 were hidden in the
+  source deck and never exported. Lecture 10 is worse: its printed numbers run 1–76 against 71 PDF
+  pages, with printed 35, 41, 47, 54 and 66 absent, so the offset **accumulates** rather than
+  being constant. Lecture 11 is the same shape: printed 1–99 against 94 PDF pages, with five
+  numbers among 58–60, 64 and 84 absent. Both of those files carry a full page-to-slide mapping
+  table, and everything in this KB cites their printed numbers. **Lecture 14 is a fourth kind of
+  exception**: its deck prints no slide number on any page at all, so slide *N* there means PDF
+  page *N* by construction, and the file's header says so rather than implying the deck numbered
+  them. **Lecture 15's printed numbers match PDF pages 1:1 with no gaps**, same as the clean decks
+  above — only page 1, the title, prints no number. **Lecture 16 also maps 1:1, but is worth a
+  specific note**: it prints its slide number in the **bottom-right** corner ("Life after DPO |
+  Lambert: N" on content slides, a bare N on section dividers) rather than the bottom-left this
+  KB's other decks use, which is why the repo's `slide_number_map.py` — whose corner heuristic
+  scans the bottom-left — initially reported the deck as carrying no printed numbers at all,
+  before the mapping was checked by eye against the PDF text layer; page 1 again prints none. One
+  further caveat: **lecture 6's slides 4–18 repeat lecture 5's slides 49–63** as a recap, and are
+  transcribed in brief with pointers rather than in full — the exception is slide 15, which adds
+  the "~7 tokens back" rule of thumb that slide 25 then contrasts LSTMs against. Use these files
+  when a learner asks where something is in the slides, wants an equation exactly as written, or
+  when the transcript is unclear — the slides are the authority. Note that three slides in lecture
+  10's ethics section (70, 73, 74) reproduce hate speech, sexual violence and profanity in full on
+  the deck; the slide file states what each figure shows and cites the source paper but does not
+  reproduce the passages.
+- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 16,
   grouped into paragraphs each prefixed with an `[MM:SS]` timestamp. Use these to
   point a learner at the exact moment something is explained ("Manning covers this
   around 42:00"), or to quote him directly — they read as sentences, so they quote
@@ -524,9 +596,10 @@ systems.
   these only to check exactly what the speech recognizer produced.
 - [`sources.md`](sources.md) — the full inventory of course documents, with a
   canonical URL for each: lecture slides for Spring 2024's lectures 1–18, the two
-  **Winter 2023** decks that go with catalog lectures 9 and 10 (catalog lectures 11, 12, 13 and
-  14 use the Spring 2024 `lecture10-prompting-rlhf`, `lecture11-evaluation-yann`,
-  `lecture12-training-shikhar` and `lecture13-speech-bci` decks),
+  **Winter 2023** decks that go with catalog lectures 9 and 10 (catalog lectures 11, 12, 13, 14,
+  15 and 16 use the Spring 2024 `lecture10-prompting-rlhf`, `lecture11-evaluation-yann`,
+  `lecture12-training-shikhar`, `lecture13-speech-bci`, `lecture14-agents-shikhar-updated` and
+  `lecture15-life-after-dpo-lambert` decks),
   supplementary readings
   (the 2019 course notes, the gradient and differential-calculus reviews, the
   self-attention and transformers notes, the Python review), the assignment 2–4

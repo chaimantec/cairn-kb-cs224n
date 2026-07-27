@@ -34,7 +34,7 @@ reading from it too.
 
 ## What's covered
 
-**Lectures 1–14**, in full — wiki pages, edited transcripts and slide-by-slide text for
+**Lectures 1–16**, in full — wiki pages, edited transcripts and slide-by-slide text for
 each:
 
 | # | Lecture | Slides | Transcript |
@@ -53,14 +53,18 @@ each:
 | 12 | [Benchmarking and Evaluation](wiki/12-benchmarking.md) | [65](raw/slides/12-benchmarking.md) | [110 ¶](raw/transcripts/12-benchmarking.md) |
 | 13 | [Efficient Training](wiki/13-efficient-training.md) | [65](raw/slides/13-efficient-training.md) | [81 ¶](raw/transcripts/13-efficient-training.md) |
 | 14 | [Brain-Computer Interfaces](wiki/14-brain-computer-interfaces.md) | [75](raw/slides/14-brain-computer-interfaces.md) | [94 ¶](raw/transcripts/14-brain-computer-interfaces.md) |
+| 15 | [Reasoning and Agents](wiki/15-reasoning-and-agents.md) | [75](raw/slides/15-reasoning-and-agents.md) | [82 ¶](raw/transcripts/15-reasoning-and-agents.md) |
+| 16 | [After DPO](wiki/16-after-dpo.md) | [86](raw/slides/16-after-dpo.md) | [90 ¶](raw/transcripts/16-after-dpo.md) |
 
 Lectures 9 and 10 are **Winter 2023** recordings by John Hewitt and Xiang Lisa Li; the rest
-are Spring 2024. Lectures 11, 12, 13 and 14 are guest lectures by Archit Sharma, Yann Dubois,
-Shikhar Murty and Chaofei Fan, and their video titles run one behind this table — see
-[INDEX.md](INDEX.md) for the mapping. Lecture 14's deck prints **no slide numbers at all**, so
-its slide citations are PDF page positions; its slide file says so in the header.
+are Spring 2024. Lectures 11–16 are guest lectures — Archit Sharma, Yann Dubois, Shikhar Murty
+(twice, lectures 13 and 15), Chaofei Fan, and Nathan Lambert (AI2) — and their video titles run
+one behind this table — see [INDEX.md](INDEX.md) for the mapping. Lecture 14's deck prints
+**no slide numbers at all**, so its slide citations are PDF page positions; its slide file says
+so in the header. Lecture 16's deck numbers every page too, but in the bottom-right corner
+rather than the bottom-left every other deck uses.
 
-Plus **57 topic pages** covering concepts that span lectures — word2vec, distributional
+Plus **63 topic pages** covering concepts that span lectures — word2vec, distributional
 semantics, GloVe, gradient descent, backpropagation, matrix calculus, activation
 functions, dependency grammar, transition-based parsing, language modeling, *n*-gram
 models, recurrent neural networks, LSTMs, perplexity, vanishing and exploding gradients,
@@ -70,10 +74,12 @@ instruction finetuning, reward modeling, RLHF, DPO, how any of it gets evaluated
 lecture 13 — mixed precision training, GPU memory accounting, collective communication, DDP,
 ZeRO/FSDP, parameter-efficient finetuning and LoRA, and from lecture 14 brain-computer
 interfaces, neural recording technologies, neural population decoding, Connectionist Temporal
-Classification, language models in decoding, and neuroethics. These are what make it a wiki
-rather than a pile of lecture summaries.
+Classification, language models in decoding, and neuroethics — and from lectures 15–16
+language model agents, counterfactual evaluation, self-training and rationale distillation,
+RewardBench, PPO vs DPO, and preference data. These are what make it a wiki rather than a pile
+of lecture summaries.
 
-**Lectures 15–23 are not built yet.** This is deliberate — the KB is built incrementally, a
+**Lectures 17–23 are not built yet.** This is deliberate — the KB is built incrementally, a
 couple of lectures per run, and [TODO.md](TODO.md) is the authoritative record of what is
 done and what remains. Slide *URLs* for lectures 1–18 are already inventoried in
 [sources.md](sources.md), so questions about later lectures can at least be pointed at the

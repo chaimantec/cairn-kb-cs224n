@@ -12,7 +12,7 @@ The course has 23 lectures, built incrementally.
   Benchmarking (Yann Dubois).
 - **Run 8** (complete): lecture 13 — Efficient Training (Shikhar Murty).
 - **Run 9** (complete): lecture 14 — Brain-Computer Interfaces (Chaofei Fan).
-- **Run 10** (in progress): lectures 15 and 16 — Reasoning and Agents (Shikhar Murty) and
+- **Run 10** (complete): lectures 15 and 16 — Reasoning and Agents (Shikhar Murty) and
   After DPO (Nathan Lambert). Run 10 was resumed after an interruption: the slide file for
   lecture 15 was already committed and its verbatim transcript already fetched, so the run
   picked up at the transcript edit and then carried straight on into lecture 16.
@@ -135,15 +135,26 @@ the run-1 crawl. Guest lecture by Nathan Lambert (Allen Institute for AI).
       reads disagreed on the exact values.
 
 ## Wiki
-- [ ] wiki/16-after-dpo.md
-- [ ] Topic pages
+- [x] wiki/16-after-dpo.md
+- [x] Topic pages — `rewardbench.md`, `ppo-vs-dpo.md`, `preference-data.md`;
+      `direct-preference-optimization.md`, `rlhf.md` and `reward-modeling.md` extended with
+      lecture-16 material.
 
 ---
 
 # Run 10 — shared bookkeeping
 
-- [ ] INDEX.md, README.md, AGENTS.md
-- [ ] Link sweep
+- [x] INDEX.md, README.md, AGENTS.md — lecture 15 and 16 entries, six topic entries (placed as
+      a coherent block after lecture 14's topic pages, at the end of the Topic pages section),
+      coverage note and lecture table now say 1–16, 63 topic pages, the raw-materials slide list
+      and numbering discussion extended with lecture 15's clean 1:1 mapping and lecture 16's
+      bottom-right-corner numbering (and why `slide_number_map.py` first missed it), the
+      transcripts description now says lectures 1–16, and AGENTS.md's 1:1-numbering list,
+      Spring-2024 provenance list and conflicting-numbers note extended to 15 and 16.
+- [x] Link sweep — scripted, all 132 markdown files: **1,273 relative links checked, zero
+      broken**. The only three unresolvable strings are the same known false positives as every
+      previous run: AGENTS.md's two illustrative link examples (a gradient-descent one and a
+      lecture-5-transcript one) plus the existing line in this file that quotes the former.
 
 ## Publish
 - [ ] Commit and push (`kbUrl` already set from run 1; no `link_kb.sh` needed)
@@ -1037,8 +1048,8 @@ to re-query the catalog:
 - 12 Benchmarking (Yann Dubois) — TO0CqzqiArM
 - 13 Efficient Training (Shikhar Murty) — UVX7SYGCKkA
 - 14 Brain-Computer Interfaces (Chaofei Fan) — tfVgHsKpRC8  ✔ done in run 9
-- 15 Reasoning and Agents (Shikhar Murty) — I0tj4Y7xaOQ
-- 16 After DPO (Nathan Lambert) — dnF463_Ar9I
+- 15 Reasoning and Agents (Shikhar Murty) — I0tj4Y7xaOQ  ✔ done in run 10
+- 16 After DPO (Nathan Lambert) — dnF463_Ar9I  ✔ done in run 10
 - 17 ConvNets and TreeRNNs — S8d-7v3f5MQ
 - 18 NLP, Linguistics, Philosophy — NxH0Y78xcF4
 - 19 Multimodal Deep Learning (Douwe Kiela) — 5vfIT5LOkR0

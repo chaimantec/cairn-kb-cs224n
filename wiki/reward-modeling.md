@@ -3,6 +3,8 @@
 Turning "which answer would a human prefer?" into a differentiable scalar function you can
 optimize. Covered in [lecture 11](11-post-training.md), slides 56–63, and the prerequisite for
 both [RLHF](rlhf.md) and [DPO](direct-preference-optimization.md).
+[Lecture 16](16-after-dpo.md) returns to it at length, since it is the component
+[RewardBench](rewardbench.md) was built to evaluate.
 
 ## The target
 
@@ -119,3 +121,33 @@ Whatever this pool prefers is what $RM_\phi$ learns to score highly.
 [Lecture 12](12-benchmarking.md) finds the same fingerprint on the *evaluation* side — see
 [LLM-as-a-judge](llm-as-a-judge.md) and the OpinionQA discussion in
 [evaluating LLMs](evaluating-llms.md).
+
+## How these models are actually trained
+
+[Lecture 16](16-after-dpo.md) describes the practice, and it is stranger than the derivation
+suggests (≈26:59):
+
+- **Both completions go through together.** The loss acts on the *difference* between the two
+  scalars — the model "is trying to separate the distance between them" and gradient descent
+  widens that gap — so you cannot supervise on a single example. It "is really built on this idea
+  of separating two things and creating a margin in the preferences to learn the decision
+  boundary" (≈27:46).
+- **The architecture is a language model with the last layers modified** to emit a scalar instead
+  of text (≈26:59).
+- **One epoch.** These models are trained for a single pass (≈28:32).
+- **The accuracy numbers look bad**, next to ordinary train/test machine learning, and the tweaks
+  people add — ensembles, margin losses — are not transformative.
+- **~70% agreement with annotators** is the ceiling, which raises "is the noise part of the
+  signal, or is it a bug." For preferences it may be signal: "not everyone's preferences are the
+  same … we don't want ChatGPT to be fully narrow-minded all the time" (≈28:32).
+
+## Does a better reward model give a better policy?
+
+Not reliably, on the evidence in that lecture. Scaling the reward model from 13B to 70B "does
+improve some things, but it doesn't actually make the model overall much better — it's kind of
+flatlined" (≈42:19). Two checks confirmed the larger reward model was not simply broken:
+[RewardBench](rewardbench.md) scores were "not clearly correlated" between the two sizes, while
+**best-of-$n$ sampling** did show the bigger one to be better (≈43:05).
+
+So the component improved and the downstream policy did not — an open problem, and the strongest
+caveat on evaluating reward models in isolation. See [PPO vs DPO](ppo-vs-dpo.md).

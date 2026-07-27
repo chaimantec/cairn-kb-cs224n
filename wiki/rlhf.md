@@ -2,7 +2,8 @@
 
 Optimizing a language model against a learned model of human preference, under a penalty for
 drifting away from where it started. Covered in [lecture 11](11-post-training.md), slides 57 and
-65–69, with results at 68 and limitations at 86–92.
+65–69, with results at 68 and limitations at 86–92, and revisited from inside a working lab in
+[lecture 16](16-after-dpo.md).
 
 ## The pipeline
 
@@ -157,3 +158,40 @@ critiques and revises its own harmful answer and the revision becomes training d
 on their own outputs (Huang et al., 2022; STaR); and personalization, with the PRISM Alignment
 Project as the example. The lecture's closing caveat is that hallucination and size "may not be
 solvable with RLHF".
+
+## A practitioner's view
+
+[Lecture 16](16-after-dpo.md), a guest lecture from Nathan Lambert (AI2), covers the same
+objective from the perspective of someone training these models, and adds several things this
+page's slide-11 treatment does not:
+
+**Is RLHF necessary?** "Necessary but not sufficient" — most capability comes from pre-training,
+but at every landmark model post-training is what "shift[s] the needle on what the most important
+models are at that certain moment" (≈5:30).
+
+**The objective, written out.** Same shape as slide 57's, in the notation the guest deck uses:
+
+$$\max_{\pi_\theta} \mathbb{E}_{x \sim \mathcal{D},\, y \sim \pi_\theta(y \mid x)}\Big[r_\phi(x,y) - \beta \mathbb{D}_{\mathrm{KL}}\big[\pi_\theta(y \mid x) \,\|\, \pi_{\mathrm{ref}}(y \mid x)\big]\Big]$$
+
+with the KL term justified exactly as over-optimization control: "we want to optimize a reward but
+not over-optimize it" (≈10:07).
+
+**Where the reward comes from is a leap.** The Bradley-Terry model gives a probability over a
+*pairwise* choice, and taking its learned quantity as a scalar reward for a *single* completion —
+"the probability that that one piece of text is chosen over any arbitrary other one" — is
+something Lambert flags as "a big leap to accept" even though it works (≈11:39).
+
+**Data is the real constraint.** Meta bought roughly 1.5 million comparisons for Llama 2, more
+than the ~800,000 points collected on Chatbot Arena in total (≈2:26). See
+[preference data](preference-data.md).
+
+**Reward hacking, restated.** Asked whether reward models are subject to it: yes, structurally —
+"you have a very powerful optimizer, and you have an incomplete representation of your reward, and
+it will always find where your representation of reward is wrong," so "saying it's perfect is not
+possible, in the math" (≈1:07:17). This is slide 88's over-optimization curve as a working
+engineer describes it, with the consolation that the failures are usually obvious: a model that
+"just says 'JavaScript' to every answer, to infinity" (≈1:08:03).
+
+**Online RLHF.** What distinguishes PPO from DPO in practice is the freshness of the generations
+and of the labels — see [PPO vs DPO](ppo-vs-dpo.md). Industry's version is Llama 2's loop of
+human batch collection, generation from the previous checkpoint, and retraining (≈53:54).

@@ -2,7 +2,8 @@
 
 A way to get the effect of [RLHF](rlhf.md) with a plain binary classification loss and no
 reinforcement learning, by writing the reward model in terms of the language model. Covered in
-[lecture 11](11-post-training.md), slides 70–74, with results at 73 and practice at 82.
+[lecture 11](11-post-training.md), slides 70–74, with results at 73 and practice at 82, and
+revisited a year later by a practitioner in [lecture 16](16-after-dpo.md) — "life after DPO."
 
 ## The idea
 
@@ -145,3 +146,30 @@ made.
 DPO does not escape the limitations that come from the *preferences themselves* — reward hacking is
 attenuated but the fallibility of human comparisons, length bias and annotator demographics all carry
 over unchanged. Those are treated in [RLHF](rlhf.md) and [reward modeling](reward-modeling.md).
+
+## A year later
+
+[Lecture 16](16-after-dpo.md) is a guest lecture by Nathan Lambert (AI2) devoted to what came
+after. Four things it adds:
+
+**Why DPO won was infrastructural, not statistical.** The reference implementation is "extremely
+simple," so "it's pretty easy to write a loss function that uses DPO, rather than building an
+entire infrastructure stack to start with," where PPO "normally needs an almost entirely new
+infrastructure stack" (≈12:26). That, more than accuracy, is why "we'll see more DPO models than
+anything else" (≈13:11).
+
+**Adoption took four months and one hyperparameter.** The paper appeared in May 2023; the first
+model that made people believe it — Zephyr β — arrived in September, and needed the UltraFeedback
+dataset plus a learning rate of 5e-7, "many orders of magnitude lower" than the usual 3e-4
+(≈21:40). Lambert's reflection: "we probably could have done it months earlier if we just did more
+hyperparameter sweeps … it's somewhat random" (≈21:40).
+
+**DPO still has a reward model, and you usually cannot use it.** The implicit reward is a
+log-ratio against the reference policy, $r(x,y) = \beta \log \frac{\pi(y \mid x)}{\pi_{\text{ref}}(y \mid x)} + \beta \log Z(x)$,
+so scoring text with a DPO model yields something like $-200$ (≈36:57). But $\pi_{\text{ref}}$ is
+an intermediate checkpoint almost nobody releases, and dropping it makes benchmark scores
+"plummet across all the DPO models that we have" (≈37:42). See [RewardBench](rewardbench.md).
+
+**PPO is slightly better and much more expensive** — about 1.2% on average at 13B, at a cost
+Lambert is not sure is worth paying. See [PPO vs DPO](ppo-vs-dpo.md), which also covers the
+online-data question and the DPO variants (self-rewarding, batched, D2PO) trying to answer it.
