@@ -12,7 +12,65 @@ The course has 23 lectures, built incrementally.
   Benchmarking (Yann Dubois).
 - **Run 8** (complete): lecture 13 — Efficient Training (Shikhar Murty).
 - **Run 9** (complete): lecture 14 — Brain-Computer Interfaces (Chaofei Fan).
-- Lectures 15–23 remain deferred; video ids are listed at the bottom.
+- **Run 10** (in progress): lecture 15 — Reasoning and Agents (Shikhar Murty).
+- Lectures 16–23 remain deferred; video ids are listed at the bottom.
+
+---
+
+# Run 10 — lecture 15
+
+Catalog position 15. The catalog's own title is "Lecture 14 - Reasoning and Agents by Shikhar
+Murty". Repo files use the catalog **position** (`15-…`), per the convention set in run 3. The
+off-by-one between catalog position and the deck's own numbering, systematic since position 11,
+continues here.
+
+## Provenance — Spring 2024
+
+Position 15 ↔ `slides-cs224n-spr2024-lecture14-agents-shikhar-updated.pdf`, already on disk from
+the run-1 crawl. Confirmed by the title slide: Shikhar Murty, *Lecture 14: Reasoning and Agents*.
+Same lecturer as position 13 (Efficient Training).
+
+| Where | Reasoning and Agents |
+|---|---|
+| Cairn catalog position | 15 |
+| Catalog / YouTube title | "Lecture 14" |
+| Deck's own title | "Lecture 14: Reasoning and Agents" |
+| Deck filename | `…lecture14-agents-shikhar-updated.pdf` |
+| Repo file prefix | `15-` |
+
+Slide 38 credits "some slides borrowed from Frank Xu (CMU)" for the agents half.
+
+## Transcripts
+- [ ] 15 Reasoning and Agents — video I0tj4Y7xaOQ (82 paragraphs, 64 min)
+
+## Slides
+- [x] raw/slides/15-reasoning-and-agents.md — 75 pages, printed numbers 1:1 with PDF pages,
+      no gaps and no offset (only page 1, the title, prints no number).
+      `slide_number_map.py --verify` passes: 75 headings, sequence matches the deck exactly.
+- [x] Delegated to a Step 1b subagent (model sonnet), foreground. **The first agent was killed
+      by a session limit mid-run**, having written slides 1–60 — because it was told to append
+      each chunk as it went, that work survived intact and verified (60 headings, in order, no
+      gaps). Its transcript could not be resumed, so a second agent read pages 61–75 and built
+      the contents table. The append-as-you-go instruction is what turned a fatal interruption
+      into a 15-page top-up; keep giving it.
+- [x] Figure spot-check delegated to a third agent (model sonnet), so no PDF pages entered the
+      main context. Audited pages 3, 14, 36, 37, 67, 72, 73. **One error found and fixed**:
+      slide 36 called the counterfactual synthetic alphabet "20-letter" while quoting all 26
+      letters of it. Everything else agreed — page 14's two full results tables cell by cell,
+      the three-series legend on 37, the printed averages on 67, the missing GPT-3 bar in 72's
+      Medium panel, and 73's "(~2mins/task)" margin note correctly described as an annotation
+      rather than a second data series.
+- [x] Contents table's claim that slides 3 and 38 are the deck's only two section titles
+      confirmed against the pages — the one thing `--verify` cannot see.
+
+## Wiki
+- [ ] wiki/15-reasoning-and-agents.md
+- [ ] Topic pages
+- [ ] INDEX.md, README.md, AGENTS.md
+- [ ] Link sweep
+
+## Publish
+- [ ] Commit and push (`kbUrl` already set from run 1; no `link_kb.sh` needed)
 
 ---
 
