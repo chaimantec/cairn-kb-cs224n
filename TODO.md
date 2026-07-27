@@ -11,7 +11,7 @@ The course has 23 lectures, built incrementally.
 - **Run 7** (complete): lectures 11–12 — Post-training (Archit Sharma) and
   Benchmarking (Yann Dubois).
 - **Run 8** (complete): lecture 13 — Efficient Training (Shikhar Murty).
-- **Run 9** (in progress): lecture 14 — Brain-Computer Interfaces (Chaofei Fan).
+- **Run 9** (complete): lecture 14 — Brain-Computer Interfaces (Chaofei Fan).
 - Lectures 15–23 remain deferred; video ids are listed at the bottom.
 
 ---
@@ -107,7 +107,8 @@ lecture number, no agenda slide of the usual form, and no announcements.
       the same known false positives as previous runs.)
 
 ## Publish
-- [ ] Commit and push
+- [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n
+- [x] `kbUrl` already set on the catalog entry from run 1; no `link_kb.sh` needed.
 
 ---
 
@@ -901,7 +902,7 @@ to re-query the catalog:
 - 11 Post-training (Archit Sharma) — 35X6zlhoCy4
 - 12 Benchmarking (Yann Dubois) — TO0CqzqiArM
 - 13 Efficient Training (Shikhar Murty) — UVX7SYGCKkA
-- 14 Brain-Computer Interfaces (Chaofei Fan) — tfVgHsKpRC8
+- 14 Brain-Computer Interfaces (Chaofei Fan) — tfVgHsKpRC8  ✔ done in run 9
 - 15 Reasoning and Agents (Shikhar Murty) — I0tj4Y7xaOQ
 - 16 After DPO (Nathan Lambert) — dnF463_Ar9I
 - 17 ConvNets and TreeRNNs — S8d-7v3f5MQ
