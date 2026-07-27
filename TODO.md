@@ -11,7 +11,89 @@ The course has 23 lectures, built incrementally.
 - **Run 7** (complete): lectures 11–12 — Post-training (Archit Sharma) and
   Benchmarking (Yann Dubois).
 - **Run 8** (complete): lecture 13 — Efficient Training (Shikhar Murty).
-- Lectures 14–23 remain deferred; video ids are listed at the bottom.
+- **Run 9** (in progress): lecture 14 — Brain-Computer Interfaces (Chaofei Fan).
+- Lectures 15–23 remain deferred; video ids are listed at the bottom.
+
+---
+
+# Run 9 — lecture 14
+
+Catalog position 14. The catalog's own title is "Lecture 13 - Brain-Computer Interfaces".
+Repo files use the catalog **position** (`14-…`), per the convention set in run 3. The
+off-by-one between catalog position and the deck's own numbering, systematic since position
+11, continues here.
+
+## Provenance — Spring 2024
+
+Position 14 ↔ `slides-cs224n-spr2024-lecture13-speech-bci.pdf`, already on disk from the
+run-1 crawl (62MB, the largest deck in the course). Confirmed by the title slide: Chaofei
+Fan, Stanford NPTL / BrainGate.
+
+| Where | Brain-Computer Interfaces |
+|---|---|
+| Cairn catalog position | 14 |
+| Catalog / YouTube title | "Lecture 13" |
+| Deck's own title | *Speech Brain-Computer Interfaces for Restoring Natural Communication* (unnumbered) |
+| Deck filename | `…lecture13-speech-bci.pdf` |
+| Repo file prefix | `14-` |
+
+This is a guest research talk rather than a numbered course lecture: the deck carries no
+lecture number, no agenda slide of the usual form, and no announcements.
+
+## Transcripts
+- [x] 14 Brain-Computer Interfaces — video tfVgHsKpRC8 (94 paragraphs, 72 min)
+- [x] Copy-edited by hand; verbatim original kept in `raw/transcripts/original/`.
+      All 94 `[MM:SS]` timestamps verified identical and in order.
+- [x] Number inventory compared body-to-body. Every difference investigated and accounted
+      for: "0 five seconds" → **0.5 seconds**, "assignment three" → **Assignment 3**,
+      "CS2 24s"/"cs2 24n" → **CS224S**/**CS224N**, the stutters "T6 that code name T6" and
+      "60 to 7 70" collapsed, and "150 and 60 words per minute" → **150 and 160**, which is
+      the only one that adds a digit and is therefore flagged inline against slide 29.
+- [x] Restored against the slides: *brain-computer interface* ("bre/breing/green/Brin
+      computer interface"), *BCI* ("PCI", "BC"), *ALS* ("AOS", "Asos"), *motor cortex*
+      ("modor/modal/model/M cortex"), *orofacial* ("artificial", "auto facial"), *phoneme*
+      ("fum", "PHS", "volume", "fores", "phic"), *CTC* ("CDC"), *RNN* ("RN"), *LSTM* ("ISM"),
+      *GRU* ("Gru Gator recurring unit"), *n-gram* ("angram", "engram"), *ECoG* ("EOG",
+      "Eco"), *fMRI* ("Mi"), *Broca's area* ("Brokers area", "broadcast area"), *NPTL*
+      ("mptl"), *Hans Berger* ("hansburg"), *Richard Caton* ("Richard Kon"), *Frank Willett*
+      ("Frank wet"), *letter board* ("lead board", "ladder board"), *cosine tuning curve*
+      ("coign tuning curve"), *neuroprosthesis* ("neuroth neuro prothesis"), *word error
+      rate* ("world a rate"), *attempted speech* ("template speech"), *inner speech* ("UN
+      speech"), *locked-in state* ("locking state"), *brainstem stroke* ("brain stamp
+      stroke"), *tongue* ("towns"), *vowels* ("vows").
+- [x] Names confirmed from the slides rather than from memory: **Richard Caton** (slide 8
+      reproduces his 1875 *BMJ* paper), **Noland Arbaugh** (slide 6 quote), **Frank Willett**
+      (slides 27, 36).
+- [x] Four residual ambiguities left marked `[Ed: …]` rather than guessed: 0:51 "was shot",
+      which conflicts with the stroke named in the same sentence; 33:19 "ctech" for the
+      robotic-arm institution, where slide 25 names none and the lecturer hedges himself;
+      and two fragments inside video-clip audio at 45:42 and 1:06:32.
+
+## Slides
+- [x] raw/slides/14-brain-computer-interfaces.md — 75 pages.
+      `slide_number_map.py --verify` passes: 75 headings, sequence matches the deck exactly.
+- [x] **This deck prints no slide number on any page** — the first in the course to do so.
+      `slide_number_map.py` warned rather than silently claiming a clean 1:1, which is the
+      failure mode that warning exists for. Slide N = page N by construction, and the file's
+      front matter says so explicitly instead of implying the deck printed them.
+- [x] Delegated to a Step 1b subagent (model sonnet), read in four contiguous chunks.
+      Hand-checked four figure-heavy pages against the PDF: *29* (the words-per-minute
+      scale — all nine labelled points and both annotated study markers correct), *17*,
+      *36* and *60*. Two slips found and fixed, both small and both about series
+      attribution: slide 36 confined the grey speech-volume trace to the "Words" panel when
+      it also appears in "Single phonemes", and slide 60 gave the 130,000-word WPM series as
+      a flat 63–67 when it dips to about 61 on day 141. No invented series, no invented
+      cells.
+- [x] Contents table checked by hand against the deck's actual section-title slides (7, 34,
+      62) — the one thing `--verify` cannot see.
+
+## Wiki
+- [ ] wiki/14-brain-computer-interfaces.md
+- [ ] Topic pages
+- [ ] INDEX.md table of contents
+
+## Publish
+- [ ] Commit and push
 
 ---
 
