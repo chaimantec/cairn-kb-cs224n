@@ -16,7 +16,91 @@ The course has 23 lectures, built incrementally.
   After DPO (Nathan Lambert). Run 10 was resumed after an interruption: the slide file for
   lecture 15 was already committed and its verbatim transcript already fetched, so the run
   picked up at the transcript edit and then carried straight on into lecture 16.
-- Lectures 17–23 remain deferred; video ids are listed at the bottom.
+- **Run 11** (in progress): lectures 17 and 18 — ConvNets and TreeRNNs (Christopher Manning)
+  and NLP, Linguistics, Philosophy (Christopher Manning).
+- Lectures 19–23 remain deferred; video ids are listed at the bottom.
+
+---
+
+# Run 11 — lectures 17 and 18
+
+Both lectures are Christopher Manning's, and both decks were already on disk from the run-1
+crawl, so run 11 needed no re-crawl and `sources.md` is unchanged.
+
+## Provenance — Spring 2024
+
+| Where | ConvNets and TreeRNNs | NLP, Linguistics, Philosophy |
+|---|---|---|
+| Cairn catalog position | 17 | 18 |
+| Catalog / YouTube title | "Lecture 16" | "Lecture 18" |
+| Deck's own title | "Lecture 16: ConvNets for NLP and Tree Recursive Neural Networks" | "Lecture 18: NLP, linguistics, and philosophy" |
+| Deck filename | `…lecture16-CNN-TreeRNN.pdf` | `…lecture18-nlp-linguistics-philosophy.pdf` |
+| Repo files | `17-convnets-and-treernns` | `18-nlp-linguistics-philosophy` |
+| Video id | `S8d-7v3f5MQ` | `NxH0Y78xcF4` |
+
+Repo files use the catalog **position**, per the convention set in run 3. Note the off-by-one
+that has been systematic since position 11 **closes here**: position 17 ↔ deck 16, but position
+18 ↔ deck 18. The course's own lecture 17 is not in the Cairn playlist, so the catalog catches
+up. Anyone extending this KB past position 18 should re-derive the mapping from the title slide
+rather than assuming either offset.
+
+## Transcripts
+- [x] 17 ConvNets and TreeRNNs — video S8d-7v3f5MQ (93 paragraphs)
+- [x] 18 NLP, Linguistics, Philosophy — video NxH0Y78xcF4 (98 paragraphs)
+- [x] Copy-edit both, delegated to Sonnet with the slide files as the terminology authority,
+      adjudicated here. Verified three ways against the verbatim originals: timestamp sequence
+      identical (93/93 and 98/98, in order), number inventory diffed token by token, and
+      per-paragraph word-count ratios — **no paragraph outside the 0.72–1.10 band in either
+      lecture**, so nothing drifted across a timestamp boundary.
+- [x] Adjudicate every number difference. All deliberate: lecture 17 restored `1,24` → `1,024`
+      (twice, the VD-CNN character-level dimension), `reach 2` → "reached to" (the homophone,
+      not a numeral), `3 G` → "trigrams", `4 gr` → "four-gram", `8 G` → "eight-grams"; lecture
+      18 restored `Cs 24n` → CS224N, the `gp4`/`GPT 4` family to GPT-4, "system one/to" →
+      System 1 / System 2, `2s and1s` → "2000s … 2010s", `2000th` → "2000s", `a zero1` →
+      "zero-one". The rest are prose spell-outs ("5" → "five") and currency marks ("143 billion"
+      → "$143 billion").
+- Editorial gaps left marked rather than guessed: lecture 17 has one `[Ed:]` at 3:10 (the Colab
+  Pro price aside); lecture 18 has two, at 23:25 and 49:07 (the second is probably the iota
+  operator from the adjacent slide, but was not confident enough to assert).
+
+## Slides
+- [x] raw/slides/17-convnets-and-treernns.md — all 60 pages transcribed; `--verify` passes
+- [x] raw/slides/18-nlp-linguistics-philosophy.md — all 65 pages transcribed
+- [x] Figure spot-check delegated (4 pages per deck, checked against the PDF, never opened in
+      the parent). Two corrections applied: deck 18 slide 21's low-quality secondary bump on
+      the BCG-consultants density plot belongs to the **red "used AI"** curve, not the blue
+      control group — the bimodality is the paper's "outside the frontier" effect, and
+      attributing it to the control group inverted the finding; deck 17 slide 9's highlight box
+      is drawn loosely over four rows, which does not change the filter width of 3.
+
+### Slide numbering
+
+- **Deck 17** (60 pages): printed numbers run 1–48 and equal the PDF page number. Pages 1, 16,
+  18 and 35 print nothing but sit inside the run. Pages 49–60 print nothing at all — printed
+  numbering simply stops at 48 — so those labels are inferred by continuing the sequence and
+  are flagged as inferred in the file.
+- **Deck 18** (65 pages): printed numbers run 1–58, equal to the PDF page number. Pages 59–65
+  are unnumbered appendix material, inferred.
+- **`slide_number_map.py --verify` fails on deck 18 and the file is right.** The script reads
+  page 32's footer as `3` and therefore calls the file's `## Slide 32` heading an extra. The
+  page's footer is a **split span**: `3` at y=530 and `2` at y=547 on a page 540 units tall, so
+  the second digit is positioned below the page edge and the extractor drops it. Pages 31 and
+  33 print 31 and 33, so page 32 is slide 32. This is a *third* text-layer failure mode after
+  run 10's bottom-corner fix — worth handling in the script if a fourth deck trips it.
+- The deck-18 subagent reported that pages 41–43 do print footer numbers, contradicting the
+  map's "no number" list. It checked visually, which is the authority; the labels agree either
+  way, so only the printed-vs-inferred annotation was affected.
+
+## Wiki
+- [ ] wiki/17-convnets-and-treernns.md
+- [ ] wiki/18-nlp-linguistics-philosophy.md
+- [ ] Topic pages (cross-lecture concepts)
+- [ ] INDEX.md table of contents
+
+## Publish
+- [ ] Commit and push
+- `kbUrl` is already set on catalog course b102c48c-0c1b-4fc5-be6d-4c6d1e7211d1, so no
+  `link_kb.sh` is needed.
 
 ---
 
@@ -1070,8 +1154,8 @@ to re-query the catalog:
 - 14 Brain-Computer Interfaces (Chaofei Fan) — tfVgHsKpRC8  ✔ done in run 9
 - 15 Reasoning and Agents (Shikhar Murty) — I0tj4Y7xaOQ  ✔ done in run 10
 - 16 After DPO (Nathan Lambert) — dnF463_Ar9I  ✔ done in run 10
-- 17 ConvNets and TreeRNNs — S8d-7v3f5MQ
-- 18 NLP, Linguistics, Philosophy — NxH0Y78xcF4
+- 17 ConvNets and TreeRNNs — S8d-7v3f5MQ  ✔ done in run 11
+- 18 NLP, Linguistics, Philosophy — NxH0Y78xcF4  ✔ done in run 11
 - 19 Multimodal Deep Learning (Douwe Kiela) — 5vfIT5LOkR0
 - 20 Model Interpretability & Editing (Been Kim) — cd3pRpEtjLs
 - 21 Python Tutorial (Manasi Sharma) — 8j4wpU98Q74
