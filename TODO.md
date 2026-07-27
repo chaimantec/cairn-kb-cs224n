@@ -163,11 +163,14 @@ the run-1 crawl. Guest lecture by Nathan Lambert (Allen Institute for AI).
 
 ## Notes for the next run
 
-- **`slide_number_map.py` only scans the bottom-left corner.** Lecture 16's deck numbers in the
-  bottom **right** and the script reported it as carrying no numbers at all. The 1:1 fallback
-  happened to be correct, but it was not verified by the script — the subagent caught it by
-  looking, and the parent confirmed it from the text layer. Until the script scans both corners,
-  treat a "no printed slide number found on ANY page" warning as *unconfirmed*, not as a finding.
+- **`slide_number_map.py` scanned only the bottom-left corner — now fixed.** Lecture 16's deck
+  numbers in the bottom **right** and the script reported it as carrying no numbers at all; the
+  1:1 fallback happened to be correct but was never actually verified by the script. The script
+  now checks both corners, and reads a number ending a running footer ("… | Lambert: 42") as
+  well as a bare one. Regression-tested across all 19 decks on disk: only this deck's output
+  changed, to `86 pages, printed numbers 1-86, only page 1 unnumbered`, matching the hand check.
+  Still treat a "no printed slide number found on ANY page" warning as *unconfirmed* — the
+  lecture-14 speech-BCI deck genuinely prints none, and that remains the only way to tell.
 - **Add a per-paragraph word-count-ratio check to transcript adjudication.** The timestamp diff
   and the number-inventory diff both pass cleanly when an editing agent moves a sentence across
   an `[MM:SS]` boundary. Comparing each edited paragraph's word count against its original
