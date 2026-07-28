@@ -147,6 +147,34 @@ student work, not course material.
 If you are studying CS224N, go read the real thing. This is a navigation aid, not a
 replacement.
 
+## How it was written
+
+Every page in this repo was written by **Claude Opus 5** and **Claude Sonnet 5**, running as
+agents under Cairn's `cairn-kb` build process. No page is hand-written by a person, and none is
+mechanically generated either — a text extractor was deliberately not used, because the decks'
+tables are pasted images that extract as nothing and their equations lose their structure.
+
+The two models do different jobs. **Opus 5** writes the wiki prose and makes every editorial
+call: what a lecture establishes, which concepts earn their own topic page, how a garbled
+passage should be resolved against the slides, and which numbering claims are safe to assert.
+**Sonnet 5** does the bulk transcription work under instructions — reading each slide deck page
+by page and describing its figures, copy-editing the auto-generated captions into sentences, and
+spot-checking finished slide files against the PDF.
+
+That split is deliberate: the delegated work is the work a script can check. Every copy-edited
+transcript is verified against its verbatim original on three axes — the `[MM:SS]` sequence must
+be identical, the number inventory must match token for token, and each paragraph's word count
+must stay within a fixed band of the original, which is what catches content drifting across a
+timestamp boundary. Every slide file is checked page by page against the deck. Differences are
+adjudicated by Opus 5 rather than accepted, and the residue is recorded in each file's header.
+
+The wiki prose is not delegated, because no script scores it.
+
+Both models make mistakes, and the workflow assumes it. Where a caption is garbled beyond
+confident reconstruction, the transcript carries an inline `[Ed: …]` note instead of a guess;
+where a slide's content could not be read reliably, the slide file says so. Treat those marks as
+the honest edges of the KB, and treat the linked PDFs and recordings as the authority.
+
 ## Built with Cairn
 
 [Cairn](https://cairnstudy.com) tracks lecture courses on YouTube and puts an AI chat

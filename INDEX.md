@@ -709,3 +709,13 @@ traceable to a transcript timestamp or a slide, LaTeX for all mathematics, and n
 inventing course content.
 Where a transcript is genuinely unclear, the pages say so rather than filling the
 gap.
+
+**Who wrote this.** Every page here was written by **Claude Opus 5** and **Claude Sonnet 5**
+running as agents, not by a person and not by a text extractor. Opus 5 wrote the wiki prose and
+made the editorial calls; Sonnet 5 read the slide decks page by page and copy-edited the
+auto-generated captions into sentences, with its output verified by script — timestamp sequence,
+number inventory, and per-paragraph word counts against the verbatim originals — and every
+difference adjudicated rather than accepted. If a learner asks where a claim comes from, the
+answer is the linked slide or timestamp, and those are the authority. See
+[README.md](README.md#how-it-was-written) for the full account, including what the models are
+known to get wrong.

@@ -4,6 +4,14 @@ This repo is the knowledge base for **CS224N — Natural Language Processing wit
 by Cairn's in-extension AI chat, which fetches files over
 raw.githubusercontent.com and follows relative markdown links.
 
+Every page in it was written by **Claude Opus 5** and **Claude Sonnet 5** running as agents.
+Opus 5 writes the wiki prose and makes the editorial calls — what a lecture establishes, how a
+garbled passage resolves against the slides, which numbering claims are safe to assert. Sonnet 5
+does the script-checkable bulk work: reading each deck page by page, and copy-editing the
+auto-generated captions. If you extend this KB, keep that split — the transcript edit is safe to
+delegate because the checks below verify it mechanically, and the wiki prose is not, because
+nothing scores it.
+
 ## Layout
 
 | Path                | Contents                                                      |

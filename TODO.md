@@ -111,6 +111,16 @@ rather than assuming either offset.
       `#anchor` targets** — clean apart from three pre-existing format examples inside AGENTS.md
       and TODO.md, which are illustrations rather than links.
 
+## Attribution
+- [x] Record authorship in the repo, at the user's request (2026-07-28): the KB is written by
+      **Claude Opus 5** and **Claude Sonnet 5**. Stated in three places, each aimed at a
+      different reader — `README.md` gets a full "How it was written" section (the split of work
+      between the models, the three-axis verification of delegated transcripts, and what the
+      models are known to get wrong); `INDEX.md` gets a short paragraph so the chat can answer
+      "who made this?" without opening another file; `AGENTS.md` gets the rule a future
+      maintainer needs, which is *why* the split exists — the transcript edit is delegable
+      because scripts check it, the wiki prose is not.
+
 ## Publish
 - [x] Commit and push
 - `kbUrl` is already set on catalog course b102c48c-0c1b-4fc5-be6d-4c6d1e7211d1, so no
@@ -254,6 +264,16 @@ the run-1 crawl. Guest lecture by Nathan Lambert (Allen Institute for AI).
       previous run: AGENTS.md's two illustrative link examples (a gradient-descent one and a
       lecture-5-transcript one) plus the existing line in this file that quotes the former.
 
+## Attribution
+- [x] Record authorship in the repo, at the user's request (2026-07-28): the KB is written by
+      **Claude Opus 5** and **Claude Sonnet 5**. Stated in three places, each aimed at a
+      different reader — `README.md` gets a full "How it was written" section (the split of work
+      between the models, the three-axis verification of delegated transcripts, and what the
+      models are known to get wrong); `INDEX.md` gets a short paragraph so the chat can answer
+      "who made this?" without opening another file; `AGENTS.md` gets the rule a future
+      maintainer needs, which is *why* the split exists — the transcript edit is delegable
+      because scripts check it, the wiki prose is not.
+
 ## Publish
 - [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (2 commits: lecture 15
       wiki plus lecture 16 raw sources, then lecture 16 wiki plus the bookkeeping pass).
@@ -369,6 +389,16 @@ lecture number, no agenda slide of the usual form, and no announcements.
       (Three apparent hits are illustrative examples inside code spans in AGENTS.md/TODO.md,
       the same known false positives as previous runs.)
 
+## Attribution
+- [x] Record authorship in the repo, at the user's request (2026-07-28): the KB is written by
+      **Claude Opus 5** and **Claude Sonnet 5**. Stated in three places, each aimed at a
+      different reader — `README.md` gets a full "How it was written" section (the split of work
+      between the models, the three-axis verification of delegated transcripts, and what the
+      models are known to get wrong); `INDEX.md` gets a short paragraph so the chat can answer
+      "who made this?" without opening another file; `AGENTS.md` gets the rule a future
+      maintainer needs, which is *why* the split exists — the transcript edit is delegable
+      because scripts check it, the wiki prose is not.
+
 ## Publish
 - [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n
 - [x] `kbUrl` already set on the catalog entry from run 1; no `link_kb.sh` needed.
@@ -469,6 +499,16 @@ the run-1 crawl. The lecturer opens with "welcome to lecture 12", matching the d
 - [x] LaTeX check: no equation inside a code fence, no unbalanced `$` on any line. One inline
       expression that had wrapped across a line break was promoted to a display equation,
       since inline math split by a newline does not reliably render.
+
+## Attribution
+- [x] Record authorship in the repo, at the user's request (2026-07-28): the KB is written by
+      **Claude Opus 5** and **Claude Sonnet 5**. Stated in three places, each aimed at a
+      different reader — `README.md` gets a full "How it was written" section (the split of work
+      between the models, the three-axis verification of delegated transcripts, and what the
+      models are known to get wrong); `INDEX.md` gets a short paragraph so the chat can answer
+      "who made this?" without opening another file; `AGENTS.md` gets the rule a future
+      maintainer needs, which is *why* the split exists — the transcript edit is delegable
+      because scripts check it, the wiki prose is not.
 
 ## Publish
 - [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (3 commits: slides,
@@ -582,6 +622,16 @@ match the Spring 2024 decks crawled in run 1:
       offset grows, and the provenance and multiple-numbering notes extended to 11–12.
 - [x] Verified every relative link in the repo resolves (only two known non-links remain,
       the illustrative `[gradient descent](gradient-descent.md)` examples inside AGENTS.md)
+
+## Attribution
+- [x] Record authorship in the repo, at the user's request (2026-07-28): the KB is written by
+      **Claude Opus 5** and **Claude Sonnet 5**. Stated in three places, each aimed at a
+      different reader — `README.md` gets a full "How it was written" section (the split of work
+      between the models, the three-axis verification of delegated transcripts, and what the
+      models are known to get wrong); `INDEX.md` gets a short paragraph so the chat can answer
+      "who made this?" without opening another file; `AGENTS.md` gets the rule a future
+      maintainer needs, which is *why* the split exists — the transcript edit is delegable
+      because scripts check it, the wiki prose is not.
 
 ## Publish
 - [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (3 commits: slides,
@@ -752,6 +802,16 @@ deck-vs-catalog title disagreements.
       `raw/slides/04-dependency-parsing.md` ("for $27 a share") sits inside a 4-space indented
       block, so it renders literally and is safe; it is pre-existing.
 
+## Attribution
+- [x] Record authorship in the repo, at the user's request (2026-07-28): the KB is written by
+      **Claude Opus 5** and **Claude Sonnet 5**. Stated in three places, each aimed at a
+      different reader — `README.md` gets a full "How it was written" section (the split of work
+      between the models, the three-axis verification of delegated transcripts, and what the
+      models are known to get wrong); `INDEX.md` gets a short paragraph so the chat can answer
+      "who made this?" without opening another file; `AGENTS.md` gets the rule a future
+      maintainer needs, which is *why* the split exists — the transcript edit is delegable
+      because scripts check it, the wiki prose is not.
+
 ## Publish
 - [x] Commit and push (kbUrl already set on the catalog entry, no re-link needed)
 
@@ -835,6 +895,16 @@ deck-vs-catalog title disagreements.
       no wiki page points into gitignored raw/pdfs/. Caught and fixed a sed/perl bug
       that had merged several display-math lines with following prose in
       attention.md, self-attention.md and transformer.md.
+
+## Attribution
+- [x] Record authorship in the repo, at the user's request (2026-07-28): the KB is written by
+      **Claude Opus 5** and **Claude Sonnet 5**. Stated in three places, each aimed at a
+      different reader — `README.md` gets a full "How it was written" section (the split of work
+      between the models, the three-axis verification of delegated transcripts, and what the
+      models are known to get wrong); `INDEX.md` gets a short paragraph so the chat can answer
+      "who made this?" without opening another file; `AGENTS.md` gets the rule a future
+      maintainer needs, which is *why* the split exists — the transcript edit is delegable
+      because scripts check it, the wiki prose is not.
 
 ## Publish
 - [x] Commit and push (kbUrl already set on the catalog entry, no re-link needed) —
@@ -999,6 +1069,16 @@ already built; no transcripts, slides or lectures were added.
       three course PDF URLs verified against sources.md. Also fixed a stale illustrative
       path in AGENTS.md left over from the skill's CS229 example.
 
+## Attribution
+- [x] Record authorship in the repo, at the user's request (2026-07-28): the KB is written by
+      **Claude Opus 5** and **Claude Sonnet 5**. Stated in three places, each aimed at a
+      different reader — `README.md` gets a full "How it was written" section (the split of work
+      between the models, the three-axis verification of delegated transcripts, and what the
+      models are known to get wrong); `INDEX.md` gets a short paragraph so the chat can answer
+      "who made this?" without opening another file; `AGENTS.md` gets the rule a future
+      maintainer needs, which is *why* the split exists — the transcript edit is delegable
+      because scripts check it, the wiki prose is not.
+
 ## Publish
 - [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (kbUrl already
       set from run 1, so no link_kb.sh needed)
@@ -1079,6 +1159,16 @@ already built; no transcripts, slides or lectures were added.
 - [x] Link sweep: all relative links resolve; no wiki page points into gitignored
       raw/pdfs/; all six course PDF URLs verified against sources.md
 
+## Attribution
+- [x] Record authorship in the repo, at the user's request (2026-07-28): the KB is written by
+      **Claude Opus 5** and **Claude Sonnet 5**. Stated in three places, each aimed at a
+      different reader — `README.md` gets a full "How it was written" section (the split of work
+      between the models, the three-axis verification of delegated transcripts, and what the
+      models are known to get wrong); `INDEX.md` gets a short paragraph so the chat can answer
+      "who made this?" without opening another file; `AGENTS.md` gets the rule a future
+      maintainer needs, which is *why* the split exists — the transcript edit is delegable
+      because scripts check it, the wiki prose is not.
+
 ## Publish
 - [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (kbUrl already
       set from run 1, so no link_kb.sh needed)
@@ -1129,6 +1219,16 @@ already built; no transcripts, slides or lectures were added.
       glove, gradient-descent, softmax-and-cross-entropy,
       word-senses-and-polysemy, evaluating-word-vectors
 - [x] INDEX.md table of contents
+
+## Attribution
+- [x] Record authorship in the repo, at the user's request (2026-07-28): the KB is written by
+      **Claude Opus 5** and **Claude Sonnet 5**. Stated in three places, each aimed at a
+      different reader — `README.md` gets a full "How it was written" section (the split of work
+      between the models, the three-axis verification of delegated transcripts, and what the
+      models are known to get wrong); `INDEX.md` gets a short paragraph so the chat can answer
+      "who made this?" without opening another file; `AGENTS.md` gets the rule a future
+      maintainer needs, which is *why* the split exists — the transcript edit is delegable
+      because scripts check it, the wiki prose is not.
 
 ## Publish
 - [x] Commit and push — https://github.com/chaimantec/cairn-kb-cs224n (public)
