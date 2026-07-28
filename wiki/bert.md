@@ -111,7 +111,7 @@ architecture; after, a single pretrained encoder fine-tuned per task beat all of
 | **BERT-large** | **86.7/85.9** | **72.1** | **92.7** | **94.9** | **60.5** | **86.5** | **89.3** | **70.1** | **82.1** |
 
 The tasks span paraphrase detection (QQP, MRPC), natural language inference (QNLI, RTE,
-MNLI), sentiment ([SST-2](softmax-and-cross-entropy.md)), grammatical acceptability (CoLA) and
+MNLI), sentiment ([SST-2](sentiment-analysis.md)), grammatical acceptability (CoLA) and
 semantic similarity (STS-B). The lecturer's account of the reception: "the field was taken
 aback in a way that's hard to describe … roughly all of that was blown out of the water by
 'just build a big Transformer and just teach it to predict the missing words a whole bunch,

@@ -92,9 +92,14 @@ rather than assuming either offset.
   way, so only the printed-vs-inferred annotation was affected.
 
 ## Wiki
-- [ ] wiki/17-convnets-and-treernns.md
+- [x] wiki/17-convnets-and-treernns.md
 - [ ] wiki/18-nlp-linguistics-philosophy.md
-- [ ] Topic pages (cross-lecture concepts)
+- [x] Topic pages for lecture 17 — convolutional-neural-networks, tree-recursive-neural-networks,
+      sentiment-analysis. `compositionality` is deliberately deferred until lecture 18 is written,
+      since it spans both (Frege and Montague in 18, the TreeRNN/RNTN implementation in 17).
+- [x] Fixed a pre-existing mis-link in wiki/bert.md: GLUE's SST-2 pointed at
+      softmax-and-cross-entropy.md; it now points at the new sentiment-analysis.md.
+- [ ] Topic pages for lecture 18
 - [ ] INDEX.md table of contents
 
 ## Publish
