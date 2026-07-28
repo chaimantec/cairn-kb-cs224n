@@ -16,8 +16,9 @@ The course has 23 lectures, built incrementally.
   After DPO (Nathan Lambert). Run 10 was resumed after an interruption: the slide file for
   lecture 15 was already committed and its verbatim transcript already fetched, so the run
   picked up at the transcript edit and then carried straight on into lecture 16.
-- **Run 11** (in progress): lectures 17 and 18 — ConvNets and TreeRNNs (Christopher Manning)
-  and NLP, Linguistics, Philosophy (Christopher Manning).
+- **Run 11** (complete): lectures 17 and 18 — ConvNets and TreeRNNs (Christopher Manning)
+  and NLP, Linguistics, Philosophy (Christopher Manning). Both are Manning's own, and the
+  catalog/deck numbering offset that has run since position 11 closes at position 18.
 - Lectures 19–23 remain deferred; video ids are listed at the bottom.
 
 ---
@@ -93,17 +94,25 @@ rather than assuming either offset.
 
 ## Wiki
 - [x] wiki/17-convnets-and-treernns.md
-- [ ] wiki/18-nlp-linguistics-philosophy.md
+- [x] wiki/18-nlp-linguistics-philosophy.md
 - [x] Topic pages for lecture 17 — convolutional-neural-networks, tree-recursive-neural-networks,
       sentiment-analysis. `compositionality` is deliberately deferred until lecture 18 is written,
       since it spans both (Frege and Montague in 18, the TreeRNN/RNTN implementation in 17).
 - [x] Fixed a pre-existing mis-link in wiki/bert.md: GLUE's SST-2 pointed at
       softmax-and-cross-entropy.md; it now points at the new sentiment-analysis.md.
-- [ ] Topic pages for lecture 18
-- [ ] INDEX.md table of contents
+- [x] Topic pages for lecture 18 — compositionality (written last, so it spans both lectures:
+      Frege/Montague and the homomorphism requirement from 18, the TreeRNN/RNTN implementation
+      and the negation result from 17), formal-semantics, symbolic-and-neural-ai,
+      ai-risks-and-harms.
+- [x] INDEX.md table of contents — two lecture entries, seven topic entries, and the coverage
+      note, slide-numbering note, transcript-garble list and sources paragraph all extended to
+      lecture 18. README.md's table and AGENTS.md's Spring-2024 range updated to match.
+- [x] Link sweep: all 147 markdown files checked for unresolvable relative links **and broken
+      `#anchor` targets** — clean apart from three pre-existing format examples inside AGENTS.md
+      and TODO.md, which are illustrations rather than links.
 
 ## Publish
-- [ ] Commit and push
+- [x] Commit and push
 - `kbUrl` is already set on catalog course b102c48c-0c1b-4fc5-be6d-4c6d1e7211d1, so no
   `link_kb.sh` is needed.
 

@@ -10,7 +10,7 @@ goals are that students learn the methods, gain some real understanding of human
 language and why it is hard for computers, and come out able to build working
 systems.
 
-> **Coverage note.** This knowledge base covers **lectures 1 to 16**: wiki pages,
+> **Coverage note.** This knowledge base covers **lectures 1 to 18**: wiki pages,
 > timestamped transcripts, and full slide-by-slide text for each. Slide *URLs* for
 > lectures 1–18 are listed in [sources.md](sources.md), so questions about later
 > lectures can be answered by pointing at the right PDF, but there are no transcripts,
@@ -37,6 +37,13 @@ systems.
 > AI2) goes one step further — catalog and video call it "Lecture 15" while the deck's own title
 > is simply "Life after DPO" — and also maps 1:1, though its footer prints the number in the
 > **bottom-right** corner rather than the bottom-left this KB's other decks use.
+> **Lecture 17** (ConvNets and TreeRNNs) is the last of the off-by-one lectures — video and deck
+> both call it "Lecture 16" — and **lecture 18** (NLP, Linguistics, Philosophy) is where the
+> offset closes, because the course's own lecture 17 appears neither in this playlist nor in the
+> course site's slide directory, so position 18 and the deck's "Lecture 18" agree. Both are Manning's. Their printed numbers match the PDF pages
+> 1:1, but each deck simply *stops* numbering before the end: lecture 17 prints 1–48 of 60 pages
+> and lecture 18 prints 1–58 of 65, so the trailing slides are labelled by continuing the count
+> and both slide files flag those labels as inferred.
 >
 > **Citing sources.** Prefer citing a **slide number** for anything on a slide
 > (equations, tables, definitions) and a **timestamp** for anything Manning says aloud
@@ -185,6 +192,32 @@ systems.
   *data* beats changing the algorithm, a 70B reward model improves on best-of-n yet flatlines
   downstream, and PPO beats DPO by 1.2% for an effort Lambert doubts is worth it. Closes on what
   "online" data means, D2PO, what Llama 3's blog post implies, and a Q&A on reward hacking.
+- [Lecture 17 — ConvNets and Tree Recursive Neural Networks](wiki/17-convnets-and-treernns.md) —
+  two architectures that lost, taught because "people find new ways to reinvent things." First
+  half: the 1D convolution over $n$-grams worked through numerically, padding and wide
+  convolutions, why max pooling is the right summary if a filter is a feature detector, stride,
+  local and $k$-max pooling, dilation, `Conv1d`; then Yoon Kim's 2014 single-layer CNN with its
+  softmax classifier and its dropout confound, the **word-vector fine-tuning pitfall** (words
+  absent from your training set never move, so *plodding* is stranded on the wrong side of the
+  boundary) and the channel-doubling fix; BatchNorm vs LayerNorm; size-1 convolutions as the
+  ancestor of the Transformer's per-position feed-forward layer; and VD-CNN, 29 layers deep from
+  raw characters. Second half: recursion in language via Hauser, Chomsky and Fitch, the TreeRNN's
+  shared composition matrix and greedy parser, why one matrix cannot serve every syntactic
+  relation, the RNTN's multiplicative tensor layer, the Stanford Sentiment Treebank, and the
+  negation result Manning thinks Transformers still do not match.
+- [Lecture 18 — NLP, Linguistics, Philosophy](wiki/18-nlp-linguistics-philosophy.md) — Manning's
+  closing lecture, and the most argumentative page in this KB. The course's four big ideas; the
+  open problems (memorization vs generalization — with an LSTM out-generalizing a Transformer on
+  limited data — interpretability, the multilingual long tail, benchmark contamination, legal and
+  clinical NLP, bias). Then an honest read on GPT-4: a passable T-alliterative sonnet, BCG
+  consultants 40% higher quality with it, "not even close" to *New Yorker* fiction, and the FT's
+  "models predict, they do not comprehend." Then the history — symbolic AI vs cybernetics, the
+  physical symbol system hypothesis, 1958's Perceptron hype — and Manning's own position:
+  **language is a symbolic system, but its processor need not be**. Then meaning: model-theoretic
+  vs distributional semantics, Tarski and Montague, the full lambda-calculus derivation, semantic
+  parsing to SQL, Wittgenstein against denotation, and the *shehnai* argument that meaning is
+  gradient and comes from connections of many kinds. Closes on AI risk, arguing existential risk
+  is overweighted and concentration of power under-weighted.
 
 ## Topic pages
 
@@ -502,6 +535,42 @@ systems.
   replaced it, UltraFeedback as the workhorse, HH-RLHF's useful noise, ~70% annotator agreement as
   possible signal rather than bug, and the routes beyond pairwise preferences (KTO's one-sided
   labels, Starling's k-wise, fine-grained attributes).
+- [Convolutional neural networks for NLP](wiki/convolutional-neural-networks.md) — the mechanics
+  in one place: the feature-map equation, narrow vs wide convolutions, multiple channels, max vs
+  average pooling and the feature-detector intuition that justifies max, stride, local and
+  $k$-max pooling, dilation, `Conv1d`, BatchNorm vs LayerNorm, size-1 convolutions, and the two
+  landmark systems (Kim 2014, VD-CNN).
+- [Tree recursive neural networks](wiki/tree-recursive-neural-networks.md) — recursive vs
+  recurrent, why linguists think recursion is the defining property of language, the
+  $p = \tanh(W[c_1;c_2] + b)$ composition with a score head, greedy bottom-up parsing worked
+  through on "The cat sat on the mat," why a single shared matrix cannot model different
+  syntactic relations, the RNTN's tensor layer, and the negation experiments — the one result
+  where these models still beat Transformers.
+- [Compositionality](wiki/compositionality.md) — "the meaning of a whole is a function of the
+  meanings of its parts and how they combine," in both its logical form (Montague's homomorphism
+  requirement, the lambda-calculus derivation) and its vector form (TreeRNN, RNTN). Covers
+  systematic generalization and the Fodor & Pylyshyn test, why negation is the sharp empirical
+  case, and the open question of whether Transformers compose at all. **Spans lectures 17 and 18.**
+- [Formal semantics](wiki/formal-semantics.md) — the denotational theory of meaning that ran NLP
+  from 1967 to 2017: Tarski's rejection of natural language, Montague's break from it, the
+  parse → lexical lookup → rule-to-rule composition pipeline, semantic parsing compiled to SQL,
+  why it was brittle, and what survives. The counterpart to
+  [distributional semantics](wiki/distributional-semantics.md).
+- [Symbolic and neural AI](wiki/symbolic-and-neural-ai.md) — the two research traditions and why
+  the distinction is not decorative: McCarthy coining "artificial intelligence" to break from
+  cybernetics, Newell and Simon's physical symbol system hypothesis and the strength of its
+  "necessary" clause, the 1958 Perceptron hype, Manning's separation of the symbol system from
+  its processor, signalling reliability as the reason language is discrete, what linguistics is
+  for now, and language as a thinking tool (von Humboldt, Dennett's four grades).
+- [Sentiment analysis](wiki/sentiment-analysis.md) — the course's default sentence-classification
+  task. Why keyword matching reaches ~90% and then stops, the Stanford Sentiment Treebank's
+  215,154 phrase labels and the four-point lift they give even a naive Bayes baseline, how each
+  model in the course scores, and SST-2's later life as a GLUE task.
+- [AI risks and harms](wiki/ai-risks-and-harms.md) — lecture 18's closing argument, laid out:
+  the 1928 and 1961 automation panics, concentration of power as the risk Manning does weight,
+  the x-risk debate with Chollet's, Pineau's and Gebru's objections (including the
+  infinity-times-any-probability flaw), the present-harms list, and the Sagan quotation the
+  course ends on.
 
 ## Raw materials
 
@@ -520,8 +589,10 @@ systems.
   ([65 slides](raw/slides/12-benchmarking.md)), lecture 13
   ([65 slides](raw/slides/13-efficient-training.md)), lecture 14
   ([75 slides](raw/slides/14-brain-computer-interfaces.md)), lecture 15
-  ([75 slides](raw/slides/15-reasoning-and-agents.md)) and lecture 16
-  ([86 slides](raw/slides/16-after-dpo.md)). Each file opens
+  ([75 slides](raw/slides/15-reasoning-and-agents.md)), lecture 16
+  ([86 slides](raw/slides/16-after-dpo.md)), lecture 17
+  ([60 slides](raw/slides/17-convnets-and-treernns.md)) and lecture 18
+  ([65 slides](raw/slides/18-nlp-linguistics-philosophy.md)). Each file opens
   with a section-to-slide-range table, then transcribes every slide in order — including the
   equations, the tables of numbers, the margin annotations, and prose descriptions of the diagrams
   and plots. For lectures 1–3, 5–9, 12, 13 and 15 **the printed slide number equals the PDF page
@@ -540,8 +611,14 @@ systems.
   Lambert: N" on content slides, a bare N on section dividers) rather than the bottom-left this
   KB's other decks use, which is why the repo's `slide_number_map.py` — whose corner heuristic
   scans the bottom-left — initially reported the deck as carrying no printed numbers at all,
-  before the mapping was checked by eye against the PDF text layer; page 1 again prints none. One
-  further caveat: **lecture 6's slides 4–18 repeat lecture 5's slides 49–63** as a recap, and are
+  before the mapping was checked by eye against the PDF text layer; page 1 again prints none.
+  **Lectures 17 and 18 are a fifth kind of exception**: both map 1:1, but each deck stops printing
+  numbers before it ends — lecture 17 prints 1–48 across 60 pages and lecture 18 prints 1–58
+  across 65 — so the trailing slides carry labels inferred by continuing the count, and both files
+  say which those are rather than presenting them as printed. Lecture 18 has one further quirk
+  worth knowing if you re-check it with a script: page 32's footer splits into two text spans with
+  the "2" positioned below the page edge, so an extractor reads it as "3" and reports a numbering
+  gap that is not there. One further caveat: **lecture 6's slides 4–18 repeat lecture 5's slides 49–63** as a recap, and are
   transcribed in brief with pointers rather than in full — the exception is slide 15, which adds
   the "~7 tokens back" rule of thumb that slide 25 then contrasts LSTMs against. Use these files
   when a learner asks where something is in the slides, wants an equation exactly as written, or
@@ -549,7 +626,7 @@ systems.
   10's ethics section (70, 73, 74) reproduce hate speech, sexual violence and profanity in full on
   the deck; the slide file states what each figure shows and cites the source paper but does not
   reproduce the passages.
-- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 16,
+- [`raw/transcripts/`](raw/transcripts/) — lecture transcripts for lectures 1 to 18,
   grouped into paragraphs each prefixed with an `[MM:SS]` timestamp. Use these to
   point a learner at the exact moment something is explained ("Manning covers this
   around 42:00"), or to quote him directly — they read as sentences, so they quote
@@ -584,7 +661,15 @@ systems.
   cortex", *orofacial* as "artificial", *phoneme* as "fum", "PHS" and "volume", *CTC* as "CDC",
   *GRU* as "Gru Gator recurring unit", *n-gram* as "angram", *ECoG* as "EOG", *fMRI* as "Mi",
   *Broca's area* as "broadcast area", *Hans Berger* as "hansburg", *Richard Caton* as "Richard
-  Kon", and *Frank Willett* as "Frank wet"). No content was added,
+  Kon", and *Frank Willett* as "Frank wet"; in lecture 17 *the attention function* as "this
+  tension function", *Yoon Kim* as "Yun Kim", *Conneau et al.* as "Cano Al", the whole $n$-gram
+  vocabulary as "engram"/"byr"/"Tri"/"forr", and the sentiment examples *plodding* and *spice* as
+  "plotting" and "space"; and in lecture 18 the philosophers and linguists the lecture is built
+  on — *Montague* as "montigue", *von Humboldt* as "vilhelm Von Hot", *Tarski* as "Alfred tasi",
+  *Wittgenstein* as "viken Stein", *Dennett* as "Daniel dennet" with his four grades as "dar
+  wian"/"scaran"/"paparian", *Barwise* as "John barwise", *Wiener* as "Norbert weer",
+  *Minsky* as "Marvin miny the Teeny", *Chollet* as "franois charal", *Gebru* as "Tim n jeu",
+  *Sagan* as "Carl San", and *shehnai* throughout as "Shai"). No content was added,
   removed or reordered, and every timestamp is preserved. Mathematical notation in
   lectures 7–11's and 13's transcripts stays spelled out (bold for vectors/matrices, Unicode
   subscripts), matching lecture 3's convention — LaTeX is wiki-only. Student questions
@@ -599,7 +684,10 @@ systems.
   **Winter 2023** decks that go with catalog lectures 9 and 10 (catalog lectures 11, 12, 13, 14,
   15 and 16 use the Spring 2024 `lecture10-prompting-rlhf`, `lecture11-evaluation-yann`,
   `lecture12-training-shikhar`, `lecture13-speech-bci`, `lecture14-agents-shikhar-updated` and
-  `lecture15-life-after-dpo-lambert` decks),
+  `lecture15-life-after-dpo-lambert` decks, catalog lecture 17 the `lecture16-CNN-TreeRNN` deck,
+  and catalog lecture 18 the `lecture18-nlp-linguistics-philosophy` deck — the course's own
+  lecture 17 is absent from both the playlist and the course site's slide directory, which is
+  why the numbering offset closes at position 18),
   supplementary readings
   (the 2019 course notes, the gradient and differential-calculus reviews, the
   self-attention and transformers notes, the Python review), the assignment 2–4

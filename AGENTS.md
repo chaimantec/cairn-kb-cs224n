@@ -52,7 +52,7 @@ slides at their source URL, not at a local path.
   transcribing a new deck, verify the printed numbers against the page count rather than
   assuming, and do not assume a constant offset once you find one.
 - **Not every lecture in the playlist is from the course the site describes.** Lectures 1–8 and
-  11–16 are Spring 2024; lectures 9 and 10 are Winter 2023 recordings by John Hewitt and Xiang
+  11–18 are Spring 2024; lectures 9 and 10 are Winter 2023 recordings by John Hewitt and Xiang
   Lisa Li, whose decks come from the `cs224n.1234` archive. Before transcribing a deck for a new
   lecture, check that it matches the video — announcements ("Assignment 5 is out on Thursday"),
   the lecturer's name, and the day-of-week references on the title and reminder slides are the

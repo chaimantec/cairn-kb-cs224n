@@ -34,7 +34,7 @@ reading from it too.
 
 ## What's covered
 
-**Lectures 1–16**, in full — wiki pages, edited transcripts and slide-by-slide text for
+**Lectures 1–18**, in full — wiki pages, edited transcripts and slide-by-slide text for
 each:
 
 | # | Lecture | Slides | Transcript |
@@ -55,11 +55,15 @@ each:
 | 14 | [Brain-Computer Interfaces](wiki/14-brain-computer-interfaces.md) | [75](raw/slides/14-brain-computer-interfaces.md) | [94 ¶](raw/transcripts/14-brain-computer-interfaces.md) |
 | 15 | [Reasoning and Agents](wiki/15-reasoning-and-agents.md) | [75](raw/slides/15-reasoning-and-agents.md) | [82 ¶](raw/transcripts/15-reasoning-and-agents.md) |
 | 16 | [After DPO](wiki/16-after-dpo.md) | [86](raw/slides/16-after-dpo.md) | [90 ¶](raw/transcripts/16-after-dpo.md) |
+| 17 | [ConvNets and TreeRNNs](wiki/17-convnets-and-treernns.md) | [60](raw/slides/17-convnets-and-treernns.md) | [93 ¶](raw/transcripts/17-convnets-and-treernns.md) |
+| 18 | [NLP, Linguistics, Philosophy](wiki/18-nlp-linguistics-philosophy.md) | [65](raw/slides/18-nlp-linguistics-philosophy.md) | [98 ¶](raw/transcripts/18-nlp-linguistics-philosophy.md) |
 
 Lectures 9 and 10 are **Winter 2023** recordings by John Hewitt and Xiang Lisa Li; the rest
 are Spring 2024. Lectures 11–16 are guest lectures — Archit Sharma, Yann Dubois, Shikhar Murty
 (twice, lectures 13 and 15), Chaofei Fan, and Nathan Lambert (AI2) — and their video titles run
-one behind this table — see [INDEX.md](INDEX.md) for the mapping. Lecture 14's deck prints
+one behind this table, as does lecture 17's; lecture 18 is where the offset closes, because the
+course's own lecture 17 is in neither the playlist nor the site's slide directory. Lectures 17
+and 18 are Manning's again. See [INDEX.md](INDEX.md) for the mapping. Lecture 14's deck prints
 **no slide numbers at all**, so its slide citations are PDF page positions; its slide file says
 so in the header. Lecture 16's deck numbers every page too, but in the bottom-right corner
 rather than the bottom-left every other deck uses.
